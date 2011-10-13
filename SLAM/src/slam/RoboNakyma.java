@@ -1,3 +1,6 @@
+/**
+ * Luokka jolla toteutetaan eri roboottien näkymät käyttöliittymässä.
+ */
 package slam;
 
 import java.awt.*;
@@ -9,6 +12,10 @@ import javax.swing.JPanel;
  * @author Olli Koskinen
  */
 public class RoboNakyma extends JPanel {
+
+    RoboNakyma(Komentaja komentaja) {
+      
+    }
     
     @Override
     public void paintComponent(Graphics g){
