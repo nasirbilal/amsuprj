@@ -4,12 +4,9 @@
 
 
 package slam;
-import java.awt.Dimension;
-import java.awt.GridBagLayout;
-import java.awt.Point;
-import java.awt.Toolkit;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import java.awt.*;
+import javax.swing.*;
+import javax.swing.border.Border;
 
 /**
  *
@@ -25,6 +22,8 @@ public class UI extends JFrame {
     private RoboNakyma Robo1;
     private RoboNakyma Robo2;
     private Komentaja komentaja;
+    private JTextArea debugTekstit;
+    private Border reunus;
     
     
     /**
@@ -42,7 +41,7 @@ public class UI extends JFrame {
     private void alustaKomponentit() {
         
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+        setSize(800,600);
         //Keskitetään ikkuna keskelle ruutua
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         Dimension frameSize = getSize();
@@ -53,8 +52,16 @@ public class UI extends JFrame {
         paaPaneeli = new JPanel(new GridBagLayout());
         Robo1 = new RoboNakyma(komentaja);
         Robo2 = new RoboNakyma(komentaja);
+        reunus = BorderFactory.createEtchedBorder();
+        debugTekstit = new JTextArea(5,60);
         
-        setSize(800,600);
+        //reunukset
+        debugTekstit.setBorder(reunus);
+        
+        //asetetaan paneelit
+        paaPaneeli.add(debugTekstit);
+        
+        
         setContentPane(paaPaneeli);
         setVisible(true);
     }
