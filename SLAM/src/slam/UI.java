@@ -5,6 +5,7 @@
 
 package slam;
 import java.awt.Dimension;
+import java.awt.GridBagLayout;
 import java.awt.Point;
 import java.awt.Toolkit;
 import javax.swing.JFrame;
@@ -49,11 +50,11 @@ public class UI extends JFrame {
 
         
         //Alustetaan muuttujat
-        paaPaneeli = new JPanel();
+        paaPaneeli = new JPanel(new GridBagLayout());
         Robo1 = new RoboNakyma(komentaja);
         Robo2 = new RoboNakyma(komentaja);
         
-        pack();
+        setSize(800,600);
         setContentPane(paaPaneeli);
         setVisible(true);
     }
