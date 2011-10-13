@@ -10,6 +10,7 @@ public class UItempMain {
      * @param args
      */
     public static void main(String[] args) {
-        UI ui = new UI();
+        Komentaja komentaja = new Komentaja();
+        UI ui = new UI(komentaja);
     }
 }

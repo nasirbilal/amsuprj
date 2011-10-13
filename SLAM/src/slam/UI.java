@@ -1,5 +1,9 @@
-package slam;
+/*
+ * Luokka käyttöliittymälle.
+ */
 
+
+package slam;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Toolkit;
@@ -10,19 +14,24 @@ import javax.swing.JPanel;
  *
  * @author Olli Koskinen
  */
+
 public class UI extends JFrame {
     
     /**
      * Luokkamuuttujat
      */
     private JPanel paaPaneeli;
+    private RoboNakyma Robo1;
+    private RoboNakyma Robo2;
+    private Komentaja komentaja;
     
     
     /**
      * Konstruktori
      */
-    public UI() {
+    public UI(Komentaja commander) {
         super("SLAM");
+        rekisteroiKomentaja(komentaja);
         alustaKomponentit();
     }
 
@@ -41,9 +50,20 @@ public class UI extends JFrame {
         
         //Alustetaan muuttujat
         paaPaneeli = new JPanel();
+        Robo1 = new RoboNakyma(komentaja);
+        Robo2 = new RoboNakyma(komentaja);
         
         pack();
         setContentPane(paaPaneeli);
         setVisible(true);
+    }
+    
+    /**
+     * 
+     * @param komentaja 
+     * 
+     */
+    private void rekisteroiKomentaja(Komentaja komentaja){
+        this.komentaja = komentaja;
     }
 }
