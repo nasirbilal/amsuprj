@@ -15,6 +15,6 @@ public class Main {
      */
     public static void main(String[] args) {
        //Tämä on testicommit :---D
-        System.out.println("Heissan Laurin maailma.");
+        System.out.println("Heissan");
     }
 }
