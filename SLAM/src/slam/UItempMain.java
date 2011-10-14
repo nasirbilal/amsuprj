@@ -1,5 +1,5 @@
 /**
- * VÄLIAIKAINEN: Poistetaan käytöstä, kun UI on hierottu kuntoon.
+ * VÄLIAIKAINEN: Poistetaan käytöstä, kun UI on hierottu kuntoon
  */
 
 package slam;
