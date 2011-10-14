@@ -1,3 +1,7 @@
+/**
+ * VÄLIAIKAINEN: Poistetaan käytöstä, kun UI on hierottu kuntoon.
+ */
+
 package slam;
 
 /**
@@ -5,6 +9,7 @@ package slam;
  * @author Olli Koskinen
  */
 public class UItempMain {
+
     /**
      * 
      * @param args
