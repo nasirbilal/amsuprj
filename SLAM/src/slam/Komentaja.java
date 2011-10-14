@@ -5,7 +5,7 @@ package slam;
 
 /**
  *
- * @author Olli
+ * @author Olli Koskinen
  */
 public class Komentaja {
     
