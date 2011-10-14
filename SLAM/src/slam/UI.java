@@ -84,7 +84,8 @@ public class UI extends JFrame{
         //reunukset
         debugTekstit.setBorder(reunus);
         nappulaPaneeli.setBorder(reunus);
-        roboPaneeli.setBorder(reunus);
+        robo1.setBorder(reunus);
+        robo2.setBorder(reunus);
         roboPaneeli.setBorder(reunus);
       
         //asetetaan paneelit
