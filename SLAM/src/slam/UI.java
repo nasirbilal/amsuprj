@@ -55,7 +55,7 @@ public class UI extends JFrame{
 
         //Alustetaan muuttujat
         paaPaneeli = new JPanel(new BorderLayout());
-        roboPaneeli = new JPanel(new GridLayout(2,1));
+        roboPaneeli = new JPanel(new BorderLayout());
         nappulaPaneeli = new JPanel();
         nappulaPaneeli.setLayout(new BoxLayout(nappulaPaneeli, BoxLayout.Y_AXIS));
         robo1 = new RoboNakyma(komentaja);
@@ -84,10 +84,7 @@ public class UI extends JFrame{
         //reunukset
         debugTekstit.setBorder(reunus);
         nappulaPaneeli.setBorder(reunus);
-        robo1.setBorder(reunus);
-        robo2.setBorder(reunus);
         roboPaneeli.setBorder(reunus);
-        karttaNakyma.setBorder(reunus);
       
         //asetetaan paneelit
         nappulaPaneeli.add(yhdistaN);
@@ -96,8 +93,8 @@ public class UI extends JFrame{
         nappulaPaneeli.add(paivitaNakymaN);
         nappulaPaneeli.add(tallennaKarttaN);
         nappulaPaneeli.add(lopetaN);
-        roboPaneeli.add(robo1, 0);
-        roboPaneeli.add(robo2,1);
+        roboPaneeli.add(robo1,BorderLayout.NORTH);
+        roboPaneeli.add(robo2,BorderLayout.SOUTH);
         paaPaneeli.add(nappulaPaneeli, BorderLayout.EAST);
         paaPaneeli.add(roboPaneeli, BorderLayout.WEST);
         paaPaneeli.add(karttaNakyma,BorderLayout.CENTER);
