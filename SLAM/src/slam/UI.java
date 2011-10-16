@@ -4,6 +4,8 @@
 package slam;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.*;
 import javax.swing.border.Border;
 
@@ -26,19 +28,19 @@ public class UI extends JFrame{
     private JTextArea debugTekstit;
     private Border reunus;
     private JScrollPane scrollPane;
-    private JButton suljeYhteysN;
-    private JButton yhdistaN;
-    private JButton debugValitsinN;
-    private JButton paivitaNakymaN;
-    private JButton tallennaKarttaN;
-    private JButton lopetaN;
+    private JButton suljeYhteysN, yhdistaN, debugValitsinN, 
+                    paivitaNakymaN,tallennaKarttaN,lopetaN;
+    
+    private boolean debug;
     
     /**
      * Konstruktori
+     * @param commander 
      */
     public UI(Komentaja commander) {
         super("SLAM");
-        rekisteroiKomentaja(komentaja);
+        debug = true;
+        rekisteroiKomentaja(commander);
         alustaKomponentit();
 
         //Keskitetään ikkuna keskelle ruutua
@@ -58,9 +60,16 @@ public class UI extends JFrame{
         roboPaneeli = new JPanel(new BorderLayout());
         nappulaPaneeli = new JPanel();
         nappulaPaneeli.setLayout(new BoxLayout(nappulaPaneeli, BoxLayout.Y_AXIS));
-        robo1 = new RoboNakyma(komentaja);
-        robo2 = new RoboNakyma(komentaja);
+        
+        //TODO: poista testit kun nakyman saato on valmis
+        robo1 = new RoboNakyma();
+        robo2 = new RoboNakyma(); 
+        
+        komentaja.asetaRoboNakyma1(robo1);
+        
+        komentaja.asetaRoboNakyma2(robo2);
         karttaNakyma = new KarttaNakyma(komentaja);
+        komentaja.asetaKarttaNakyma(karttaNakyma);
         reunus = BorderFactory.createEtchedBorder();
         debugTekstit = new JTextArea(8, 50);
         scrollPane = new JScrollPane(debugTekstit);
@@ -68,7 +77,7 @@ public class UI extends JFrame{
         //isoon N-kirjaimeen loppuvat muuttujat ovat nappuloita.
         suljeYhteysN = new JButton("Sulje yhteys");
         yhdistaN = new JButton("Yhdistä");
-        debugValitsinN = new JButton("Debug ON");
+        debugValitsinN = new JButton("Debug OFF");
         paivitaNakymaN = new JButton("Päivitä Näkymä");
         tallennaKarttaN = new JButton("Tallenna Kartta");
         lopetaN = new JButton("Lopeta");
@@ -99,8 +108,60 @@ public class UI extends JFrame{
         paaPaneeli.add(roboPaneeli, BorderLayout.WEST);
         paaPaneeli.add(karttaNakyma,BorderLayout.CENTER);
         paaPaneeli.add(scrollPane, BorderLayout.SOUTH);
-
-
+        
+        //Nappuloiden toiminnot
+        yhdistaN.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+               
+            }
+        });
+        
+        suljeYhteysN.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+               
+            }
+        });
+        
+        debugValitsinN.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+               if(debug){
+                   debug = false;
+                   debugValitsinN.setText("Debug ON");
+               }
+               else{
+                   debug = true;
+                   debugValitsinN.setText("Debug OFF");
+               }
+            }
+        });
+        
+        paivitaNakymaN.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+               repaint();
+               komentaja.paivitaNakymat();
+               komentaja.TESTIroboNakymaTESTI();
+            }
+        });
+        
+        tallennaKarttaN.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+               
+            }
+        });
+        
+        lopetaN.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+               System.gc();
+               System.exit(0);
+            }
+        });
+        
         setContentPane(paaPaneeli);
         setVisible(true);
     }
@@ -121,7 +182,7 @@ public class UI extends JFrame{
      * @param str 
      */
     protected void asetaDebugTeksti(String str) {
-        if (str != null) {
+        if (str != null && debug) {
             debugTekstit.append(str.concat("\n"));
         }
     }

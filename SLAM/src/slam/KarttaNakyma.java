@@ -20,9 +20,6 @@ public class KarttaNakyma extends JPanel {
     @Override
     public void paintComponent(Graphics g){
         super.paintComponent(g);
-        g.setColor(Color.WHITE);
-        g.drawRect(0, 0, getWidth(), getHeight());
         g.setColor(Color.gray);
-        g.drawString("TestiTeksti", 20, 20);
     }
 }

@@ -17,5 +17,6 @@ public class UItempMain {
     public static void main(String[] args) {
         Komentaja komentaja = new Komentaja();
         UI ui = new UI(komentaja);
+        
     }
 }
