@@ -6,6 +6,7 @@ package slam;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Random;
 import javax.swing.*;
 import javax.swing.border.Border;
 
@@ -13,7 +14,7 @@ import javax.swing.border.Border;
  *
  * @author Olli Koskinen
  */
-public class UI extends JFrame{
+public class UI extends JFrame {
 
     /**
      * Luokkamuuttujat
@@ -28,11 +29,11 @@ public class UI extends JFrame{
     private JTextArea debugTekstit;
     private Border reunus;
     private JScrollPane scrollPane;
-    private JButton suljeYhteysN, yhdistaN, debugValitsinN, 
-                    paivitaNakymaN,tallennaKarttaN,lopetaN;
-    
+    private JButton suljeYhteysN, yhdistaN, debugValitsinN,
+            paivitaNakymaN, tallennaKarttaN, lopetaN;
     private boolean debug;
-    
+    private GridBagConstraints gbc;
+
     /**
      * Konstruktori
      * @param commander 
@@ -40,6 +41,7 @@ public class UI extends JFrame{
     public UI(Komentaja commander) {
         super("SLAM");
         debug = true;
+        karttaNakyma = null;
         rekisteroiKomentaja(commander);
         alustaKomponentit();
 
@@ -59,16 +61,14 @@ public class UI extends JFrame{
         paaPaneeli = new JPanel(new BorderLayout());
         roboPaneeli = new JPanel(new BorderLayout());
         nappulaPaneeli = new JPanel();
-        nappulaPaneeli.setLayout(new BoxLayout(nappulaPaneeli, BoxLayout.Y_AXIS));
-        
+        nappulaPaneeli.setLayout(new GridBagLayout());
+        gbc = new GridBagConstraints();
         //TODO: poista testit kun nakyman saato on valmis
         robo1 = new RoboNakyma();
-        robo2 = new RoboNakyma(); 
-        
+        robo2 = new RoboNakyma();
         komentaja.asetaRoboNakyma1(robo1);
-        
         komentaja.asetaRoboNakyma2(robo2);
-        karttaNakyma = new KarttaNakyma(komentaja);
+        karttaNakyma = new KarttaNakyma();
         komentaja.asetaKarttaNakyma(karttaNakyma);
         reunus = BorderFactory.createEtchedBorder();
         debugTekstit = new JTextArea(8, 50);
@@ -83,8 +83,16 @@ public class UI extends JFrame{
         lopetaN = new JButton("Lopeta");
 
         //Asetukset 
-        robo1.setPreferredSize(new Dimension(150, 150));
-        robo2.setPreferredSize(new Dimension(150, 150));
+        nappulaPaneeli.setPreferredSize(new Dimension(140,20));
+        suljeYhteysN.setMinimumSize(new Dimension(140, 20));
+        yhdistaN.setMinimumSize(new Dimension(140, 20));
+        debugValitsinN.setMinimumSize(new Dimension(140, 20));
+        paivitaNakymaN.setMinimumSize(new Dimension(140, 20));
+        tallennaKarttaN.setMinimumSize(new Dimension(140, 20));
+        lopetaN.setMinimumSize(new Dimension(140, 20));
+
+        robo1.setPreferredSize(new Dimension(200, 200));
+        robo2.setPreferredSize(new Dimension(200, 200));
         debugTekstit.setLineWrap(true);
         debugTekstit.setEditable(false);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -94,74 +102,87 @@ public class UI extends JFrame{
         debugTekstit.setBorder(reunus);
         nappulaPaneeli.setBorder(reunus);
         roboPaneeli.setBorder(reunus);
-      
+
         //asetetaan paneelit
-        nappulaPaneeli.add(yhdistaN);
-        nappulaPaneeli.add(suljeYhteysN);
-        nappulaPaneeli.add(debugValitsinN);
-        nappulaPaneeli.add(paivitaNakymaN);
-        nappulaPaneeli.add(tallennaKarttaN);
-        nappulaPaneeli.add(lopetaN);
-        roboPaneeli.add(robo1,BorderLayout.NORTH);
-        roboPaneeli.add(robo2,BorderLayout.SOUTH);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.insets = new Insets(5, 5, 5, 5);
+        nappulaPaneeli.add(yhdistaN,gbc);
+        gbc.gridy = 1;
+        nappulaPaneeli.add(suljeYhteysN,gbc);
+        gbc.gridy = 2;
+        nappulaPaneeli.add(debugValitsinN,gbc);
+        gbc.gridy = 3;
+        nappulaPaneeli.add(paivitaNakymaN,gbc);
+        gbc.gridy = 4;
+        nappulaPaneeli.add(tallennaKarttaN,gbc);
+        gbc.gridy = 5;
+        nappulaPaneeli.add(lopetaN,gbc);
+        roboPaneeli.add(robo1, BorderLayout.NORTH);
+        roboPaneeli.add(robo2, BorderLayout.SOUTH);
         paaPaneeli.add(nappulaPaneeli, BorderLayout.EAST);
         paaPaneeli.add(roboPaneeli, BorderLayout.WEST);
-        paaPaneeli.add(karttaNakyma,BorderLayout.CENTER);
+        paaPaneeli.add(karttaNakyma, BorderLayout.CENTER);
         paaPaneeli.add(scrollPane, BorderLayout.SOUTH);
-        
+
         //Nappuloiden toiminnot
         yhdistaN.addActionListener(new ActionListener() {
+
             @Override
             public void actionPerformed(ActionEvent e) {
-               
             }
         });
-        
+
         suljeYhteysN.addActionListener(new ActionListener() {
+
             @Override
             public void actionPerformed(ActionEvent e) {
-               
             }
         });
-        
+
         debugValitsinN.addActionListener(new ActionListener() {
+
             @Override
             public void actionPerformed(ActionEvent e) {
-               if(debug){
-                   debug = false;
-                   debugValitsinN.setText("Debug ON");
-               }
-               else{
-                   debug = true;
-                   debugValitsinN.setText("Debug OFF");
-               }
+                if (debug) {
+                    debug = false;
+                    debugValitsinN.setText("Debug ON");
+                } else {
+                    debug = true;
+                    debugValitsinN.setText("Debug OFF");
+                }
             }
         });
-        
+
         paivitaNakymaN.addActionListener(new ActionListener() {
+
             @Override
             public void actionPerformed(ActionEvent e) {
-               repaint();
-               komentaja.paivitaNakymat();
-               komentaja.TESTIroboNakymaTESTI();
+                repaint();
+                komentaja.paivitaNakymat();
+                komentaja.TESTIroboNakymaTESTI();
+                java.util.Random r = new Random();
+                asetaDebugTeksti("Este havaittu pisteessä: " + r.nextInt(80) + ", " + r.nextInt(80));
             }
         });
-        
+
         tallennaKarttaN.addActionListener(new ActionListener() {
+
             @Override
             public void actionPerformed(ActionEvent e) {
-               
             }
         });
-        
+
         lopetaN.addActionListener(new ActionListener() {
+
             @Override
             public void actionPerformed(ActionEvent e) {
-               System.gc();
-               System.exit(0);
+                System.gc();
+                System.exit(0);
             }
         });
-        
+
         setContentPane(paaPaneeli);
         setVisible(true);
     }
@@ -181,7 +202,7 @@ public class UI extends JFrame{
      * 
      * @param str 
      */
-    protected void asetaDebugTeksti(String str) {
+    public void asetaDebugTeksti(String str) {
         if (str != null && debug) {
             debugTekstit.append(str.concat("\n"));
         }

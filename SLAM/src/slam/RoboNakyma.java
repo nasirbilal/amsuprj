@@ -19,12 +19,25 @@ public class RoboNakyma extends JPanel {
      */
     public RoboNakyma() {
         this.pisteet = null;
+        final float katko[] = {10.0f};
+        final BasicStroke katkoV = new BasicStroke(1.0f,
+                BasicStroke.CAP_BUTT,
+                BasicStroke.JOIN_MITER,
+                10.0f, katko, 0.0f);
+
     }
-    
-    
 
     @Override
     public void paintComponent(Graphics g) {
+
+        final float katko[] = {10.0f};
+        final BasicStroke katkoV = new BasicStroke(1.0f,
+                BasicStroke.CAP_BUTT,
+                BasicStroke.JOIN_MITER,
+                10.0f, katko, 0.0f);
+
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setStroke(new BasicStroke(1));
         super.paintComponent(g);
         //Reunukset
         g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
@@ -41,16 +54,19 @@ public class RoboNakyma extends JPanel {
                 viimeinen = piste;
 
                 if (temp != null) {
-                    g.setColor(Color.red);
-                    g.drawLine(temp.x, temp.y, piste.x, piste.y);
+                    g2.drawLine(temp.x, temp.y, piste.x, piste.y);
                 }
                 temp = piste;
             }
-            if(ensimmainen == null){
+            if (ensimmainen == null) {
                 JOptionPane.showMessageDialog(this, "Point-ensimmäinen is null");
             }
-            g.drawLine(0, getHeight(), ensimmainen.x, ensimmainen.y);
-            g.drawLine(0, getHeight(), viimeinen.x, viimeinen.y);
+            g2.setStroke(katkoV);
+            g2.setColor(Color.red);
+            g2.drawLine(0, getHeight(), ensimmainen.x, ensimmainen.y);
+            g2.drawLine(0, getHeight(), viimeinen.x, viimeinen.y);
+            g2.setStroke(new BasicStroke(1));
+            g2.setColor(Color.black);
         }
     }
 
