@@ -192,6 +192,7 @@ public class RoboSimulaattori {
         
         public Line2D.Float[] luoRoboViivat(){
             //Olen pahoillani
+            // :DD
             Line2D.Float roboViivat[] = {new Line2D.Float(x,y,Xsuuntima(),Ysuuntima()),
                                          new Line2D.Float(x,y,Xsuuntima(),Ysuuntima()),
                                          new Line2D.Float(x,y,Xsuuntima(),Ysuuntima()),
