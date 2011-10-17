@@ -63,8 +63,8 @@ public class RoboNakyma extends JPanel {
             }
             g2.setStroke(katkoV);
             g2.setColor(Color.red);
-            g2.drawLine(0, getHeight(), ensimmainen.x, ensimmainen.y);
-            g2.drawLine(0, getHeight(), viimeinen.x, viimeinen.y);
+            g2.drawLine((getWidth()/2), getHeight(), ensimmainen.x, ensimmainen.y);
+            g2.drawLine((getWidth()/2), getHeight(), viimeinen.x, viimeinen.y);
             g2.setStroke(new BasicStroke(1));
             g2.setColor(Color.black);
         }

@@ -25,7 +25,6 @@ public class RoboSimKartta {
 
     //Nää Line2D.Floatit on melko selkeesti täyttä kuraa
     
-    
     //Jätkät, miten olis 
     /**
      * Line2D.Float kartta[] = new Line2D.Float[600];
