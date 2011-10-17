@@ -34,6 +34,12 @@ public class RoboSimKartta {
      * 
      * T: KikkiHiiri aka. MolliKolli, Kuningas Olli
      */
+    
+    /**
+     * No olishan se hieno jos se toimis.
+     * t. Alfred lepakkoluolasta
+     */
+    
     static Line2D.Float kartta[] = {
     new Line2D.Float(luoPiste(),luoPiste(),luoPiste(),luoPiste()),
     new Line2D.Float(luoPiste(),luoPiste(),luoPiste(),luoPiste()),
