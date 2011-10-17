@@ -23,6 +23,7 @@ public class RoboSimTextSim {
         System.out.println("Suunta on: " + Jantunen.getSuunta());
         
         System.out.println("Testi intersect");
+        //Nykyisillä kartoilla erittäin epätodennäköstä saada mitään siihen näkökenttään
         Jantunen.mittaa();
         
     }

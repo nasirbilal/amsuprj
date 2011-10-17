@@ -5,7 +5,7 @@
 package slam;
 import java.awt.geom.*;
 import java.util.Random;
-import slam.simuKartta.Kartta;
+//import slam.simuKartta.Kartta;
 
 /*
  * Diipadaapa herpaderp!!
@@ -28,7 +28,8 @@ public class RoboSimulaattori {
         
         private Mittaukset mitat;
         
-        private Line2D.Float kartta[] = Kartta.getKartta();
+        //private Line2D.Float kartta[] = Kartta.getKartta();
+        private Line2D.Float kartta[] = RoboSimKartta.getKartta();
         
         private Line2D.Float[] roboViivat; //Simulaattorirobotin "näköviivat" ??? trolololo
         
@@ -82,10 +83,10 @@ public class RoboSimulaattori {
             final int kartanviivat = 9;  //JOS KARTTAA MUUTETAAN NIIN MUUTA TÄTÄ!!!!
             
             while (irv < 37){
-             //   System.out.println("irviluuppi:" + irv); // debug
+                System.out.println("irviluuppi:" + irv); // debug
                 lyhyinPituus = 666;
                 while (krv < kartanviivat ){
-               //     System.out.println("karviluuppi:" + krv); // debug
+                    System.out.println("karviluuppi:" + krv); // debug
                     
                     if (roboViivat[irv].intersectsLine(kartta[krv])){
                         System.out.println("!!INTERSEXÖN!!");
