@@ -74,20 +74,20 @@ public class RoboSimulaattori {
         void mittaa(){
             
             roboViivat = luoRoboViivat();
-            
+            suuntimalaskuri = -90;
             int tulokset[] = new int[37];
             int lyhyinPituus;
             
             int irv = 0; //Roboviivalaskuri
             int krv = 0; //karttaviivalaskuri
-            final int kartanviivat = 9;  //JOS KARTTAA MUUTETAAN NIIN MUUTA TÄTÄ!!!!
+            final int kartanviivat = kartta.length;  //Tämä on huono mut minkäs teet
             
             while (irv < 37){
-                System.out.println("irviluuppi:" + irv); // debug
+                //System.out.println("irviluuppi:" + irv); // debug
+                System.out.println("SUUNTIMA:"+suuntimalaskuri);
                 lyhyinPituus = 666;
                 while (krv < kartanviivat ){
-                    System.out.println("karviluuppi:" + krv); // debug
-                    
+                    System.out.print("/krv:" + krv); // debug
                     if (roboViivat[irv].intersectsLine(kartta[krv])){
                         System.out.println("!!INTERSEXÖN!!");
                         float aputaulu[] = new float[2];
@@ -105,6 +105,8 @@ public class RoboSimulaattori {
                 }
                 krv = 0;
                 irv++;
+                suuntimalaskuri = suuntimalaskuri+5;
+                System.out.println();
             }
             irv = 0;
 
@@ -158,6 +160,7 @@ public class RoboSimulaattori {
   }
         
         //Suuntimia käytetään LuoRoboViivoissa
+        //Täytyy käytää aina pareittain suuntimalaskurin takia
         int suuntimalaskuri = -90;  //Tää on taas sitä koodia jota ei ymmärrä edes kirjotettaessa
         public float Xsuuntima(){
             
