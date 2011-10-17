@@ -40,6 +40,17 @@ public class RoboSimKartta {
      * t. Alfred lepakkoluolasta
      */
     
+    /**
+     * Vaihtoehtoisesti 
+     * Line2D.Float kartta[] = new Line2D.Float[600];
+     * for(int i = 0; i<600; i++){
+     *  kartta[i]= new Line2D.Float(luoPiste(),luoPiste(),luoPiste(),luoPiste());
+     * }
+     * 
+     * t. Muumi keikko
+     */
+   
+    
     static Line2D.Float kartta[] = {
     new Line2D.Float(luoPiste(),luoPiste(),luoPiste(),luoPiste()),
     new Line2D.Float(luoPiste(),luoPiste(),luoPiste(),luoPiste()),
@@ -694,5 +705,4 @@ public class RoboSimKartta {
     new Line2D.Float(luoPiste(),luoPiste(),luoPiste(),luoPiste()),
     }; //Muistitko jo luoda pisteen?
     //ps. mä kirjotin nyt 15 sekunnissa 600 riviä koodia.
-    
 }
