@@ -87,12 +87,12 @@ public class RoboSimulaattori {
                 System.out.println("SUUNTIMA:"+suuntimalaskuri);
                 lyhyinPituus = 666;
                 while (krv < kartanviivat ){
-                    System.out.print("/krv:" + krv); // debug
+                    //System.out.print("/krv:" + krv); // debug
                     if (roboViivat[irv].intersectsLine(kartta[krv])){
-                        System.out.println("!!INTERSEXÖN!!");
                         float aputaulu[] = new float[2];
                         aputaulu = risteys(roboViivat[irv], kartta[krv]);
-                        System.out.println("paikassa : (" +  aputaulu[0] + "," + aputaulu[1]);
+                        //System.out.println();
+                        System.out.println("!!!LEIKKAUS!!!paikka:(" +  aputaulu[0] + "," + aputaulu[1]+ "): Suunta: "+ suuntimalaskuri);
                         
                         if (lyhyinPituus > (int)Math.sqrt(Math.pow(aputaulu[0], 2)+Math.pow(aputaulu[1], 2))){
                         
@@ -106,7 +106,7 @@ public class RoboSimulaattori {
                 krv = 0;
                 irv++;
                 suuntimalaskuri = suuntimalaskuri+5;
-                System.out.println();
+                //System.out.println();
             }
             irv = 0;
 
