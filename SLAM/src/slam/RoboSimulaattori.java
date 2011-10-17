@@ -7,6 +7,12 @@ import java.awt.geom.*;
 import java.util.Random;
 import slam.simuKartta.Kartta;
 
+/*
+ * Diipadaapa herpaderp!!
+ * kapitalistien koira slam.simukartta ei näköjään osallistunut cominterniin,
+ * mä (Monsieur Vainio) koodaan tästä vaikka jonkun karttageneraattorin jos jaksan.
+ */
+
 
 /**
  *
