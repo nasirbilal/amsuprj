@@ -24,6 +24,15 @@ public class RoboSimKartta {
     }
 
     //Nää Line2D.Floatit on melko selkeesti täyttä kuraa
+    //Jätkät, miten olis 
+    /**
+     * Line2D.Float kartta[] = new Line2D.Float[600];
+     * for(Line2D.Float p: kartta){
+     *      p = new Line2D.Float(luoPiste(),luoPiste(),luoPiste(),luoPiste());
+     * }
+     * 
+     * T: KikkiHiiri
+     */
     static Line2D.Float kartta[] = {
     new Line2D.Float(luoPiste(),luoPiste(),luoPiste(),luoPiste()),
     new Line2D.Float(luoPiste(),luoPiste(),luoPiste(),luoPiste()),
