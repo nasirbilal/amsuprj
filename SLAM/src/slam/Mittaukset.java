@@ -3,14 +3,32 @@ package slam;
 
 public class Mittaukset {
     
-    private int suunta;
+    private float suunta;
     
-    private int mittaukset[] = new int[36];
+    private float mittaukset[] = new float[36];
     
-    public Mittaukset(int suunta, int[] mittaukset){
+    public Mittaukset(float suunta, float[] mittaukset){
         this.suunta=suunta;
         this.mittaukset = mittaukset; 
     }
+    
+    public float[] getTaulu(){
+        return mittaukset;
+    }
+    
+    /*
+    public float valitseUusiSuunta(){
+        int i = 0;
+        int tyhjyys = 0;
+        
+        while (i < mittaukset.length){
+            
+            if (mittaukset[i])
+            
+            i++;
+        }
+        */
+  //  }
 
     
 }
