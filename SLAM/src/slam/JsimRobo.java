@@ -13,6 +13,9 @@ import java.awt.geom.Line2D;
 
 /*
  * Poistan noita vanhoja ku näitä on testailutu tarpeeks
+ * 
+ * 
+ * 
  */
 
 public class JsimRobo {
@@ -80,7 +83,7 @@ public class JsimRobo {
     public Point2D.Float etenePisteeseen(Point2D.Float kohde){
         /* Palauttaa uuden paikan Point2D.Float-oliona.
          * Parametri on kohteena oleva paikka.
-         * HUOM. Robotti kääntyy pistettä kohti ja ajaa siihen. Ei mitään pathfindingiä.
+         * HUOM. Robotti kääntyy pistettä kohti ja "ajaa" siihen. Ei mitään pathfindingiä.
          */
         käännyKohti(kohde);
         return etene((float)Math.sqrt(Math.pow(paikka.x+kohde.x,2)+(Math.pow(paikka.y+kohde.y,2))));
@@ -141,9 +144,13 @@ public class JsimRobo {
         for (int i = 0; i < näkymä.getNäkötaulu().length; i++){
             pieninleikkaus = 9001; //ettei nulleja vertailla
             for (int k = 0; k < kartta.length; k++){
-                Point2D.Float leikkauspiste = näkymä.leikkaako(näkymä.getNäköviiva(i), kartta[k]);
-                if (Math.sqrt(Math.pow(paikka.x+leikkauspiste.x,2)+(Math.pow(paikka.y+leikkauspiste.y,2))) < pieninleikkaus){
-                    pieninleikkaus = (float)Math.sqrt(Math.pow(paikka.x+leikkauspiste.x,2)+(Math.pow(paikka.y+leikkauspiste.y,2)));
+                
+                if (näkymä.leikkaako(näkymä.getNäköviiva(i), kartta[k]) != null){
+                
+                    Point2D.Float leikkauspiste = näkymä.leikkaako(näkymä.getNäköviiva(i), kartta[k]);
+                    if (Math.sqrt(Math.pow(paikka.x+leikkauspiste.x,2)+(Math.pow(paikka.y+leikkauspiste.y,2))) < pieninleikkaus){
+                        pieninleikkaus = (float)Math.sqrt(Math.pow(paikka.x+leikkauspiste.x,2)+(Math.pow(paikka.y+leikkauspiste.y,2)));
+                    }
                 }
             }
             

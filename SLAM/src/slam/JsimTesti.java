@@ -19,6 +19,7 @@ public class JsimTesti {
         
         System.out.println("1. ongelmia etene():ssä");
         System.out.println("2. teleport-versio");
+        System.out.println("3. leikkaako()-testi");
         int valinta = s.nextInt();
         
         if (valinta == 1){
@@ -96,6 +97,47 @@ public class JsimTesti {
             paikka = jantunen.getPaikka();
             System.out.println("robotti on pisteessä: ("+ paikka.x + "," + paikka.y + ")");
             System.out.println("robotin suunta on: " + jantunen.getSuunta());
+            
+            System.out.print("käännytään vasemmalle x2 ->");
+            System.out.println("robotin suunta on: " + jantunen.käänny(-90));
+            System.out.println("robotin suunta on: " + jantunen.käänny(-90));
+            paikka = jantunen.getPaikka();
+            System.out.println("robotti on pisteessä: ("+ paikka.x + "," + paikka.y + ")");
+            System.out.println("robotin suunta on: " + jantunen.getSuunta());
+            
+            System.out.println("alkupisteessä ollaan!");
+            
+            System.out.println("otetaan mittaus ja rukoillaan:");
+            JsimData testidata = jantunen.mittaa(kartta);
+            float taulu[] = testidata.getData();
+            System.out.println("mikä oli suunta testimittauksessa? se oli: " + testidata.getRobosuunta());
+            System.out.println("tarkastellaanpa dataa: ");
+            
+            for (int i = 0; i < 37; i++){
+                System.out.println("datakulma=" + i + "||lähin seinä=" + taulu[i]);
+            }
+            /*
+             * Outoa dataa taas. leikkaako() ilmeisesti hajalla.
+             */
+            
+            
+            
+        } else if (valinta == 3){
+            /* suorakulmaleikkaus toimii
+            JsimRoboNäkymä testijsrn = new JsimRoboNäkymä(new Point2D.Float(0,0), 0, 37, 800);
+            Point2D.Float testipiste = testijsrn.leikkaako(new Line2D.Float(0,-100,0,100),new Line2D.Float(-100,0,100,0));
+            
+            System.out.println("x:"+testipiste.x);
+            System.out.println("y:"+testipiste.y);
+            */
+            
+            //Näyttää leikkauspisteetkin toimivan
+            JsimRoboNäkymä testijsrn = new JsimRoboNäkymä(new Point2D.Float(0,0), 0, 37, 800);
+            Point2D.Float testipiste = testijsrn.leikkaako(new Line2D.Float(-5,-100,0,100),new Line2D.Float(-100,0,100,0));
+            
+            System.out.println("x:"+testipiste.x);
+            System.out.println("y:"+testipiste.y);
+            
         }
         
     }

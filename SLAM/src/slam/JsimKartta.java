@@ -21,6 +21,7 @@ public class JsimKartta {
         kartta[1] = new Line2D.Float(new Point2D.Float(-50,-500), new Point2D.Float(50,-500));
         kartta[2] = new Line2D.Float(new Point2D.Float(-500,50), new Point2D.Float(-500,-50));
         kartta[3] = new Line2D.Float(new Point2D.Float(-50,500), new Point2D.Float(50,500));
+      
     }
     
     public Line2D.Float[] getKartta(){

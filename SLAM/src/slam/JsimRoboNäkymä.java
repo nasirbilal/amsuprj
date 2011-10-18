@@ -8,6 +8,9 @@ import java.awt.geom.Line2D;
  *
  * @author juho vainio
  */
+
+
+
 public class JsimRoboNäkymä {
     
     private Line2D.Float anv[];     //(Astenäkymäviiva) Line2D.Float-olioita, jotka esittävät
