@@ -49,6 +49,8 @@ public class RoboSimKartta {
      * 
      * t. Muumi keikko
      */
+    
+    //static Line2D.Float kartta[] = {new Line2D.Float((float)-0.5,(float)10,(float)0.5,(float)10)}; //Testiä mutta ei toimi
    
     
     static Line2D.Float kartta[] = {
@@ -705,4 +707,6 @@ public class RoboSimKartta {
     new Line2D.Float(luoPiste(),luoPiste(),luoPiste(),luoPiste()),
     }; //Muistitko jo luoda pisteen?
     //ps. mä kirjotin nyt 15 sekunnissa 600 riviä koodia.
+     
+     
 }
