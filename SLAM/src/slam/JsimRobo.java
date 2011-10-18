@@ -75,6 +75,9 @@ public class JsimRobo {
         /* Palauttaa uuden paikan Point2D.Float-oliona.
          * parametri matka on MILLIMETREISSÄ.
          */
+        
+        //Täällä jotain ilmeisesti hajalla
+        
         float x = (float)(paikka.x + matka*Math.sin(suunta));
         float y = (float)(paikka.y + matka*Math.cos(suunta));
         paikka = new Point2D.Float(x,y);
@@ -119,6 +122,14 @@ public class JsimRobo {
         float aste = (float)Math.atan((paikka.x+kohde.x)/(paikka.y+kohde.y));
         
         return käänny(aste);
+    }
+    
+    public float osoitaSuuntaan(float suunta){
+        /*
+         * teleportille kusetuspartneri
+         */
+        this.suunta = suunta;
+        return suunta;
     }
     
     
