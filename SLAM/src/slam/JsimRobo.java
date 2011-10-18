@@ -86,6 +86,16 @@ public class JsimRobo {
         return etene((float)Math.sqrt(Math.pow(paikka.x+kohde.x,2)+(Math.pow(paikka.y+kohde.y,2))));
     }
     
+    public Point2D.Float teleport(Point2D.Float kohde){
+        /*
+         * Mä en hiffaa enää mitään eli nyt kusetetaan
+         */
+        
+        paikka = kohde;
+        
+        return paikka;
+    }
+    
     public float käänny(float aste){
         /* Palauttaa uuden suunnan.
          * Parametri aste on väliltä -90 (vasemmalle) viiva 90 (oikealle).
