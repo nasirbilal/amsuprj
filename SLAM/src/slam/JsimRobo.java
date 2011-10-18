@@ -134,6 +134,15 @@ public class JsimRobo {
      */
     
     public JsimData mittaa(JsimKartta JSKkartta){
+        /*
+         * Tässä olis ideana, että verrataan robotin yhtä "näköviivaa" kaikkiin kartan viivoihin vuoron perään ja jos leikkaus
+         * löytyy niin tallennetaan se pieninleikkaus-muuttujaan, jota vertaillaan tuleviin leikkauspituuksiin. Sitten tallennetaan
+         * pieninleikkaus tauluun ja siirrytään tarkastelemaan seuraavaa näköviivaa. Lopuksi pieninleikkaus-muuttujista muodostettu
+         * taulu annetaan JsimData oliolle, johon myös tallennetaan robotin tämänhetkinen suunta.
+         */
+        
+        //Jotain täällä(kin) ei vaan toimi
+        
         JsimData mittaus;
         float taulu[] = new float[mittausmäärä];    //Käytetään "mittaus"-jsimdatan luomisessa
         float pieninleikkaus;

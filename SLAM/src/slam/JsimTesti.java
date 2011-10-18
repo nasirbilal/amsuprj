@@ -117,7 +117,7 @@ public class JsimTesti {
                 System.out.println("datakulma=" + i + "||lähin seinä=" + taulu[i]);
             }
             /*
-             * Outoa dataa taas. leikkaako() ilmeisesti hajalla.
+             * Outoa dataa taas.
              */
             
             
