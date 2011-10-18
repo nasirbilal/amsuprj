@@ -23,7 +23,7 @@ public class JsimData {
         this.data = data;
     }
     
-    public float getSDS(){
+    public float getRobosuunta(){
         /*
          * Palauttaa robotin suunnan tältä mittaukselta
          */

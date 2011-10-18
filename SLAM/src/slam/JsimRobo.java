@@ -21,7 +21,7 @@ public class JsimRobo {
     private Point2D.Float paikka;           //Robotin paikka Point-oliona MILLIMETREISSÄ
     private Point2D.Float kohde;
     
-    private final float IRkantama = 800;    //Robotin infrapunasensorin kantama MILLIMETREISSÄ
+    private final int IRkantama = 800;    //Robotin infrapunasensorin kantama MILLIMETREISSÄ
     private final int mittausmäärä = 37;    //Robotin mittaukset per 180 astetta // 37 = 5 asteen välein
     
     
@@ -119,10 +119,28 @@ public class JsimRobo {
      * Mittaus :(
      */
     
-    public JsimData mittaa(){
+    public JsimData mittaa(JsimKartta JSKkartta){
         JsimData mittaus;
+        float taulu[] = new float[mittausmäärä];    //Käytetään "mittaus"-jsimdatan luomisessa
+        float pieninleikkaus;
+        JsimRoboNäkymä näkymä = new JsimRoboNäkymä(paikka, suunta, mittausmäärä, IRkantama);
         
+        Line2D.Float kartta[] = JSKkartta.getKartta();
         
+        for (int i = 0; i < näkymä.getNäkötaulu().length; i++){
+            pieninleikkaus = 9001; //ettei nulleja vertailla
+            for (int k = 0; k < kartta.length; k++){
+                Point2D.Float leikkauspiste = näkymä.leikkaako(näkymä.getNäköviiva(i), kartta[k]);
+                if (Math.sqrt(Math.pow(paikka.x+leikkauspiste.x,2)+(Math.pow(paikka.y+leikkauspiste.y,2))) < pieninleikkaus){
+                    pieninleikkaus = (float)Math.sqrt(Math.pow(paikka.x+leikkauspiste.x,2)+(Math.pow(paikka.y+leikkauspiste.y,2)));
+                }
+            }
+            
+            taulu[i] = pieninleikkaus;
+            
+        }
+        
+        mittaus = new JsimData(suunta,taulu);
         
         return mittaus;
     }
