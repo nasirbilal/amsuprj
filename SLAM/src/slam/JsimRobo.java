@@ -12,10 +12,16 @@ import java.awt.geom.Line2D;
  */
 
 /*
- * Poistan noita vanhoja ku näitä on testailutu tarpeeks
+ * Poistan noita vanhoja ku näitä on testailtu tarpeeks
  * 
- * mä sain täs roskan näköjään toimimaan
- * HALLELUUJAH mää meen röökille nyt
+ * Jossain on häikkää, mää en tiä missä.
+ * testiohjelma 8:n pitäis tuottaa 2.
+ * mittauskierroksella tilanne jossa ainakin
+ * dk0 ja dk36 näyttää jotain muuta kun 9999
+ * 
+ * liekö onkelma kääntymisessä... ainakin toi
+ * arkustangentti on aika ihme vääntöä
+ * 
  */
 
 public class JsimRobo {
@@ -28,6 +34,7 @@ public class JsimRobo {
     private final int mittausmäärä = 37;    //Robotin mittaukset per 180 astetta // 37 = 5 asteen välein
     
     JsimData mittaus;                       //luodaan mittaa()-metodilla, käytetään seuraavan mittauspaikan valitsemiseksi
+    JsimRoboNäkymä näkymä;                  //luodaan mittaa()-metodilla, debugausta
     
     
     /*
@@ -88,7 +95,7 @@ public class JsimRobo {
          * Parametri on kohteena oleva paikka.
          * HUOM. Robotti kääntyy pistettä kohti ja "ajaa" siihen. Ei mitään pathfindingiä.
          */
-        käännyKohti(kohde);
+        käännyKohti(kohde,0);
         return etene((float)Math.sqrt(Math.pow(paikka.x+kohde.x,2)+(Math.pow(paikka.y+kohde.y,2))));
     }
     
@@ -115,15 +122,16 @@ public class JsimRobo {
         return suunta;
     }
     
-    public float käännyKohti(Point2D.Float kohde){
+    public float käännyKohti(Point2D.Float kohde, float bonusaste){
         /* Palauttaa uuden suunnan.
-         * Parametrinä Point2D.Float-olio, jota kohti käännytään.
+         * 1. Parametrinä Point2D.Float-olio, jota kohti käännytään.
+         * 2. parametri on mahdollinen lisäkääntyminen, anna 0 jos ei tarvetta
          */
 
             float aste = (float)((Math.atan((paikka.x+kohde.x)/(paikka.y+kohde.y))));
             aste = (float)(aste*(180/Math.PI)); //käännetään radiaanit asteiksi
             System.out.println("aste:" + aste); //debug
-            return käänny(aste);
+            return käänny(aste+bonusaste);
     }
     
     public float osoitaSuuntaan(float suunta){
@@ -142,7 +150,7 @@ public class JsimRobo {
     
     //TODO
     
-    public void valitseUusiPiste(JsimKartta JSKkartta){
+    public JsimData valitseUusiPiste(JsimKartta JSKkartta){
         
         mittaus = mittaa(JSKkartta);            //mittaus on osa näitä navigointihommia
         float mtaulu[] = mittaus.getData();     //tiedot edessäolevasta kamasta
@@ -176,11 +184,15 @@ public class JsimRobo {
             if (alkumuisti + tyhjyysmuisti < mittausmäärä){
                 
                 float tap = mtaulu[alkumuisti];
-                float tlp = mtaulu[alkumuisti+tyhjyysmuisti];
+                float tlp = mtaulu[alkumuisti+tyhjyysmuisti+1];
+                System.out.println("tap"+tap);
+                System.out.println("tlp"+tlp);
+                System.out.println("!!!navSuurinVäli("+tap+","+alkumuisti+","+tlp+","+tyhjyysmuisti+")");
                 navSuurinVäli(tap, alkumuisti, tlp, alkumuisti+tyhjyysmuisti);
             }
         }
    
+        return mittaus;
     }
     
     private void navSuurinVäli(float tap, int as, float tlp, int ls){
@@ -190,6 +202,7 @@ public class JsimRobo {
 
         float x2 = (float)(paikka.x + tlp*Math.sin(((suunta+(ls*5-90))*(Math.PI/180))));
         float y2 = (float)(paikka.y + tlp*Math.cos(((suunta+(ls*5-90))*(Math.PI/180))));
+
         
         System.out.println("(" + x1 + "," + y1 + ") - (" + x2 + "," + y2 + ")");    //debug
         
@@ -198,8 +211,21 @@ public class JsimRobo {
         
         System.out.println("keskipiste:(" + keskipisteX + "," + keskipisteY + ")"); //debug
         
-        etenePisteeseen(new Point2D.Float(keskipisteX,keskipisteY));
+        Point2D.Float etenemiskohde = new Point2D.Float(keskipisteX,keskipisteY);
         
+        System.out.println("etenepisteeseen(" + etenemiskohde.x + "," + etenemiskohde.y + ")");
+        System.out.println("1jantusen sijainti nyt:(" + etenemiskohde.x + "," + etenemiskohde.y + ")");
+        System.out.println("1jantusen suunta nyt:" + suunta);
+        
+        etenePisteeseen(etenemiskohde);
+        
+        System.out.println("2jantusen sijainti nyt:(" + etenemiskohde.x + "," + etenemiskohde.y + ")");
+        System.out.println("2jantusen suunta nyt:" + suunta);
+        
+        käännyKohti(new Point2D.Float(x1,y1),90);
+        
+        System.out.println("3jantusen sijainti nyt:(" + etenemiskohde.x + "," + etenemiskohde.y + ")");
+        System.out.println("3jantusen suunta nyt:" + suunta);
     }
     
     
@@ -219,11 +245,12 @@ public class JsimRobo {
          * jos tää roska antaa 9999 pituudeksi niin se tarkoittaa että mitää ei ole havaittu
          * 
          */
-        
+
         //JsimData mittaus; !!siirretty ylös!!
+        //JsimRoboNäkymä siirretty ylös
         float taulu[] = new float[mittausmäärä];    //Käytetään "mittaus"-jsimdatan luomisessa
         float pieninleikkaus;
-        JsimRoboNäkymä näkymä = new JsimRoboNäkymä(paikka, suunta, mittausmäärä, IRkantama);
+        näkymä = new JsimRoboNäkymä(paikka, suunta, mittausmäärä, IRkantama);
         
         Line2D.Float kartta[] = JSKkartta.getKartta();
         
@@ -233,39 +260,21 @@ public class JsimRobo {
             pieninleikkaus = 9999;
             for (int k = 0; k < kartta.length; k++){                            //karttaviiva loop
                 if (näkymä.getNäköviiva(i).intersectsLine(kartta[k])){          //boolean intersect if
+                    System.out.println("kartta["+k+"] leikkaa näköviiva["+i+"]");//debug
                     Point2D.Float leikkauspiste = näkymä.leikkaako(näkymä.getNäköviiva(i), kartta[k]);
-                    pieninleikkaus = (float)Math.sqrt(Math.pow(paikka.x+leikkauspiste.x,2)+(Math.pow(paikka.y+leikkauspiste.y,2)));
+                    System.out.println("paikassa("+leikkauspiste.x+","+leikkauspiste.y+")");
+                    
+                    if (pieninleikkaus > Math.sqrt(Math.pow(paikka.x+leikkauspiste.x,2)+(Math.pow(paikka.y+leikkauspiste.y,2)))){
+
+                        pieninleikkaus = (float)Math.sqrt(Math.pow(paikka.x+leikkauspiste.x,2)+(Math.pow(paikka.y+leikkauspiste.y,2)));
+                        System.out.println("pit:"+pieninleikkaus);
+                    }
+                    
                 }
             }
                 taulu[i] = pieninleikkaus;
         }
         
-        
-        
-        /* tää ei toiminu
-        for (int i = 0; i < näkymä.getNäkötaulu().length; i++){
-            System.out.println("i=" + i);
-            pieninleikkaus = 9001; //ettei nulleja vertailla
-            
-            for (int k = 0; k < kartta.length; k++){
-                System.out.print(" k=" + k + ": "); // debug
-                
-                if (näkymä.leikkaako(näkymä.getNäköviiva(i), kartta[k]) != null){
-                    System.out.print("!!leikkaus!!"); //debug
-                    Point2D.Float leikkauspiste = näkymä.leikkaako(näkymä.getNäköviiva(i), kartta[k]);
-                    System.out.print("(" + leikkauspiste.x + "," + leikkauspiste.y + ")"); // debug
-                    if (Math.sqrt(Math.pow(paikka.x+leikkauspiste.x,2)+(Math.pow(paikka.y+leikkauspiste.y,2))) < pieninleikkaus){
-                        System.out.print("-PL pienempi"); //debug else
-                        pieninleikkaus = (float)Math.sqrt(Math.pow(paikka.x+leikkauspiste.x,2)+(Math.pow(paikka.y+leikkauspiste.y,2)));
-                        System.out.println(".PL=" + pieninleikkaus + ":");
-                    } else {System.out.println("-PL suurempi");} //debug else
-                } else {System.out.println("..ei leikkausta..");} //debug else
-            }
-            System.out.println();
-            taulu[i] = pieninleikkaus;
-            
-        }
-        */
         mittaus = new JsimData(suunta,taulu);
         
         return mittaus;

@@ -24,6 +24,7 @@ public class JsimTesti {
         System.out.println("5. Math.* testaus(//WANHA)");
         System.out.println("6. radianisoidut koodit testi");
         System.out.println("7. etenePisteeseen()-testi");
+        System.out.println("8. kuutostestit sekottaa mun pään, pakko alottaa uus");
         int valinta = s.nextInt();
         
         if (valinta == 1){
@@ -306,7 +307,7 @@ public class JsimTesti {
             float taulu[] = testidata.getData();
             
             for (int i = 0; i < 37; i++){
-                System.out.println("datakulma=" + i + "||lähin seinä=" + taulu[i]);
+                System.out.println("datakulma=" + i + "("+(int)(jantunen.getSuunta()+((i))*5-90)+")" +"||lähin seinä=" + taulu[i]);
             }
             
             jantunen.valitseUusiPiste(kartta);
@@ -314,6 +315,8 @@ public class JsimTesti {
             System.out.println("Jantusen suunta ja paikka = (" + 
                     jantunen.getPaikka().x + "," + jantunen.getPaikka().y + 
                     "), " + jantunen.getSuunta());
+            
+            //trolololo
             
             System.out.println("!!!UUDESTAAN!!!");
             
@@ -322,7 +325,7 @@ public class JsimTesti {
             float taulu2[] = testidata.getData();
             
             for (int i = 0; i < 37; i++){
-                System.out.println("datakulma=" + i + "||lähin seinä=" + taulu2[i]);
+                System.out.println("datakulma=" + i + "("+(int)(jantunen.getSuunta()+((i))*5-90)+")" +"||lähin seinä=" + taulu[i]);
             }
             
             jantunen.valitseUusiPiste(kartta);
@@ -330,7 +333,35 @@ public class JsimTesti {
             System.out.println("Jantusen suunta ja paikka = (" + 
                     jantunen.getPaikka().x + "," + jantunen.getPaikka().y + 
                     "), " + jantunen.getSuunta());
+            
+            for (int i = 0; i < 37; i++){
+                System.out.println("datakulma=" + i + "("+(int)(jantunen.getSuunta()+((i))*5-90)+")" +"||lähin seinä=" + taulu[i]);
+            }
 
+            System.out.println("outoo settii, katotaas Jsimun robonäkymän ensimmäinen näköviiva:");
+            System.out.println("("+jantunen.näkymä.getNäköviiva(0).x1+","+jantunen.näkymä.getNäköviiva(0).y1+")viiva");
+            System.out.println("("+jantunen.näkymä.getNäköviiva(0).x2+","+jantunen.näkymä.getNäköviiva(0).y2+")");
+            
+            System.out.println("näköviiva on täysin oikeessa paikassa");
+            
+            System.out.println("eteenpäin 500mm ja mitataan");
+            jantunen.etene(500);
+            
+            testidata = jantunen.mittaa(kartta);
+            float taulu3[] = testidata.getData();
+            
+            System.out.println("Jantusen suunta ja paikka = (" + 
+                    jantunen.getPaikka().x + "," + jantunen.getPaikka().y + 
+                    "), " + jantunen.getSuunta());
+            
+            System.out.println("Nyt pitäs tulla tyhjää:");
+            
+            for (int i = 0; i < 37; i++){
+                System.out.println("datakulma=" + i + "("+(int)(jantunen.getSuunta()+((i))*5-90)+")" +"||lähin seinä=" + taulu3[i]);
+            }
+            
+            
+            
             
             
             
@@ -358,9 +389,48 @@ public class JsimTesti {
             System.out.println("Jantusen paikka ja suunta . (" + 
                     jantunen.getPaikka().x + "," + jantunen.getPaikka().y + 
                     "), " + jantunen.getSuunta());
+
             
             
             
+        } else if (valinta == 8){
+            
+            System.out.println("Testi");
+            
+            System.out.println("-------------");
+            System.out.println("Jantusen paikka ja suunta = (" + 
+                    jantunen.getPaikka().x + "," + jantunen.getPaikka().y + 
+                    "), " + jantunen.getSuunta());
+            System.out.println("-------------");
+            
+            
+            JsimData data1 = jantunen.valitseUusiPiste(kartta);
+            
+            float taulu1[] = data1.getData();
+            
+            for (int i = 0; i < 37; i++){
+                System.out.println("dk=" + i + ";ak="+(int)(jantunen.getSuunta()+((i))*5-90) +";ls=" + taulu1[i]);
+            }
+            
+            System.out.println("-------------");
+            System.out.println("Jantusen paikka ja suunta = (" + 
+                    jantunen.getPaikka().x + "," + jantunen.getPaikka().y + 
+                    "), " + jantunen.getSuunta());
+            System.out.println("-------------");
+            
+            JsimData data2 = jantunen.valitseUusiPiste(kartta);
+            
+            float taulu2[] = data2.getData();
+            
+            for (int i = 0; i < 37; i++){
+                System.out.println("dk=" + i + ";ak="+(int)(jantunen.getSuunta()+((i))*5-90) +";ls=" + taulu2[i]);
+            }
+            
+            System.out.println("-------------");
+            System.out.println("Jantusen paikka ja suunta = (" + 
+                    jantunen.getPaikka().x + "," + jantunen.getPaikka().y + 
+                    "), " + jantunen.getSuunta());
+            System.out.println("-------------");
             
         }
         
