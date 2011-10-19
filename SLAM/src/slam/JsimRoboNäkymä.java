@@ -29,8 +29,8 @@ public class JsimRoboNäkymä {
         
         for (int i = 0; i < anv.length; i++){
             
-            float x = (float)(paikka.x + 800*Math.sin(suunta));
-            float y = (float)(paikka.y + 800*Math.cos(suunta));
+            float x = (float)(paikka.x + 800*Math.sin((suunta*(Math.PI/180))));
+            float y = (float)(paikka.y + 800*Math.cos((suunta*(Math.PI/180))));
             Point2D.Float ääri = new Point2D.Float(x,y);
             
             anv[i] = new Line2D.Float(paikka, ääri);

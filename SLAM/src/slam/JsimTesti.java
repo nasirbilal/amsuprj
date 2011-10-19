@@ -17,11 +17,12 @@ public class JsimTesti {
         JsimKartta kartta = new JsimKartta();
         Scanner s = new Scanner(System.in);
         
-        System.out.println("1. ongelmia etene():ssä");
-        System.out.println("2. teleport-versio");
-        System.out.println("3. leikkaako()-testi");
-        System.out.println("4. etene()-testi");
-        System.out.println("5. Math.* testaus");
+        System.out.println("1. ongelmia etene():ssä(//WANHA)");
+        System.out.println("2. teleport-versio(//WANHA)");
+        System.out.println("3. leikkaako()-testi(//WANHA)");
+        System.out.println("4. etene()-testi(//WANHA)");
+        System.out.println("5. Math.* testaus(//WANHA)");
+        System.out.println("6. radianisoidut koodit testi");
         int valinta = s.nextInt();
         
         if (valinta == 1){
@@ -58,6 +59,8 @@ public class JsimTesti {
              * -400,58 ja 200,77 vaikka pitäs tulla 0 ja 0
              * 
              * OLLIIIII TUU PYYHKIMÄÄN!
+             * PROBLEM SOLVED!
+             * olli ei tullu pyyhkimään niin vetäsin hihaan
              */
 
             System.out.println("Robon paikka liikkumisen JÄLKEEN: (" + jantunen.getPaikka().x + "," + jantunen.getPaikka().y + ")");
@@ -227,12 +230,79 @@ public class JsimTesti {
             System.out.println("sin(pi)="+Math.sin(Math.PI));
             
             /*
-             * Siis Math.sinit tahtoo parametrinä asteita ja sitten ne tulostaa jotain radiaanipaskaa
-             * 
+             * Siis Math.sinit tahtoo parametrinä radiaaneja, olis pitäny pikkasen tarkemmin katella
              */
+
+        } else if (valinta == 6){
+            
+            System.out.println("");
+            
+            System.out.println("Jantusen suunta ja paikka = (" + 
+                    jantunen.getPaikka().x + "," + jantunen.getPaikka().y + 
+                    "), " + jantunen.getSuunta());
+            
+            System.out.println("Eteenpäin 500mm");
+            jantunen.etene(500);
+            
+            System.out.println("Jantusen suunta ja paikka = (" + 
+                    jantunen.getPaikka().x + "," + jantunen.getPaikka().y + 
+                    "), " + jantunen.getSuunta());
+            
+            System.out.println("Käännytään");
+            jantunen.käänny(90);
+            System.out.println("Suunta: " + jantunen.getSuunta());
+            System.out.println("Käännytään uudelleen");
+            jantunen.käänny(90);
+            System.out.println("Suunta: " + jantunen.getSuunta());
+            
+            System.out.println("Jantusen suunta ja paikka = (" + 
+                    jantunen.getPaikka().x + "," + jantunen.getPaikka().y + 
+                    "), " + jantunen.getSuunta());
+            
+            System.out.println("Eteenpäin 500mm");
+            jantunen.etene(500);
+            
+            System.out.println("Jantusen suunta ja paikka = (" + 
+                    jantunen.getPaikka().x + "," + jantunen.getPaikka().y + 
+                    "), " + jantunen.getSuunta());
+            
+            System.out.println("Hienoja likiarvoja :(");
+            System.out.println("OK");
+            System.out.println("-------------");
+            
+            System.out.println("Käännytään:");
+            jantunen.käänny(90);
+            System.out.println("Suunta: " + jantunen.getSuunta());
+            System.out.println("Käännytään uudelleen");
+            jantunen.käänny(90);
+            System.out.println("Suunta: " + jantunen.getSuunta());
+            
+            System.out.println("Käännytään toiseen suuntaa -360:");
+            System.out.println("Suunta: " + jantunen.getSuunta());
+            
+            System.out.println("käänny() toimii. is nice");
+            
+            System.out.println("OK");
+            System.out.println("-------------");
+            
+            System.out.println("!!!MITTAUSTESTI!!! ken tästä käy saa kaiken toivon heittää");
+            
+            System.out.println("otetaan mittaus ja rukoillaan:");
+            JsimData testidata = jantunen.mittaa(kartta);
+            float taulu[] = testidata.getData();
+            System.out.println("mikä oli suunta testimittauksessa? se oli: " + testidata.getRobosuunta());
+            System.out.println("tarkastellaanpa dataa: ");
+            
+            for (int i = 0; i < 37; i++){
+                System.out.println("datakulma=" + i + "||lähin seinä=" + taulu[i]);
+            }
             
             
+                    
+
         }
+        
+        
         
     }
     

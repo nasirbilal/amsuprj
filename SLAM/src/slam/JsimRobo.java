@@ -76,10 +76,8 @@ public class JsimRobo {
          * parametri matka on MILLIMETREISSÄ.
          */
         
-        //Täällä jotain ilmeisesti hajalla
-        
-        float x = (float)(paikka.x + matka*Math.sin(suunta));
-        float y = (float)(paikka.y + matka*Math.cos(suunta));
+        float x = (float)(paikka.x + matka*Math.sin((suunta*(Math.PI/180)))); //Mathin funktiot ottaa radiaaneja
+        float y = (float)(paikka.y + matka*Math.cos((suunta*(Math.PI/180))));
         paikka = new Point2D.Float(x,y);
         return paikka;
     }
@@ -119,7 +117,7 @@ public class JsimRobo {
         /* Palauttaa uuden suunnan.
          * Parametrinä Point2D.Float-olio, jota kohti käännytään.
          */
-        float aste = (float)Math.atan((paikka.x+kohde.x)/(paikka.y+kohde.y));
+        float aste = (float)Math.atan((paikka.x+kohde.x)/(paikka.y+kohde.y)); // EI VÄLTTÄMÄTTÄ TOIMI
         
         return käänny(aste);
     }
@@ -154,6 +152,10 @@ public class JsimRobo {
         
         //Jotain täällä(kin) ei vaan toimi
         
+        /* Luupit toimii
+         * 
+         */
+        
         JsimData mittaus;
         float taulu[] = new float[mittausmäärä];    //Käytetään "mittaus"-jsimdatan luomisessa
         float pieninleikkaus;
@@ -161,19 +163,27 @@ public class JsimRobo {
         
         Line2D.Float kartta[] = JSKkartta.getKartta();
         
+        System.out.println("luuppaus alkaa");//debug
+        
         for (int i = 0; i < näkymä.getNäkötaulu().length; i++){
+            System.out.println("i=" + i);
             pieninleikkaus = 9001; //ettei nulleja vertailla
+            
             for (int k = 0; k < kartta.length; k++){
+                System.out.print(" k=" + k + ": "); // debug
                 
                 if (näkymä.leikkaako(näkymä.getNäköviiva(i), kartta[k]) != null){
-                
+                    System.out.print("!!leikkaus!!"); //debug
                     Point2D.Float leikkauspiste = näkymä.leikkaako(näkymä.getNäköviiva(i), kartta[k]);
+                    System.out.print("(" + leikkauspiste.x + "," + leikkauspiste.y + ")"); // debug
                     if (Math.sqrt(Math.pow(paikka.x+leikkauspiste.x,2)+(Math.pow(paikka.y+leikkauspiste.y,2))) < pieninleikkaus){
+                        System.out.print("-PL pienempi"); //debug else
                         pieninleikkaus = (float)Math.sqrt(Math.pow(paikka.x+leikkauspiste.x,2)+(Math.pow(paikka.y+leikkauspiste.y,2)));
-                    }
-                }
+                        System.out.println(".PL=" + pieninleikkaus + ":");
+                    } else {System.out.println("-PL suurempi");} //debug else
+                } else {System.out.println("..ei leikkausta..");} //debug else
             }
-            
+            System.out.println();
             taulu[i] = pieninleikkaus;
             
         }
