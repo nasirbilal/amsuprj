@@ -14,8 +14,8 @@ import java.awt.geom.Line2D;
 /*
  * Poistan noita vanhoja ku näitä on testailutu tarpeeks
  * 
- * 
- * 
+ * mä sain täs roskan näköjään toimimaan
+ * HALLELUUJAH mää meen röökille nyt
  */
 
 public class JsimRobo {
@@ -150,11 +150,9 @@ public class JsimRobo {
          * taulu annetaan JsimData oliolle, johon myös tallennetaan robotin tämänhetkinen suunta.
          */
         
-        //Jotain täällä(kin) ei vaan toimi
-        
-        /* Luupit toimii
-         * 
-         */
+        //Jotain täällä ei vaan toimi
+        //korjaus: tämä on täysin sekaisin
+
         
         JsimData mittaus;
         float taulu[] = new float[mittausmäärä];    //Käytetään "mittaus"-jsimdatan luomisessa
@@ -165,6 +163,20 @@ public class JsimRobo {
         
         System.out.println("luuppaus alkaa");//debug
         
+        for (int i = 0; i < näkymä.getNäkötaulu().length; i++){                 //näköviiva loop
+            pieninleikkaus = 9999;
+            for (int k = 0; k < kartta.length; k++){                            //karttaviiva loop
+                if (näkymä.getNäköviiva(i).intersectsLine(kartta[k])){          //boolean intersect if
+                    Point2D.Float leikkauspiste = näkymä.leikkaako(näkymä.getNäköviiva(i), kartta[k]);
+                    pieninleikkaus = (float)Math.sqrt(Math.pow(paikka.x+leikkauspiste.x,2)+(Math.pow(paikka.y+leikkauspiste.y,2)));
+                }
+            }
+                taulu[i] = pieninleikkaus;
+        }
+        
+        
+        
+        /*
         for (int i = 0; i < näkymä.getNäkötaulu().length; i++){
             System.out.println("i=" + i);
             pieninleikkaus = 9001; //ettei nulleja vertailla
@@ -187,7 +199,7 @@ public class JsimRobo {
             taulu[i] = pieninleikkaus;
             
         }
-        
+        */
         mittaus = new JsimData(suunta,taulu);
         
         return mittaus;
