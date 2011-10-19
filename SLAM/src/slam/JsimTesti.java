@@ -23,6 +23,7 @@ public class JsimTesti {
         System.out.println("4. etene()-testi(//WANHA)");
         System.out.println("5. Math.* testaus(//WANHA)");
         System.out.println("6. radianisoidut koodit testi");
+        System.out.println("7. etenePisteeseen()-testi");
         int valinta = s.nextInt();
         
         if (valinta == 1){
@@ -300,8 +301,67 @@ public class JsimTesti {
             
             System.out.println("!!!NAVIGOINTITESTI!!!");
             
+            JsimData testidata = jantunen.mittaa(kartta); //testi
+            
+            float taulu[] = testidata.getData();
+            
+            for (int i = 0; i < 37; i++){
+                System.out.println("datakulma=" + i + "||lähin seinä=" + taulu[i]);
+            }
+            
             jantunen.valitseUusiPiste(kartta);
+            
+            System.out.println("Jantusen suunta ja paikka = (" + 
+                    jantunen.getPaikka().x + "," + jantunen.getPaikka().y + 
+                    "), " + jantunen.getSuunta());
+            
+            System.out.println("!!!UUDESTAAN!!!");
+            
+            testidata = jantunen.mittaa(kartta); //testi
+            
+            float taulu2[] = testidata.getData();
+            
+            for (int i = 0; i < 37; i++){
+                System.out.println("datakulma=" + i + "||lähin seinä=" + taulu2[i]);
+            }
+            
+            jantunen.valitseUusiPiste(kartta);
+            
+            System.out.println("Jantusen suunta ja paikka = (" + 
+                    jantunen.getPaikka().x + "," + jantunen.getPaikka().y + 
+                    "), " + jantunen.getSuunta());
 
+            
+            
+            
+        } else if (valinta == 7){
+            
+            System.out.println("");
+            System.out.println("etenePisteeseen()-testi");
+            
+            System.out.println("Jantusen suunta ja paikka = (" + 
+                    jantunen.getPaikka().x + "," + jantunen.getPaikka().y + 
+                    "), " + jantunen.getSuunta());
+            
+            System.out.println("Eteenpäin pisteeseen (0,500)");
+            Point2D.Float piste = new Point2D.Float(0,500);
+            jantunen.etenePisteeseen(piste);
+            
+            System.out.println("Jantusen suunta ja paikka = (" + 
+                    jantunen.getPaikka().x + "," + jantunen.getPaikka().y + 
+                    "), " + jantunen.getSuunta());
+            
+            System.out.println("takaisin pisteeseen (0,0)");
+            piste = new Point2D.Float(0,0);
+            jantunen.etenePisteeseen(piste);
+            
+            System.out.println("Jantusen paikka ja suunta . (" + 
+                    jantunen.getPaikka().x + "," + jantunen.getPaikka().y + 
+                    "), " + jantunen.getSuunta());
+            
+            
+            
+            
         }
         
         
