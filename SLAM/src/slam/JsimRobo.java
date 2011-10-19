@@ -24,17 +24,19 @@ public class JsimRobo {
     private Point2D.Float paikka;           //Robotin paikka Point-oliona MILLIMETREISSÄ
     private Point2D.Float kohde;
     
-    private final int IRkantama = 800;    //Robotin infrapunasensorin kantama MILLIMETREISSÄ
+    private final int IRkantama = 800;      //Robotin infrapunasensorin kantama MILLIMETREISSÄ
     private final int mittausmäärä = 37;    //Robotin mittaukset per 180 astetta // 37 = 5 asteen välein
+    
+    JsimData mittaus;                       //luodaan mittaa()-metodilla, käytetään seuraavan mittauspaikan valitsemiseksi
     
     
     /*
      * Konstruktorit
      */
     
-    public JsimRobo(){              //Peruskonstruktori
+    public JsimRobo(){                      //Peruskonstruktori
         Random r = new Random();    
-        suunta = r.nextInt(360);    //Sattumanvarainen alkusuunta
+        suunta = r.nextInt(360);            //Sattumanvarainen alkusuunta
         paikka = new Point2D.Float(0,0);    //Alkukoordinaatti 0,0
     }
     public JsimRobo(float suunta, Point2D.Float paikka){
@@ -93,10 +95,9 @@ public class JsimRobo {
     public Point2D.Float teleport(Point2D.Float kohde){
         /*
          * Mä en hiffaa enää mitään eli nyt kusetetaan
+         * (käytännössä setPaikka)
          */
-        
         paikka = kohde;
-        
         return paikka;
     }
     
@@ -117,14 +118,15 @@ public class JsimRobo {
         /* Palauttaa uuden suunnan.
          * Parametrinä Point2D.Float-olio, jota kohti käännytään.
          */
-        float aste = (float)Math.atan((paikka.x+kohde.x)/(paikka.y+kohde.y)); // EI VÄLTTÄMÄTTÄ TOIMI
-        
+        float aste = (float)Math.atan((paikka.x+kohde.x)/(paikka.y+kohde.y));
+         // EI VÄLTTÄMÄTTÄ TOIMI tai saattaa toimia.. tässä todennäkösesti ei tarvita radiaaneja
         return käänny(aste);
     }
     
     public float osoitaSuuntaan(float suunta){
         /*
          * teleportille kusetuspartneri
+         * (käytännössä setSuunta)
          */
         this.suunta = suunta;
         return suunta;
@@ -137,12 +139,63 @@ public class JsimRobo {
     
     //TODO
     
+    public void valitseUusiPiste(JsimKartta JSKkartta){
+        
+        mittaus = mittaa(JSKkartta);            //mittaus on osa näitä navigointihommia
+        float mtaulu[] = mittaus.getData();     //tiedot edessäolevasta kamasta
+        
+        int alkusuunta = -1;
+        int tyhjyyslaskuri = 0;
+        int loppusuunta;
+        int tyhjyyspituus = -1;
+        
+        for (int i = 0; i < mtaulu.length; i++){
+            
+            if (mtaulu[i] == 9999){
+                alkusuunta = i;
+                tyhjyyslaskuri++;
+            } else {
+                loppusuunta = i-1;
+                if (tyhjyyspituus < tyhjyyslaskuri){
+                    tyhjyyspituus = tyhjyyslaskuri;
+                }
+                tyhjyyslaskuri = 0;
+            }
+        }
+        
+        if (alkusuunta != -1){
+            if (alkusuunta + tyhjyyspituus < mittausmäärä){
+                
+                float tap = mtaulu[alkusuunta];
+                System.out.println("as" + alkusuunta + " tp" + tyhjyyspituus);
+                float tlp = mtaulu[alkusuunta+tyhjyyspituus];
+                navSuurinVäli(tap, alkusuunta, tlp, alkusuunta+tyhjyyspituus);
+            }
+        }
+   
+    }
+    
+    private void navSuurinVäli(float tap, int as, float tlp, int ls){
+
+        float x1 = (float)(paikka.x + tap*Math.sin(((suunta+(as*5-90))*(Math.PI/180))));
+        float y1 = (float)(paikka.y + tap*Math.cos(((suunta+(as*5-90))*(Math.PI/180))));
+
+        float x2 = (float)(paikka.x + tlp*Math.sin(((suunta+(ls*5-90))*(Math.PI/180))));
+        float y2 = (float)(paikka.y + tlp*Math.cos(((suunta+(ls*5-90))*(Math.PI/180))));
+        
+        float keskipisteX = (x1+x2)/2;
+        float keskipisteY = (y1+y2)/2;
+        
+        etenePisteeseen(new Point2D.Float(keskipisteX,keskipisteY));
+        
+    }
+    
     
     /*
      * Mittaus :(
      */
     
-    public JsimData mittaa(JsimKartta JSKkartta){
+    private JsimData mittaa(JsimKartta JSKkartta){
         /*
          * Tässä olis ideana, että verrataan robotin yhtä "näköviivaa" kaikkiin kartan viivoihin vuoron perään ja jos leikkaus
          * löytyy niin tallennetaan se pieninleikkaus-muuttujaan, jota vertaillaan tuleviin leikkauspituuksiin. Sitten tallennetaan
@@ -155,11 +208,7 @@ public class JsimRobo {
          * 
          */
         
-        //Jotain täällä ei vaan toimi
-        //korjaus: tämä on täysin sekaisin
-
-        
-        JsimData mittaus;
+        //JsimData mittaus; !!siirretty ylös!!
         float taulu[] = new float[mittausmäärä];    //Käytetään "mittaus"-jsimdatan luomisessa
         float pieninleikkaus;
         JsimRoboNäkymä näkymä = new JsimRoboNäkymä(paikka, suunta, mittausmäärä, IRkantama);

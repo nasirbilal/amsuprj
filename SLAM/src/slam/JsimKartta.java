@@ -13,14 +13,17 @@ public class JsimKartta {
     private Line2D.Float kartta[];
     
     public JsimKartta(){
-        kartta = new Line2D.Float[4]; // MINKÄ HELVETIN TAKIA TÄÄ TOIMII VAAN KONSTRUKTORISSA
+        kartta = new Line2D.Float[5]; // MINKÄ HELVETIN TAKIA TÄÄ TOIMII VAAN KONSTRUKTORISSA
         /*
-         * Tässä kartassa vaan neljä seinää alkupositiosta testaamiseen
+         * Tässä kartassa vaan viisi seinää alkupositiosta testaamiseen
+         * kartta[4]:llä testasin että mittaus ottaa vain lähimmän seinän - toimii
          */
         kartta[0] = new Line2D.Float(new Point2D.Float(500,50), new Point2D.Float(500,-50));
         kartta[1] = new Line2D.Float(new Point2D.Float(-50,-500), new Point2D.Float(50,-500));
         kartta[2] = new Line2D.Float(new Point2D.Float(-500,50), new Point2D.Float(-500,-50));
         kartta[3] = new Line2D.Float(new Point2D.Float(-50,500), new Point2D.Float(50,500));
+        
+        kartta[4] = new Line2D.Float(new Point2D.Float(-40,300), new Point2D.Float(50,300));
       
     }
     

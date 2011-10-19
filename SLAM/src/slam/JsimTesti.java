@@ -109,7 +109,7 @@ public class JsimTesti {
             System.out.println("robotin suunta on: " + jantunen.getSuunta());
             
             System.out.println("alkupisteessä ollaan!");
-            
+            /* mittaa muutettu privateksi
             System.out.println("otetaan mittaus ja rukoillaan:");
             JsimData testidata = jantunen.mittaa(kartta);
             float taulu[] = testidata.getData();
@@ -119,7 +119,7 @@ public class JsimTesti {
             for (int i = 0; i < 37; i++){
                 System.out.println("datakulma=" + i + "||lähin seinä=" + taulu[i]);
             }
-            /*
+            
              * Outoa dataa taas.
              */
             
@@ -284,11 +284,11 @@ public class JsimTesti {
             
             System.out.println("OK");
             System.out.println("-------------");
-            
+            /* TOIMI
             System.out.println("!!!MITTAUSTESTI!!! ken tästä käy saa kaiken toivon heittää");
             
             System.out.println("otetaan mittaus ja rukoillaan:");
-            JsimData testidata = jantunen.mittaa(kartta);
+            JsimData testidata = jantunen.mittaa(kartta);   //mittaa() muutettu privateksi
             float taulu[] = testidata.getData();
             System.out.println("mikä oli suunta testimittauksessa? se oli: " + testidata.getRobosuunta());
             System.out.println("tarkastellaanpa dataa: ");
@@ -296,9 +296,11 @@ public class JsimTesti {
             for (int i = 0; i < 37; i++){
                 System.out.println("datakulma=" + i + "||lähin seinä=" + taulu[i]);
             }
+            */
             
+            System.out.println("!!!NAVIGOINTITESTI!!!");
             
-                    
+            jantunen.valitseUusiPiste(kartta);
 
         }
         
