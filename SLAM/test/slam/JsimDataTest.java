@@ -4,8 +4,6 @@
  */
 package slam;
 
-import java.awt.Graphics;
-import java.awt.Point;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -17,9 +15,9 @@ import static org.junit.Assert.*;
  *
  * @author Olli
  */
-public class RoboNakymaTest {
+public class JsimDataTest {
     
-    public RoboNakymaTest() {
+    public JsimDataTest() {
     }
 
     @BeforeClass
@@ -39,27 +37,29 @@ public class RoboNakymaTest {
     }
 
     /**
-     * Test of paintComponent method, of class RoboNakyma.
+     * Test of getRobosuunta method, of class JsimData.
      */
     @Test
-    public void testPaintComponent() {
-        System.out.println("paintComponent");
-        Graphics g = null;
-        RoboNakyma instance = null;
-        instance.paintComponent(g);
+    public void testGetRobosuunta() {
+        System.out.println("getRobosuunta");
+        JsimData instance = null;
+        float expResult = 0.0F;
+        float result = instance.getRobosuunta();
+        assertEquals(expResult, result, 0.0);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
-     * Test of piirraEtaisyydet method, of class RoboNakyma.
+     * Test of getData method, of class JsimData.
      */
     @Test
-    public void testPiirraEtaisyydet() {
-        System.out.println("piirraEtaisyydet");
-        Point[] pisteet = null;
-        RoboNakyma instance = new RoboNakyma();
-        instance.piirraEtaisyydet(pisteet);
+    public void testGetData() {
+        System.out.println("getData");
+        JsimData instance = null;
+        float[] expResult = null;
+        float[] result = instance.getData();
+        assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
