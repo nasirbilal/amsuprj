@@ -150,6 +150,11 @@ public class JsimRobo {
          * taulu annetaan JsimData oliolle, johon myös tallennetaan robotin tämänhetkinen suunta.
          */
         
+        /*
+         * jos tää roska antaa 9999 pituudeksi niin se tarkoittaa että mitää ei ole havaittu
+         * 
+         */
+        
         //Jotain täällä ei vaan toimi
         //korjaus: tämä on täysin sekaisin
 
@@ -176,7 +181,7 @@ public class JsimRobo {
         
         
         
-        /*
+        /* tää ei toiminu
         for (int i = 0; i < näkymä.getNäkötaulu().length; i++){
             System.out.println("i=" + i);
             pieninleikkaus = 9001; //ettei nulleja vertailla
