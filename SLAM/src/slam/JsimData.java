@@ -14,25 +14,26 @@ public class JsimData {
     private float robosuunta;
     private float data[];
     
-    public JsimData(float suunta, float[] data){
-        /*
-         * 1.parametri robotin suunta
-         * 2.parametri mittaus-taulukko
+        /**
+         * @param parametri robotin suunta
+         * @param parametri mittaus-taulukko
          */
+    public JsimData(float suunta, float[] data){
         robosuunta = suunta;
         this.data = data;
     }
     
+    /**
+     * @return robotin suunnan tältä mittaukselta
+     */
     public float getRobosuunta(){
-        /*
-         * Palauttaa robotin suunnan tältä mittaukselta
-         */
         return robosuunta;
     }
+
+    /**
+     * @return robotin luoman data-taulukon
+     */
     public float[] getData(){
-        /*
-         * Palauttaa robotin luoman data-taulukon
-         */
         return data;
     }
     

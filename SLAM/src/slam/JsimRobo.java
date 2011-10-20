@@ -74,25 +74,25 @@ JsimRobonäkymä // tätä luodaan JsimRobon mittaa-metodissa
 
 public class JsimRobo {
     
-    private float suunta;                   //Robotin suunta // range: 0-359 // 360 = 0 // 0 ON POHJOINEN (tai saatta olla etelä)
-    private Point2D.Float paikka;           //Robotin paikka Point-oliona MILLIMETREISSÄ
+    private float suunta;                   /// Robotin suunta // range: 0-359 // 360 = 0 // 0 ON POHJOINEN (tai saatta olla etelä)
+    private Point2D.Float paikka;           /// Robotin paikka Point-oliona MILLIMETREISSÄ
     private Point2D.Float kohde;
     
-    private final int IRkantama = 800;      //Robotin infrapunasensorin kantama MILLIMETREISSÄ
-    private final int mittausmäärä = 37;    //Robotin mittaukset per 180 astetta // 37 = 5 asteen välein
+    private final int IRkantama = 800;      /// Robotin infrapunasensorin kantama MILLIMETREISSÄ
+    private final int mittausmäärä = 37;    /// Robotin mittaukset per 180 astetta // 37 = 5 asteen välein
     
-    JsimData mittaus;                       //luodaan mittaa()-metodilla, käytetään seuraavan mittauspaikan valitsemiseksi
-    JsimRoboNäkymä näkymä;                  //luodaan mittaa()-metodilla, debugausta
+    JsimData mittaus;                       /// luodaan mittaa()-metodilla, käytetään seuraavan mittauspaikan valitsemiseksi
+    JsimRoboNäkymä näkymä;                  /// luodaan mittaa()-metodilla, debugausta
     
     
     /*
      * Konstruktorit
      */
     
-    public JsimRobo(){                      //Peruskonstruktori
+    public JsimRobo(){                      /// Peruskonstruktori
         Random r = new Random();    
-        suunta = r.nextInt(360);            //Sattumanvarainen alkusuunta
-        paikka = new Point2D.Float(0,0);    //Alkukoordinaatti 0,0
+        suunta = r.nextInt(360);            /// Sattumanvarainen alkusuunta
+        paikka = new Point2D.Float(0,0);    /// Alkukoordinaatti 0,0
     }
     public JsimRobo(float suunta, Point2D.Float paikka){
         this.suunta = suunta;
@@ -128,21 +128,24 @@ public class JsimRobo {
      * Liikuntametodit:
      */
     
+    /**
+     * @param matka on MILLIMETREISSÄ.
+     * @return uuden paikan Point2D.Float-oliona.
+     */
     public Point2D.Float etene(float matka){
-        /* Palauttaa uuden paikan Point2D.Float-oliona.
-         * parametri matka on MILLIMETREISSÄ.
-         */
         
         float x = (float)(paikka.x + matka*Math.sin((suunta*(Math.PI/180)))); //Mathin funktiot ottaa radiaaneja
         float y = (float)(paikka.y + matka*Math.cos((suunta*(Math.PI/180))));
         paikka = new Point2D.Float(x,y);
         return paikka;
     }
+
+    /** 
+     * @param on kohteena oleva paikka.
+     * @return uuden paikan Point2D.Float-oliona.
+     * @note Robotti kääntyy pistettä kohti ja "ajaa" siihen. Ei mitään pathfindingiä.
+     */
     public Point2D.Float etenePisteeseen(Point2D.Float kohde){
-        /* Palauttaa uuden paikan Point2D.Float-oliona.
-         * Parametri on kohteena oleva paikka.
-         * HUOM. Robotti kääntyy pistettä kohti ja "ajaa" siihen. Ei mitään pathfindingiä.
-         */
         käännyKohti(kohde,0);
         return etene((float)Math.sqrt(Math.pow(paikka.x+kohde.x,2)+(Math.pow(paikka.y+kohde.y,2))));
     }
@@ -156,10 +159,11 @@ public class JsimRobo {
         return paikka;
     }
     
+    /** 
+     * @param aste on väliltä -90 (vasemmalle) viiva 90 (oikealle).
+     * @return uuden suunnan.
+     */
     public float käänny(float aste){
-        /* Palauttaa uuden suunnan.
-         * Parametri aste on väliltä -90 (vasemmalle) viiva 90 (oikealle).
-         */
         suunta = suunta + aste;
             if (suunta > 359){
                 suunta = suunta - 360;
@@ -170,11 +174,12 @@ public class JsimRobo {
         return suunta;
     }
     
+    /** 
+     * @param Point2D.Float-olio, jota kohti käännytään.
+     * @param on mahdollinen lisäkääntyminen, anna 0 jos ei tarvetta
+     * @return uuden suunnan.
+     */
     public float käännyKohti(Point2D.Float kohde, float bonusaste){
-        /* Palauttaa uuden suunnan.
-         * 1. Parametrinä Point2D.Float-olio, jota kohti käännytään.
-         * 2. parametri on mahdollinen lisäkääntyminen, anna 0 jos ei tarvetta
-         */
 
             float aste = (float)((Math.atan((paikka.x+kohde.x)/(paikka.y+kohde.y))));
             aste = (float)(aste*(180/Math.PI)); //käännetään radiaanit asteiksi
