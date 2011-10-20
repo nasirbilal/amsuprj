@@ -22,6 +22,54 @@ import java.awt.geom.Line2D;
  * liekö onkelma kääntymisessä... ainakin toi
  * arkustangentti on aika ihme vääntöä
  * 
+ * OLLILLE with love: <3<3<3<3<3<3<3 XOXO
+ * puspus, nähdään loman jälkeen
+ * 
+ JsimRobo -luokka
+	Konstruktorit
+		JsimRobo() //alottaa paikaststa(0,0), suunta random
+		JsimRobo(float suunta, Point2D.Float paikka)
+		public JsimRobo(float suunta, int x, int y) //KÄYTÄ TÄTÄ (0,0,0)
+
+	Liikkumismetodit
+		Point2D.Float etene(float matka)
+		Point2D.Float etenePisteeseen(Point2D.Float kohde)
+		Point2D.Float teleport(Point2D.Float kohde)
+
+		float käänny(float aste)
+		float käännyKohti(Point2D.Float kohde, float bonusaste)
+		float osoitaSuuntaan(float suunta)
+
+	Mittausmetodit
+		JsimData mittaa(JsimKartta JSKkartta)
+
+
+JsimKartta -luokka //luo virtuaalikartan
+	konstruktori
+		JsimKartta()
+
+	getteri
+		Line2D.Float[] getKartta()
+
+JsimData
+	konstruktori
+		JsimData(float suunta, float[] data)
+
+	getterit
+		float getRobosuunta()
+		float[] getData()
+
+JsimRobonäkymä // tätä luodaan JsimRobon mittaa-metodissa
+	konstruktori
+		JsimRoboNäkymä(Point2D.Float paikka, float suunta, int mittausmäärä, int range)
+
+	getterit
+		Line2D.Float getNäköviiva(int i)
+		Line2D.Float[] getNäkötaulu()
+
+	metodi
+		Point2D.Float leikkaako(Line2D.Float näköviiva, Line2D.Float karttaviiva) //LEJOSista pöllitty
+ * 
  */
 
 public class JsimRobo {
@@ -260,13 +308,14 @@ public class JsimRobo {
             pieninleikkaus = 9999;
             for (int k = 0; k < kartta.length; k++){                            //karttaviiva loop
                 if (näkymä.getNäköviiva(i).intersectsLine(kartta[k])){          //boolean intersect if
-                    System.out.println("kartta["+k+"] leikkaa näköviiva["+i+"]");//debug
+                    System.out.print("kartta["+k+"] leikkaa näköviiva["+i+"]");//debug
                     Point2D.Float leikkauspiste = näkymä.leikkaako(näkymä.getNäköviiva(i), kartta[k]);
-                    System.out.println("paikassa("+leikkauspiste.x+","+leikkauspiste.y+")");
                     
-                    if (pieninleikkaus > Math.sqrt(Math.pow(paikka.x+leikkauspiste.x,2)+(Math.pow(paikka.y+leikkauspiste.y,2)))){
+                    System.out.print(" paikassa("+leikkauspiste.x+","+leikkauspiste.y+"), ");
+                    
+                    if (pieninleikkaus > Math.sqrt(Math.pow(paikka.x-leikkauspiste.x,2)+(Math.pow(paikka.y-leikkauspiste.y,2)))){
 
-                        pieninleikkaus = (float)Math.sqrt(Math.pow(paikka.x+leikkauspiste.x,2)+(Math.pow(paikka.y+leikkauspiste.y,2)));
+                        pieninleikkaus = (float)Math.sqrt(Math.pow(paikka.x-leikkauspiste.x,2)+(Math.pow(paikka.y-leikkauspiste.y,2)));
                         System.out.println("pit:"+pieninleikkaus);
                     }
                     

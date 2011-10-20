@@ -25,6 +25,7 @@ public class JsimTesti {
         System.out.println("6. radianisoidut koodit testi");
         System.out.println("7. etenePisteeseen()-testi");
         System.out.println("8. kuutostestit sekottaa mun pään, pakko alottaa uus");
+        System.out.println("9. tezitezi");
         int valinta = s.nextInt();
         
         if (valinta == 1){
@@ -431,6 +432,25 @@ public class JsimTesti {
                     jantunen.getPaikka().x + "," + jantunen.getPaikka().y + 
                     "), " + jantunen.getSuunta());
             System.out.println("-------------");
+            
+        } else if (valinta == 9){
+            
+            Point2D.Float paikka = jantunen.getPaikka();
+            System.out.println("robotti on pisteessä: ("+ paikka.x + "," + paikka.y + ")");
+            System.out.println("robotin suunta on: " + jantunen.getSuunta());
+            System.out.println("mennäänpä 499mm eteenpäin -> ");
+            jantunen.etene(499);
+            paikka = jantunen.getPaikka();
+            System.out.println("robotin paikka on nyt: (" + paikka.x + "," + paikka.y + ")");
+            System.out.println("robotin suunta on: " + jantunen.getSuunta());
+            
+            JsimData data1 = jantunen.mittaa(kartta);
+            
+            float taulu1[] = data1.getData();
+            
+            for (int i = 0; i < 37; i++){
+                System.out.println("dk=" + i + ";ak="+(int)(jantunen.getSuunta()+((i))*5-90) +";ls=" + taulu1[i]);
+            }
             
         }
         
