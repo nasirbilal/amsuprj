@@ -13,10 +13,13 @@ import java.util.Random;
 /*
  * 
  *          TÄMÄ ON VANHA VERSIO
+ *
+ *          OK no pitäiskö se sit poistaa SVN:stä? En tiedä onko tää
+ *          täällä jostain hyvästä syystä vielä roikkumassa ni jätän
+ *          päätösvastuun herroille A & J.
+ *          -L
  * 
  */
-
-
 
 
 /*
