@@ -4,6 +4,7 @@
  */
 package slam;
 
+import java.awt.geom.Point2D;
 import java.awt.geom.Point2D.Float;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -38,73 +39,16 @@ public class JsimRoboTest {
     }
 
     /**
-     * Test of getSuunta method, of class JsimRobo.
-     */
-    @Test
-    public void testGetSuunta() {
-        System.out.println("getSuunta");
-        JsimRobo instance = new JsimRobo();
-        float expResult = 0.0F;
-        float result = instance.getSuunta();
-        assertEquals(expResult, result, 0.0);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of setSuunta method, of class JsimRobo.
-     */
-    @Test
-    public void testSetSuunta() {
-        System.out.println("setSuunta");
-        float suunta = 0.0F;
-        JsimRobo instance = new JsimRobo();
-        instance.setSuunta(suunta);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getPaikka method, of class JsimRobo.
-     */
-    @Test
-    public void testGetPaikka() {
-        System.out.println("getPaikka");
-        JsimRobo instance = new JsimRobo();
-        Float expResult = null;
-        Float result = instance.getPaikka();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of setPaikka method, of class JsimRobo.
-     */
-    @Test
-    public void testSetPaikka() {
-        System.out.println("setPaikka");
-        int x = 0;
-        int y = 0;
-        JsimRobo instance = new JsimRobo();
-        instance.setPaikka(x, y);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
      * Test of etene method, of class JsimRobo.
      */
     @Test
     public void testEtene() {
         System.out.println("etene");
-        float matka = 0.0F;
-        JsimRobo instance = new JsimRobo();
-        Float expResult = null;
-        Float result = instance.etene(matka);
+        float matka = 500.0F;
+        JsimRobo instance = new JsimRobo(90,0,0);
+        Point2D.Float expResult =  new Point2D.Float(500.0f,0.0f);
+        Point2D.Float result = instance.etene(matka);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
