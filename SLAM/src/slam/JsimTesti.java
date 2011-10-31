@@ -340,8 +340,8 @@ public class JsimTesti {
             }
 
             System.out.println("outoo settii, katotaas Jsimun robonäkymän ensimmäinen näköviiva:");
-            System.out.println("("+jantunen.näkymä.getNäköviiva(0).x1+","+jantunen.näkymä.getNäköviiva(0).y1+")viiva");
-            System.out.println("("+jantunen.näkymä.getNäköviiva(0).x2+","+jantunen.näkymä.getNäköviiva(0).y2+")");
+            System.out.println("("+jantunen.nakyma.getNäköviiva(0).x1+","+jantunen.nakyma.getNäköviiva(0).y1+")viiva");
+            System.out.println("("+jantunen.nakyma.getNäköviiva(0).x2+","+jantunen.nakyma.getNäköviiva(0).y2+")");
             
             System.out.println("näköviiva on täysin oikeessa paikassa");
             

@@ -78,11 +78,11 @@ public class JsimRobo {
     private Point2D.Float paikka;           /// Robotin paikka Point-oliona MILLIMETREISSÄ
     private Point2D.Float kohde;
     
-    private final int IRkantama = 800;      /// Robotin infrapunasensorin kantama MILLIMETREISSÄ
-    private final int mittausmäärä = 37;    /// Robotin mittaukset per 180 astetta // 37 = 5 asteen välein
+    private final int infraKantama = 800;      /// Robotin infrapunasensorin kantama MILLIMETREISSÄ
+    private final int mittausMaara = 37;    /// Robotin mittaukset per 180 astetta // 37 = 5 asteen välein
     
     JsimData mittaus;                       /// luodaan mittaa()-metodilla, käytetään seuraavan mittauspaikan valitsemiseksi
-    JsimRoboNäkymä näkymä;                  /// luodaan mittaa()-metodilla, debugausta
+    JsimRoboNäkymä nakyma;                  /// luodaan mittaa()-metodilla, debugausta
     
     
     /*
@@ -234,7 +234,7 @@ public class JsimRobo {
         System.out.println("as" + alkumuisti + " tm" + tyhjyysmuisti); //debug
         
         if (alkumuisti != -1){
-            if (alkumuisti + tyhjyysmuisti < mittausmäärä){
+            if (alkumuisti + tyhjyysmuisti < mittausMaara){
                 
                 float tap = mtaulu[alkumuisti];
                 float tlp = mtaulu[alkumuisti+tyhjyysmuisti+1];
@@ -301,20 +301,20 @@ public class JsimRobo {
 
         //JsimData mittaus; !!siirretty ylös!!
         //JsimRoboNäkymä siirretty ylös
-        float taulu[] = new float[mittausmäärä];    //Käytetään "mittaus"-jsimdatan luomisessa
+        float taulu[] = new float[mittausMaara];    //Käytetään "mittaus"-jsimdatan luomisessa
         float pieninleikkaus;
-        näkymä = new JsimRoboNäkymä(paikka, suunta, mittausmäärä, IRkantama);
+        nakyma = new JsimRoboNäkymä(paikka, suunta, mittausMaara, infraKantama);
         
         Line2D.Float kartta[] = JSKkartta.getKartta();
         
         System.out.println("luuppaus alkaa");//debug
         
-        for (int i = 0; i < näkymä.getNäkötaulu().length; i++){                 //näköviiva loop
+        for (int i = 0; i < nakyma.getNäkötaulu().length; i++){                 //näköviiva loop
             pieninleikkaus = 9999;
             for (int k = 0; k < kartta.length; k++){                            //karttaviiva loop
-                if (näkymä.getNäköviiva(i).intersectsLine(kartta[k])){          //boolean intersect if
+                if (nakyma.getNäköviiva(i).intersectsLine(kartta[k])){          //boolean intersect if
                     System.out.print("kartta["+k+"] leikkaa näköviiva["+i+"]");//debug
-                    Point2D.Float leikkauspiste = näkymä.leikkaako(näkymä.getNäköviiva(i), kartta[k]);
+                    Point2D.Float leikkauspiste = nakyma.leikkaako(nakyma.getNäköviiva(i), kartta[k]);
                     
                     System.out.print(" paikassa("+leikkauspiste.x+","+leikkauspiste.y+"), ");
                     

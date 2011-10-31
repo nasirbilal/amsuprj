@@ -4,6 +4,7 @@
 package slam;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
 import javax.swing.*;
 
 /**
@@ -12,7 +13,7 @@ import javax.swing.*;
  */
 public class RoboNakyma extends JPanel {
 
-    private Point[] pisteet;
+    private Point2D.Double[] pisteet;
 
     /**
      * 
@@ -46,15 +47,15 @@ public class RoboNakyma extends JPanel {
         // 'origosta' ensimmäiseen ja viimeiseen pisteeseen
         // tämä siis simuloi aluetta, jonka robotti näkee
         if (pisteet != null) {
-            Point temp = null, ensimmainen = null, viimeinen = null;
-            for (Point piste : pisteet) {
+            Point2D.Double temp = null, ensimmainen = null, viimeinen = null;
+            for (Point2D.Double piste : pisteet) {
                 if (ensimmainen == null) {
                     ensimmainen = piste;
                 }
                 viimeinen = piste;
 
                 if (temp != null) {
-                    g2.drawLine(temp.x, temp.y, piste.x, piste.y);
+                    g2.drawLine((int)temp.x, (int)temp.y, (int)piste.x, (int)piste.y);
                 }
                 temp = piste;
             }
@@ -63,18 +64,19 @@ public class RoboNakyma extends JPanel {
             }
             g2.setStroke(katkoV);
             g2.setColor(Color.red);
-            g2.drawLine((getWidth()/2), getHeight(), ensimmainen.x, ensimmainen.y);
-            g2.drawLine((getWidth()/2), getHeight(), viimeinen.x, viimeinen.y);
+            //Pitää olla int,int,int,int ; ei int,int,double,double, tämä vain temp korjaus
+            g2.drawLine((getWidth()/2), getHeight(), (int)ensimmainen.x, (int)ensimmainen.y);
+            g2.drawLine((getWidth()/2), getHeight(), (int)viimeinen.x, (int)viimeinen.y);
             g2.setStroke(new BasicStroke(1));
             g2.setColor(Color.black);
         }
     }
-
+    
     /**
      * 
      * @param pisteet
      */
-    public void piirraEtaisyydet(Point[] pisteet) {
+    public void piirraEtaisyydet(Point2D.Double[] pisteet) {
         this.pisteet = pisteet;
         repaint();
     }
