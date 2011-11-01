@@ -134,6 +134,13 @@ public class JsimRobo {
      */
     public Point2D.Float etene(float matka){
         
+        /*
+         * Lasketaan uudet x- ja y-koordinaatit vanhojen koordinaattien
+         * ja suunnan perusteella.
+         * esim.
+         * (uusi X) = (vanha X) + (kuljettava matka)*sin(nykyinen suunta)
+         */
+        
         float x = (float)(paikka.x + matka*Math.sin((suunta*(Math.PI/180)))); //Mathin funktiot ottaa radiaaneja
         float y = (float)(paikka.y + matka*Math.cos((suunta*(Math.PI/180))));
         paikka = new Point2D.Float(x,y);
@@ -146,6 +153,14 @@ public class JsimRobo {
      * @note Robotti kääntyy pistettä kohti ja "ajaa" siihen. Ei mitään pathfindingiä.
      */
     public Point2D.Float etenePisteeseen(Point2D.Float kohde){
+        
+        /*
+         * Käytetään käännyKohti-metodia oikean suunnan asettamiseksi, jonka
+         * jälkeen liikutaan "tangentin" pituus pythagoraan lauseeseen perustuen:
+         * 
+         * sqrt((x1+x2)²+(y1+y2)²)
+         */
+        
         käännyKohti(kohde,0);
         return etene((float)Math.sqrt(Math.pow(paikka.x+kohde.x,2)+(Math.pow(paikka.y+kohde.y,2))));
     }
@@ -164,6 +179,12 @@ public class JsimRobo {
      * @return uuden suunnan.
      */
     public float käänny(float aste){
+        
+        /*
+         * tässä pakotetaan ensin suunnan ja kääntymisen
+         * summa sallitulle alueelle (0-359)
+         */
+        
         suunta = suunta + aste;
             if (suunta > 359){
                 suunta = suunta - 360;
@@ -180,6 +201,11 @@ public class JsimRobo {
      * @return uuden suunnan.
      */
     public float käännyKohti(Point2D.Float kohde, float bonusaste){
+        
+        /*
+         * koska tan(alpha) = a/b, niin
+         * alpha = tan⁻¹((x1+x2)/(y1+y2))
+         */
 
             float aste = (float)((Math.atan((paikka.x+kohde.x)/(paikka.y+kohde.y))));
             aste = (float)(aste*(180/Math.PI)); //käännetään radiaanit asteiksi
@@ -309,27 +335,28 @@ public class JsimRobo {
         
         System.out.println("luuppaus alkaa");//debug
         
-        for (int i = 0; i < nakyma.getNäkötaulu().length; i++){                 //näköviiva loop
-            pieninleikkaus = 9999;
-            for (int k = 0; k < kartta.length; k++){                            //karttaviiva loop
-                if (nakyma.getNäköviiva(i).intersectsLine(kartta[k])){          //boolean intersect if
-                    System.out.print("kartta["+k+"] leikkaa näköviiva["+i+"]");//debug
-                    Point2D.Float leikkauspiste = nakyma.leikkaako(nakyma.getNäköviiva(i), kartta[k]);
+        for (int i = 0; i < nakyma.getNäkötaulu().length; i++){ //iteroidaan JsimRoboNäkymän Näkötaulun näköviivoja
+            pieninleikkaus = 9999; //jos mikään ei leikkaa annetaan arvo 9999
+            for (int k = 0; k < kartta.length; k++){ //iteroidaan kartan viivoja
+                if (nakyma.getNäköviiva(i).intersectsLine(kartta[k])){ //JOS näköviiva leikkaan karttaviivan:
+                    System.out.print("kartta["+k+"] leikkaa näköviiva["+i+"]");
+                    Point2D.Float leikkauspiste = nakyma.leikkaako(nakyma.getNäköviiva(i), kartta[k]); //pistetään leikkauspiste muistiin
                     
                     System.out.print(" paikassa("+leikkauspiste.x+","+leikkauspiste.y+"), ");
                     
                     if (pieninleikkaus > Math.sqrt(Math.pow(paikka.x-leikkauspiste.x,2)+(Math.pow(paikka.y-leikkauspiste.y,2)))){
-
+                    //jos leikkauspiste on pienempi kuin muistissa oleva lyhyin matka leikkauspisteeseen
                         pieninleikkaus = (float)Math.sqrt(Math.pow(paikka.x-leikkauspiste.x,2)+(Math.pow(paikka.y-leikkauspiste.y,2)));
+                        //overwritataan wanha kaukaisempi leikkauspiste uudella lyhyemmällä
                         System.out.println("pit:"+pieninleikkaus);
                     }
                     
                 }
             }
-                taulu[i] = pieninleikkaus;
+                taulu[i] = pieninleikkaus; // pistetään lyhyin etäisyys muistiin
         }
         
-        mittaus = new JsimData(suunta,taulu);
+        mittaus = new JsimData(suunta,taulu); //annetaan etäisyystaulukko JsimDatalle, josta se toivottavasti pistetään johonkin muistiin
         
         return mittaus;
     }

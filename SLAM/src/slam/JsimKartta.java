@@ -13,13 +13,14 @@ public class JsimKartta {
     private Line2D.Float kartta[];
     
     public JsimKartta(){
-        kartta = new Line2D.Float[16]; // MINKÄ HELVETIN TAKIA TÄÄ TOIMII VAAN KONSTRUKTORISSA
+        kartta = new Line2D.Float[16];
         asetaKartta();
       
     }
     
     private void asetaKartta(){
                 //testikartta
+                //käytännössä 4 samanlaista lootaa jokasessa pääilmansuunnassa
         
         kartta[0] = new Line2D.Float(new Point2D.Float(500,50), new Point2D.Float(550,50));
         kartta[1] = new Line2D.Float(new Point2D.Float(550,50), new Point2D.Float(550,-50));

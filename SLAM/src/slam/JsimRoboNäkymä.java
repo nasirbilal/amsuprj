@@ -12,7 +12,7 @@ import java.awt.geom.Line2D;
 
 public class JsimRoboNäkymä {
     
-    private Line2D.Float anv[];     //(Astenäkymäviiva) Line2D.Float-olioita, jotka esittävät
+    private Line2D.Float katsetaulu[];     //(Astenäkymäviiva) Line2D.Float-olioita, jotka esittävät
                             //(simu)robotin jostain suunnasta ottamaa "näkymää".
     
     /**
@@ -21,30 +21,41 @@ public class JsimRoboNäkymä {
      * @param  on mittausten määrä (default 37 eli 5 asteen välein)
      * @param  on IR-sensorin kantama (default 800mm)
      */
-    public JsimRoboNäkymä(Point2D.Float paikka, float suunta, int mittausmäärä, int range){
+    public JsimRoboNäkymä(Point2D.Float paikka, float katsesuunta, int mittausmäärä, int infraEtaisyys){
         
-        anv = new Line2D.Float[mittausmäärä]; //Mä en ymmärrä minkä takia tää nyt toimii
-        float katsekulma = 180/(mittausmäärä-1);
-        suunta = suunta - 90;
+        /*
+         * Tässä luodaan robotin näkyöviivoista robon suuntaan ja paikkaan
+         * perustuen taulukko, jota vertaillaan sitten kartan viivoihin.
+         * 
+         * 
+         * 
+         */
         
-        for (int i = 0; i < anv.length; i++){
+        katsetaulu = new Line2D.Float[mittausmäärä]; //näköviivojen taulukko
+        float katsekulma = 180/(mittausmäärä-1);     //kuinka suuri kulma jää katseviivojen väliin
+        katsesuunta = katsesuunta - 90;              //katse vasemmalle
+        
+        for (int i = 0; i < katsetaulu.length; i++){
             
-            float x = (float)(paikka.x + 800*Math.sin((suunta*(Math.PI/180))));
-            float y = (float)(paikka.y + 800*Math.cos((suunta*(Math.PI/180))));
+            //näköviivan pään X = x + (sensorin kantama) * sin (katseen suunta radiaaneina)
+            float x = (float)(paikka.x + infraEtaisyys*Math.sin((katsesuunta*(Math.PI/180))));
+            float y = (float)(paikka.y + infraEtaisyys*Math.cos((katsesuunta*(Math.PI/180))));
             Point2D.Float ääri = new Point2D.Float(x,y);
             
-            anv[i] = new Line2D.Float(paikka, ääri);
+            katsetaulu[i] = new Line2D.Float(paikka, ääri);
+            //näköviiva menee robotin nykyisestä paikasta
+            //laskettuun pisteeseen
             
-            suunta = suunta + katsekulma;
+            katsesuunta = katsesuunta + katsekulma; //seuraavan katseen suunta
         }
         
     }
     
     public Line2D.Float getNäköviiva(int i){
-        return anv[i];
+        return katsetaulu[i];
     }
     public Line2D.Float[] getNäkötaulu(){
-        return anv;
+        return katsetaulu;
     }
     
     
