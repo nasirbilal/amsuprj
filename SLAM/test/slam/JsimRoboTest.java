@@ -45,8 +45,8 @@ public class JsimRoboTest {
     public void testEtene() {
         System.out.println("etene");
         float matka = 500.0F;
-        JsimRobo instance = new JsimRobo(90,0,0);
-        Point2D.Float expResult =  new Point2D.Float(500.0f,0.0f);
+        JsimRobo instance = new JsimRobo(180,0,0);
+        Point2D.Float expResult =  new Point2D.Float(6.123234E-14f,-500);
         Point2D.Float result = instance.etene(matka);
         assertEquals(expResult, result);
     }
@@ -55,15 +55,24 @@ public class JsimRoboTest {
      * Test of etenePisteeseen method, of class JsimRobo.
      */
     @Test
-    public void testEtenePisteeseen() {
+    public void testEtenePisteeseen1() {
         System.out.println("etenePisteeseen");
-        Float kohde = null;
-        JsimRobo instance = new JsimRobo();
-        Float expResult = null;
+        Point2D.Float kohde = new Point2D.Float(500.0f,0.0f);
+        JsimRobo instance = new JsimRobo(0,0,0);
+        Point2D.Float expResult = new Point2D.Float(500.0f,0.0f);
         Float result = instance.etenePisteeseen(kohde);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    }
+    @Test
+    public void testEtenePisteeseen2() {
+        System.out.println("etenePisteeseen");
+        Point2D.Float kohde = new Point2D.Float(10f,-10);
+        JsimRobo instance = new JsimRobo(0,0,0);
+        Point2D.Float expResult = new Point2D.Float(10f,-10);
+        Float result = instance.etenePisteeseen(kohde);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
     }
 
     /**
@@ -100,17 +109,26 @@ public class JsimRoboTest {
      * Test of käännyKohti method, of class JsimRobo.
      */
     @Test
-    public void testKäännyKohti() {
+    public void testKäännyKohti1() {
         System.out.println("k\u00e4\u00e4nnyKohti");
-        Float kohde = null;
+        Point2D.Float kohde = new Point2D.Float(500.0f,0.0f);
         float bonusaste = 0.0F;
-        JsimRobo instance = new JsimRobo();
-        float expResult = 0.0F;
+        JsimRobo instance = new JsimRobo(0,0,0);
+        float expResult = 90.0F;
         float result = instance.käännyKohti(kohde, bonusaste);
         assertEquals(expResult, result, 0.0);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
+    @Test
+    public void testKäännyKohti2() {
+        System.out.println("k\u00e4\u00e4nnyKohti");
+        Point2D.Float kohde = new Point2D.Float(500.0f,500.0f);
+        float bonusaste = 0.0F;
+        JsimRobo instance = new JsimRobo(0,0,0);
+        float expResult = 45.0F;
+        float result = instance.käännyKohti(kohde, bonusaste);
+        assertEquals(expResult, result, 0.0);
+    }
+
 
     /**
      * Test of osoitaSuuntaan method, of class JsimRobo.

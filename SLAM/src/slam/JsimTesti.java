@@ -376,7 +376,7 @@ public class JsimTesti {
                     "), " + jantunen.getSuunta());
             
             System.out.println("Eteenpäin pisteeseen (0,500)");
-            Point2D.Float piste = new Point2D.Float(0,500);
+            Point2D.Float piste = new Point2D.Float(0,-500);
             jantunen.etenePisteeseen(piste);
             
             System.out.println("Jantusen suunta ja paikka = (" + 

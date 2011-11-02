@@ -142,6 +142,16 @@ public class JsimRobo {
         
         float x = (float)(paikka.x + matka*Math.sin((suunta*(Math.PI/180)))); //Mathin funktiot ottaa radiaaneja
         float y = (float)(paikka.y + matka*Math.cos((suunta*(Math.PI/180))));
+        
+        
+        /*
+        if (x < 0.00001){ //hoho
+            x = 0;
+        }
+        if (y < 0.00001){
+            y = 0;
+        }
+         */
         paikka = new Point2D.Float(x,y);
         return paikka;
     }
@@ -161,7 +171,8 @@ public class JsimRobo {
          */
         
         käännyKohti(kohde,0);
-        return etene((float)Math.sqrt(Math.pow(paikka.x+kohde.x,2)+(Math.pow(paikka.y+kohde.y,2))));
+        //return etene((float)Math.sqrt(Math.pow(paikka.x+kohde.x,2)+(Math.pow(paikka.y+kohde.y,2))));
+        return etene((float)Math.sqrt(Math.pow(kohde.x-paikka.x,2)+(Math.pow(kohde.y-paikka.y,2))));
     }
     
     public Point2D.Float teleport(Point2D.Float kohde){
@@ -206,7 +217,8 @@ public class JsimRobo {
          * alpha = tan⁻¹((x1+x2)/(y1+y2))
          */
 
-            float aste = (float)((Math.atan((paikka.x+kohde.x)/(paikka.y+kohde.y))));
+            //float aste = (float)((Math.atan((paikka.x+kohde.x)/(paikka.y+kohde.y))));
+            float aste = (float)((Math.atan((kohde.x-paikka.x)/(kohde.y-paikka.y))));
             aste = (float)(aste*(180/Math.PI)); //käännetään radiaanit asteiksi
             System.out.println("aste:" + aste); //debug
             return käänny(aste+bonusaste);
