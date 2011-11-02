@@ -1,7 +1,6 @@
 
 package slam;
 
-import java.awt.geom.Point2D.Float;
 import java.awt.geom.Point2D;
 import java.util.Random;
 import java.awt.geom.Line2D;
@@ -82,7 +81,7 @@ public class JsimRobo {
     private final int mittausMaara = 37;    /// Robotin mittaukset per 180 astetta // 37 = 5 asteen välein
     
     JsimData mittaus;                       /// luodaan mittaa()-metodilla, käytetään seuraavan mittauspaikan valitsemiseksi
-    JsimRoboNäkymä nakyma;                  /// luodaan mittaa()-metodilla, debugausta
+    JsimRoboNakyma nakyma;                  /// luodaan mittaa()-metodilla, debugausta
     
     
     /*
@@ -236,7 +235,6 @@ public class JsimRobo {
         
         int alkusuunta = -1;
         int tyhjyyslaskuri = 0;
-        int loppusuunta;
         int tyhjyysmuisti = -1;
         int alkumuisti = -1;
         
@@ -257,17 +255,17 @@ public class JsimRobo {
             
         }
         
-        System.out.println("as" + alkumuisti + " tm" + tyhjyysmuisti); //debug
+        System.out.println("Alkumuisti: " + alkumuisti + " Tyhjyysmuisti: " + tyhjyysmuisti); //debug
         
         if (alkumuisti != -1){
             if (alkumuisti + tyhjyysmuisti < mittausMaara){
                 
-                float tap = mtaulu[alkumuisti];
-                float tlp = mtaulu[alkumuisti+tyhjyysmuisti+1];
-                System.out.println("tap"+tap);
-                System.out.println("tlp"+tlp);
-                System.out.println("!!!navSuurinVäli("+tap+","+alkumuisti+","+tlp+","+tyhjyysmuisti+")");
-                navSuurinVäli(tap, alkumuisti, tlp, alkumuisti+tyhjyysmuisti);
+                float taulunAlkupiste = mtaulu[alkumuisti];
+                float taulunLoppupiste = mtaulu[alkumuisti+tyhjyysmuisti+1];
+                System.out.println("tap"+taulunAlkupiste);
+                System.out.println("tlp"+taulunLoppupiste);
+                System.out.println("!!!navSuurinVäli("+taulunAlkupiste+","+alkumuisti+","+taulunLoppupiste+","+tyhjyysmuisti+")");
+                navSuurinVäli(taulunAlkupiste, alkumuisti, taulunLoppupiste, alkumuisti+tyhjyysmuisti);
             }
         }
    
@@ -329,18 +327,18 @@ public class JsimRobo {
         //JsimRoboNäkymä siirretty ylös
         float taulu[] = new float[mittausMaara];    //Käytetään "mittaus"-jsimdatan luomisessa
         float pieninleikkaus;
-        nakyma = new JsimRoboNäkymä(paikka, suunta, mittausMaara, infraKantama);
+        nakyma = new JsimRoboNakyma(paikka, suunta, mittausMaara, infraKantama);
         
         Line2D.Float kartta[] = JSKkartta.getKartta();
         
         System.out.println("luuppaus alkaa");//debug
         
-        for (int i = 0; i < nakyma.getNäkötaulu().length; i++){ //iteroidaan JsimRoboNäkymän Näkötaulun näköviivoja
+        for (int i = 0; i < nakyma.getNakotaulu().length; i++){ //iteroidaan JsimRoboNäkymän Näkötaulun näköviivoja
             pieninleikkaus = 9999; //jos mikään ei leikkaa annetaan arvo 9999
             for (int k = 0; k < kartta.length; k++){ //iteroidaan kartan viivoja
-                if (nakyma.getNäköviiva(i).intersectsLine(kartta[k])){ //JOS näköviiva leikkaan karttaviivan:
+                if (nakyma.getNakoviiva(i).intersectsLine(kartta[k])){ //JOS näköviiva leikkaan karttaviivan:
                     System.out.print("kartta["+k+"] leikkaa näköviiva["+i+"]");
-                    Point2D.Float leikkauspiste = nakyma.leikkaako(nakyma.getNäköviiva(i), kartta[k]); //pistetään leikkauspiste muistiin
+                    Point2D.Float leikkauspiste = nakyma.leikkaako(nakyma.getNakoviiva(i), kartta[k]); //pistetään leikkauspiste muistiin
                     
                     System.out.print(" paikassa("+leikkauspiste.x+","+leikkauspiste.y+"), ");
                     

@@ -45,9 +45,9 @@ public class JsimRoboNäkymäTest {
     public void testGetNäköviiva() {
         System.out.println("getN\u00e4k\u00f6viiva");
         int i = 0;
-        JsimRoboNäkymä instance = null;
+        JsimRoboNakyma instance = null;
         Float expResult = null;
-        Float result = instance.getNäköviiva(i);
+        Float result = instance.getNakoviiva(i);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
@@ -59,9 +59,9 @@ public class JsimRoboNäkymäTest {
     @Test
     public void testGetNäkötaulu() {
         System.out.println("getN\u00e4k\u00f6taulu");
-        JsimRoboNäkymä instance = null;
+        JsimRoboNakyma instance = null;
         Float[] expResult = null;
-        Float[] result = instance.getNäkötaulu();
+        Float[] result = instance.getNakotaulu();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
@@ -75,7 +75,7 @@ public class JsimRoboNäkymäTest {
         System.out.println("leikkaako");
         Float näköviiva = null;
         Float karttaviiva = null;
-        JsimRoboNäkymä instance = null;
+        JsimRoboNakyma instance = null;
         Point2D.Float expResult = null;
         Point2D.Float result = instance.leikkaako(näköviiva, karttaviiva);
         assertEquals(expResult, result);

@@ -138,7 +138,7 @@ public class JsimTesti {
             */
             
             //Näyttää leikkauspisteetkin toimivan
-            JsimRoboNäkymä testijsrn = new JsimRoboNäkymä(new Point2D.Float(0,0), 0, 37, 800);
+            JsimRoboNakyma testijsrn = new JsimRoboNakyma(new Point2D.Float(0,0), 0, 37, 800);
             Point2D.Float testipiste = testijsrn.leikkaako(new Line2D.Float(-5,-100,0,100),new Line2D.Float(-100,0,100,0));
             
             System.out.println("x:"+testipiste.x);
@@ -340,8 +340,8 @@ public class JsimTesti {
             }
 
             System.out.println("outoo settii, katotaas Jsimun robonäkymän ensimmäinen näköviiva:");
-            System.out.println("("+jantunen.nakyma.getNäköviiva(0).x1+","+jantunen.nakyma.getNäköviiva(0).y1+")viiva");
-            System.out.println("("+jantunen.nakyma.getNäköviiva(0).x2+","+jantunen.nakyma.getNäköviiva(0).y2+")");
+            System.out.println("("+jantunen.nakyma.getNakoviiva(0).x1+","+jantunen.nakyma.getNakoviiva(0).y1+")viiva");
+            System.out.println("("+jantunen.nakyma.getNakoviiva(0).x2+","+jantunen.nakyma.getNakoviiva(0).y2+")");
             
             System.out.println("näköviiva on täysin oikeessa paikassa");
             
