@@ -28,6 +28,14 @@ public class JsimRoboNakyma {
         // perustuen taulukko, jota vertaillaan sitten kartan viivoihin.
 
         katsetaulu = new Line2D.Float[mittausmaara]; // Näköviivojen taulukko
+        
+        if (mittausmaara == 1) {
+            // Katsekulma on suoraan eteenpäin.
+            katsetaulu[0] = new Line2D.Float(paikka, new Point2D.Float(
+                                paikka.x + infraEtaisyys, paikka.y));
+            return;
+        }
+
         float katsekulma = 180 / (mittausmaara - 1); // Kuinka suuri kulma jää katseviivojen väliin.
         katsesuunta = katsesuunta - 90;              // Katse vasemmalle
 
@@ -43,11 +51,11 @@ public class JsimRoboNakyma {
         }
     }
 
-    public Line2D.Float getNakoviiva(int i){
+    public Line2D.Float getNakoviiva(int i){ // Tästä vois hankkiutua eroon.
         return katsetaulu[i];
     }
 
-    public Line2D.Float[] getNakotaulu(){
+    public Line2D.Float[] getNakotaulu(){ // Koska tää on kaikki mitä tarvitaan.
         return katsetaulu;
     }
 

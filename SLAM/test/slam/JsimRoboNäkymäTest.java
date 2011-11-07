@@ -4,6 +4,7 @@
  */
 package slam;
 
+import java.awt.geom.Line2D;
 import java.awt.geom.Line2D.Float;
 import java.awt.geom.Point2D;
 import org.junit.After;
@@ -39,32 +40,16 @@ public class JsimRoboNäkymäTest {
     }
 
     /**
-     * Test of getNäköviiva method, of class JsimRoboNäkymä.
-     */
-    @Test
-    public void testGetNäköviiva() {
-        System.out.println("getN\u00e4k\u00f6viiva");
-        int i = 0;
-        JsimRoboNakyma instance = null;
-        Float expResult = null;
-        Float result = instance.getNakoviiva(i);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
      * Test of getNäkötaulu method, of class JsimRoboNäkymä.
      */
     @Test
     public void testGetNäkötaulu() {
         System.out.println("getN\u00e4k\u00f6taulu");
-        JsimRoboNakyma instance = null;
-        Float[] expResult = null;
-        Float[] result = instance.getNakotaulu();
+        JsimRoboNakyma instance = new JsimRoboNakyma(new Point2D.Float(66, 99),
+                                                     45f, 10, 80);
+        Line2D.Float[] expResult = null;
+        Line2D.Float[] result = instance.getNakotaulu();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
