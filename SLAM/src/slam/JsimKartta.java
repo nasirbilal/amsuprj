@@ -12,7 +12,7 @@ public class JsimKartta {
     private Line2D.Float kartta[];
     
     public JsimKartta(){
-        kartta = new Line2D.Float[16];
+        kartta = new Line2D.Float[20];
         asetaKartta();
     }
     
@@ -39,6 +39,13 @@ public class JsimKartta {
         kartta[13] = new Line2D.Float(new Point2D.Float(-50,550), new Point2D.Float(50,550));
         kartta[14] = new Line2D.Float(new Point2D.Float(50,550), new Point2D.Float(50,500));
         kartta[15] = new Line2D.Float(new Point2D.Float(50,500), new Point2D.Float(-50,500));
+        
+        kartta[16] = new Line2D.Float(new Point2D.Float(50,500), new Point2D.Float(-50,500));
+        kartta[17] = new Line2D.Float(new Point2D.Float(50,500), new Point2D.Float(-50,500));
+        kartta[18] = new Line2D.Float(new Point2D.Float(50,500), new Point2D.Float(-50,500));
+        kartta[19] = new Line2D.Float(new Point2D.Float(50,500), new Point2D.Float(-50,500));
+        
+        
         
         // kartta[16] = new Line2D.Float(new Point2D.Float(-50,500), new Point2D.Float(50,500));
         //kartta[4] = new Line2D.Float(new Point2D.Float(10,300), new Point2D.Float(50,300));
