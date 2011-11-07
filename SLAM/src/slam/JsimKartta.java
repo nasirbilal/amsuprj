@@ -14,7 +14,6 @@ public class JsimKartta {
     public JsimKartta(){
         kartta = new Line2D.Float[16];
         asetaKartta();
-      
     }
     
     private void asetaKartta(){
