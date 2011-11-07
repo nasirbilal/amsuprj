@@ -16,7 +16,7 @@ import org.junit.runners.Suite;
  * @author Olli
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({UItempMainTest.class, KomentajaTest.class, JsimTestiTest.class, JsimRoboNäkymäTest.class, UITest.class, JsimRoboTest.class, KarttaNakymaTest.class})
+@Suite.SuiteClasses({UItempMainTest.class, KomentajaTest.class, JsimRoboNäkymäTest.class, UITest.class, JsimRoboTest.class, KarttaNakymaTest.class})
 public class SlamSuite {
 
     @BeforeClass
