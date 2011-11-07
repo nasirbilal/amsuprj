@@ -102,35 +102,30 @@ public class JsimRoboTest {
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
     }
-
-    /**
-     * Test of teleport method, of class JsimRobo.
-     */
     @Test
-    public void testTeleport() {
-        System.out.println("teleport");
-        Float kohde = null;
-        JsimRobo instance = new JsimRobo();
-        Float expResult = null;
-        Float result = instance.teleport(kohde);
+    public void testEtenePisteeseen6() {
+        System.out.println("etenePisteeseen");
+        Point2D.Float kohde = new Point2D.Float(-63.764F,47.007F);
+        JsimRobo instance = new JsimRobo(0,0,0);
+        Point2D.Float expResult = new Point2D.Float(-63.764F,47.007F);
+        Float result = instance.etenePisteeseen(kohde);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
+ 
     /**
      * Test of käänny method, of class JsimRobo.
      */
     @Test
     public void testKäänny() {
         System.out.println("k\u00e4\u00e4nny");
-        float aste = 0.0F;
-        JsimRobo instance = new JsimRobo();
-        float expResult = 0.0F;
+        float aste = -40.0F;
+        JsimRobo instance = new JsimRobo(0,0,0);
+        float expResult = 320.0F;
         float result = instance.käänny(aste);
         assertEquals(expResult, result, 0.0);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -167,20 +162,18 @@ public class JsimRoboTest {
         assertEquals(expResult, result, 0.0);
     }
 
-
     /**
      * Test of osoitaSuuntaan method, of class JsimRobo.
      */
     @Test
     public void testOsoitaSuuntaan() {
         System.out.println("osoitaSuuntaan");
-        float suunta = 0.0F;
+        float suunta = 45.0F;
         JsimRobo instance = new JsimRobo();
-        float expResult = 0.0F;
+        float expResult = 45.0F;
         float result = instance.osoitaSuuntaan(suunta);
         assertEquals(expResult, result, 0.0);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -195,7 +188,7 @@ public class JsimRoboTest {
         JsimData result = instance.valitseUusiPiste(JSKkartta);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        fail("ValitseUusiPiste ei ole valmis");
     }
 
     /**
