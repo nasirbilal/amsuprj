@@ -1,6 +1,5 @@
 
 package slam;
-import java.awt.geom.Point2D.Float;
 import java.awt.geom.Point2D;
 import java.awt.geom.Line2D;
 import java.util.Scanner;
@@ -60,10 +59,6 @@ public class JsimTesti {
             /*
              * toi funktio on laskimella testattu ja se antaa pisteen arvoiksi
              * -400,58 ja 200,77 vaikka pitäs tulla 0 ja 0
-             * 
-             * OLLIIIII TUU PYYHKIMÄÄN!
-             * PROBLEM SOLVED!
-             * olli ei tullu pyyhkimään niin vetäsin hihaan
              */
 
             System.out.println("Robon paikka liikkumisen JÄLKEEN: (" + jantunen.getPaikka().x + "," + jantunen.getPaikka().y + ")");
@@ -125,8 +120,6 @@ public class JsimTesti {
             
              * Outoa dataa taas.
              */
-            
-            
             
         } else if (valinta == 3){ // elikkä leikkaako() toimii niin kuin pitääkin
             /* suorakulmaleikkaus toimii
@@ -360,12 +353,7 @@ public class JsimTesti {
             for (int i = 0; i < 37; i++){
                 System.out.println("datakulma=" + i + "("+(int)(jantunen.getSuunta()+((i))*5-90)+")" +"||lähin seinä=" + taulu3[i]);
             }
-            
-            
-            
-            
-            
-            
+       
         } else if (valinta == 7){
             
             System.out.println("");
@@ -391,9 +379,6 @@ public class JsimTesti {
                     jantunen.getPaikka().x + "," + jantunen.getPaikka().y + 
                     "), " + jantunen.getSuunta());
 
-            
-            
-            
         } else if (valinta == 8){
             
             System.out.println("Testi");
@@ -451,11 +436,6 @@ public class JsimTesti {
             for (int i = 0; i < 37; i++){
                 System.out.println("dk=" + i + ";ak="+(int)(jantunen.getSuunta()+((i))*5-90) +";ls=" + taulu1[i]);
             }
-            
         }
-        
-        
-        
-    }
-    
+    }  
 }

@@ -62,7 +62,6 @@ public class JsimRoboTest {
         Point2D.Float expResult = new Point2D.Float(500.0f,0.0f);
         Float result = instance.etenePisteeseen(kohde);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
     }
     @Test
     public void testEtenePisteeseen2() {
@@ -72,7 +71,6 @@ public class JsimRoboTest {
         Point2D.Float expResult = new Point2D.Float(10f,-10);
         Float result = instance.etenePisteeseen(kohde);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
     }
 
     /**
