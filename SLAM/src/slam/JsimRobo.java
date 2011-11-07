@@ -177,50 +177,70 @@ public class JsimRobo {
     
     public JsimData valitseUusiPiste(JsimKartta JSKkartta){
         
+        
+        
+        
         mittaus = mittaa(JSKkartta);            //mittaus on osa näitä navigointihommia
         float mtaulu[] = mittaus.getData();     //tiedot edessäolevasta kamasta
         
-        int alkusuunta = -1;
+        
         int tyhjyyslaskuri = 0;
-        int tyhjyysmuisti = -1;
-        int alkumuisti = -1;
+        int tyhjyysalku = 0;
+        int tyhjyysmuisti = 0;
+        int tyhjyysalkumuisti = 0;
         
         for (int i = 0; i < mtaulu.length; i++){
-            
-            if (mtaulu[i] != 9999){
-                alkusuunta = i;
+            if (mtaulu[i] == 9999){                 //jos ei nähdä mitään
+                if (i != 0){                        // ja
+                    if (mtaulu[i-1] != 9999){       //  jos edellinen näköviiva näki jotain
+                        tyhjyysalku = i;            //      niin tämän tyhjyyden alkukohta on i
+                    }                               
+                } else {                            
+                    tyhjyysalku = 0;                  
+                }                                   
+                tyhjyyslaskuri++;                   
+            } else {                                
+                if (tyhjyyslaskuri > tyhjyysmuisti){
+                    tyhjyysmuisti = tyhjyyslaskuri; 
+                    tyhjyysalkumuisti = tyhjyysalku;
+                }
                 tyhjyyslaskuri = 0;
-                
+            }
+        }
+        
+        /*
+         * Jos ei mitään haivaittu missään
+         *  niin edetään 65cm
+         */
+        boolean edettytäyteen=false; //Jos (false)-> edetään täyteen näkymään, =true; jos (true) -> käännytään 180, =false.
+        if (tyhjyysmuisti == mtaulu.length){ // ei mitään havaittu missään
+            etene(650);
+            return mittaus;
+        } else if (tyhjyysmuisti == 0){ //kaikki havaitaittu kaikkialla
+            if (edettytäyteen){
+                edettytäyteen = false;
+                käänny(180);
+                return mittaus;
             } else {
-                tyhjyyslaskuri++;
+                etene(mtaulu[19]/2);    // edetään suoraan eteenpäin puolet eteenpäin mitatusta pituudesta
+                edettytäyteen = true;
+                return mittaus;
             }
-            
-            if (tyhjyysmuisti < tyhjyyslaskuri){
-                tyhjyysmuisti = tyhjyyslaskuri +1;
-                alkumuisti = alkusuunta;
-            }
-            
+        } else {
+            käänny(((tyhjyysalkumuisti+tyhjyysmuisti)/2)*5-90);
+            etene( (mtaulu[tyhjyysalkumuisti]+mtaulu[tyhjyysalkumuisti+tyhjyysmuisti])/2 ); //yksinkertaistettu. tekosyy: tää kuluttaa vähemmän rosessoria
+            return mittaus;
         }
-        
-        System.out.println("Alkumuisti: " + alkumuisti + " Tyhjyysmuisti: " + tyhjyysmuisti); //debug
-        
-        if (alkumuisti != -1){
-            if (alkumuisti + tyhjyysmuisti < mittausMaara){
-                
-                float taulunAlkupiste = mtaulu[alkumuisti];
-                float taulunLoppupiste = mtaulu[alkumuisti+tyhjyysmuisti+1];
-                System.out.println("tap"+taulunAlkupiste);
-                System.out.println("tlp"+taulunLoppupiste);
-                System.out.println("!!!navSuurinVäli("+taulunAlkupiste+","+alkumuisti+","+taulunLoppupiste+","+tyhjyysmuisti+")");
-                navSuurinVäli(taulunAlkupiste, alkumuisti, taulunLoppupiste, alkumuisti+tyhjyysmuisti);
-            }
-        }
-   
-        return mittaus;
+
     }
     
+    
+    /*
+     * tämä on melkein obsolete muttei poisteta vielä, jos vaikka tarvii tulevaisuudessa
+     */
     private void navSuurinVäli(float tap, int as, float tlp, int ls){
 
+ 
         float x1 = (float)(paikka.x + tap*Math.sin(((suunta+(as*5-90))*(Math.PI/180))));
         float y1 = (float)(paikka.y + tap*Math.cos(((suunta+(as*5-90))*(Math.PI/180))));
 
