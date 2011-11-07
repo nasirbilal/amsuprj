@@ -38,13 +38,13 @@ public class KarttaNakymaTest {
     }
 
     /**
-     * Test of paintComponent method, of class KarttaNakyma.
+     * Test of paintComponent method, of class UIKarttaNakyma.
      */
     @Test
     public void testPaintComponent() {
         System.out.println("paintComponent");
         Graphics g = null;
-        KarttaNakyma instance = null;
+        UIKarttaNakyma instance = null;
         instance.paintComponent(g);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");

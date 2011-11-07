@@ -23,9 +23,9 @@ public class UI extends JFrame {
     private JPanel nappulaPaneeli;
     private JPanel roboPaneeli;
     private Komentaja komentaja;
-    private RoboNakyma robo1;
-    private RoboNakyma robo2;
-    private KarttaNakyma karttaNakyma;
+    private UIRoboNakyma robo1;
+    private UIRoboNakyma robo2;
+    private UIKarttaNakyma karttaNakyma;
     private JTextArea debugTekstit;
     private Border reunus;
     private JScrollPane scrollPane;
@@ -64,11 +64,11 @@ public class UI extends JFrame {
         nappulaPaneeli.setLayout(new GridBagLayout());
         gbc = new GridBagConstraints();
         //TODO: poista testit kun nakyman saato on valmis
-        robo1 = new RoboNakyma();
-        robo2 = new RoboNakyma();
+        robo1 = new UIRoboNakyma();
+        robo2 = new UIRoboNakyma();
         komentaja.asetaRoboNakyma1(robo1);
         komentaja.asetaRoboNakyma2(robo2);
-        karttaNakyma = new KarttaNakyma();
+        karttaNakyma = new UIKarttaNakyma();
         komentaja.asetaKarttaNakyma(karttaNakyma);
         reunus = BorderFactory.createEtchedBorder();
         debugTekstit = new JTextArea(8, 50);

@@ -9,9 +9,9 @@ import java.awt.geom.Point2D;
  */
 public class Komentaja {
     private final double SKAALA  = (double)200/80;
-    private RoboNakyma roboNakyma1;
-    private RoboNakyma roboNakyma2;
-    private KarttaNakyma karttaNakyma;
+    private UIRoboNakyma roboNakyma1;
+    private UIRoboNakyma roboNakyma2;
+    private UIKarttaNakyma karttaNakyma;
 
     /**
      * 
@@ -52,7 +52,7 @@ public class Komentaja {
      * 
      * @param rb
      */
-    public void asetaRoboNakyma1(RoboNakyma rb) {
+    public void asetaRoboNakyma1(UIRoboNakyma rb) {
         this.roboNakyma1 = rb;
     }
 
@@ -60,7 +60,7 @@ public class Komentaja {
      * 
      * @param rb
      */
-    public void asetaRoboNakyma2(RoboNakyma rb) {
+    public void asetaRoboNakyma2(UIRoboNakyma rb) {
         this.roboNakyma2 = rb;
     }
 
@@ -68,7 +68,7 @@ public class Komentaja {
      * 
      * @param karttaNakyma
      */
-    public void asetaKarttaNakyma(KarttaNakyma karttaNakyma) {
+    public void asetaKarttaNakyma(UIKarttaNakyma karttaNakyma) {
         this.karttaNakyma = karttaNakyma;
     }
 

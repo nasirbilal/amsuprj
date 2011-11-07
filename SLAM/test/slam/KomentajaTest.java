@@ -60,7 +60,7 @@ public class KomentajaTest {
     @Test
     public void testAsetaRoboNakyma1() {
         System.out.println("asetaRoboNakyma1");
-        RoboNakyma rb = null;
+        UIRoboNakyma rb = null;
         Komentaja instance = new Komentaja();
         instance.asetaRoboNakyma1(rb);
         // TODO review the generated test code and remove the default call to fail.
@@ -73,7 +73,7 @@ public class KomentajaTest {
     @Test
     public void testAsetaRoboNakyma2() {
         System.out.println("asetaRoboNakyma2");
-        RoboNakyma rb = null;
+        UIRoboNakyma rb = null;
         Komentaja instance = new Komentaja();
         instance.asetaRoboNakyma2(rb);
         // TODO review the generated test code and remove the default call to fail.
@@ -86,7 +86,7 @@ public class KomentajaTest {
     @Test
     public void testAsetaKarttaNakyma() {
         System.out.println("asetaKarttaNakyma");
-        KarttaNakyma karttaNakyma = null;
+        UIKarttaNakyma karttaNakyma = null;
         Komentaja instance = new Komentaja();
         instance.asetaKarttaNakyma(karttaNakyma);
         // TODO review the generated test code and remove the default call to fail.

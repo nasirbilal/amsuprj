@@ -1,5 +1,5 @@
 /**
- * KarttaNakyma -luokka on tarkoitettu koostetun kartan piirtämistä varten
+ * UIKarttaNakyma -luokka on tarkoitettu koostetun kartan piirtämistä varten
  */
 package slam;
 
@@ -11,7 +11,7 @@ import javax.swing.*;
  *
  * @author Olli Koskinen
  */
-public class KarttaNakyma extends JPanel {
+public class UIKarttaNakyma extends JPanel {
 
     private Random r = new Random();
 
