@@ -86,4 +86,22 @@ public class Komentaja {
         Komentaja komentaja = new Komentaja();
         UI ui = new UI(komentaja);
     }
+
+    void yhdista() {
+        // luoda kartan eli kokoajan
+        // luoda jsimrobot
+        // arpoa robolle sijainti
+        // jokaiselle robotille luodaan säie, joka kuuntelee robotilta tulevia
+        // mittaustuloksia ja kun uudet tulokset tulevat, annetaan ne
+        // ensin roboNakymalle, joka piirtää viivat robotin mittaamien pisteiden
+        // välille: roboNakyma1.piirraEtaisyydet(p). Sen jälkeen mittaustulokset annetaan
+        // Kokoajalle, joka sylkee uuden kartan, joka sitten piirretään ruudulle.
+        // Lopuksi säie kutsuu paivitaNakymat().
+
+        // EXTRAAAAA JA BOOONUSTA:
+        // robotti ei tiedä, missä se on. Tietokone laskee robotin todellisen sijainnin
+        // mittausetäisyyksien perusteella. Säie luettuaan robotin mittaustulokset
+        // laskee robotin sijainnin, uuden mittauspisteen ja käskee robotin mennä
+        // uuteen pisteeseen mittaamaan. Sitten säie alkaa alusta.
+    }
 }
