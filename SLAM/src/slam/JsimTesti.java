@@ -75,7 +75,7 @@ public class JsimTesti {
             System.out.println("robotin suunta on: " + jantunen.getSuunta());
             
             System.out.println("mennäänpä 500mm eteenpäin -> ");
-            jantunen.teleport(new Point2D.Float(0,500));
+            jantunen.setPaikka(0,500);
             paikka = jantunen.getPaikka();
             System.out.println("robotti on pisteessä: ("+ paikka.x + "," + paikka.y + ")");
             System.out.println("robotin suunta on: " + jantunen.getSuunta());
@@ -94,7 +94,7 @@ public class JsimTesti {
             
             System.out.println("mennäänpä 500mm eteenpäin -> ");
             //jantunen.etene(500); //ei toimi etene() täälläkään
-            jantunen.teleport(new Point2D.Float(0,0));
+            jantunen.setPaikka(0,0);
             paikka = jantunen.getPaikka();
             System.out.println("robotti on pisteessä: ("+ paikka.x + "," + paikka.y + ")");
             System.out.println("robotin suunta on: " + jantunen.getSuunta());

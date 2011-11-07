@@ -10,97 +10,36 @@ import java.awt.geom.Line2D;
  * @author juho vainio & arska
  */
 
-/*
- * Poistan noita vanhoja ku näitä on testailtu tarpeeks
- * 
- * Jossain on häikkää, mää en tiä missä.
- * testiohjelma 8:n pitäis tuottaa 2.
- * mittauskierroksella tilanne jossa ainakin
- * dk0 ja dk36 näyttää jotain muuta kun 9999
- * 
- * liekö onkelma kääntymisessä... ainakin toi
- * arkustangentti on aika ihme vääntöä
- * 
- * OLLILLE with love: <3<3<3<3<3<3<3 XOXO
- * puspus, nähdään loman jälkeen
- * 
- JsimRobo -luokka
-	Konstruktorit
-		JsimRobo() //alottaa paikaststa(0,0), suunta random
-		JsimRobo(float suunta, Point2D.Float paikka)
-		public JsimRobo(float suunta, int x, int y) //KÄYTÄ TÄTÄ (0,0,0)
-
-	Liikkumismetodit
-		Point2D.Float etene(float matka)
-		Point2D.Float etenePisteeseen(Point2D.Float kohde)
-		Point2D.Float teleport(Point2D.Float kohde)
-
-		float käänny(float aste)
-		float käännyKohti(Point2D.Float kohde, float bonusaste)
-		float osoitaSuuntaan(float suunta)
-
-	Mittausmetodit
-		JsimData mittaa(JsimKartta JSKkartta)
-
-
-JsimKartta -luokka //luo virtuaalikartan
-	konstruktori
-		JsimKartta()
-
-	getteri
-		Line2D.Float[] getKartta()
-
-JsimData
-	konstruktori
-		JsimData(float suunta, float[] data)
-
-	getterit
-		float getRobosuunta()
-		float[] getData()
-
-JsimRobonäkymä // tätä luodaan JsimRobon mittaa-metodissa
-	konstruktori
-		JsimRoboNäkymä(Point2D.Float paikka, float suunta, int mittausmäärä, int range)
-
-	getterit
-		Line2D.Float getNäköviiva(int i)
-		Line2D.Float[] getNäkötaulu()
-
-	metodi
-		Point2D.Float leikkaako(Line2D.Float näköviiva, Line2D.Float karttaviiva) //LEJOSista pöllitty
- * 
- */
-
 public class JsimRobo {
     
-    private float suunta;                   /// Robotin suunta // range: 0-359 // 360 = 0 // 0 ON POHJOINEN (tai saatta olla etelä)
+    private float suunta;                   /// Robotin suunta, range: 0-359, jossa 0 ON POHJOINEN
     private Point2D.Float paikka;           /// Robotin paikka Point-oliona MILLIMETREISSÄ
     private Point2D.Float kohde;
-    
-    private final int infraKantama = 800;      /// Robotin infrapunasensorin kantama MILLIMETREISSÄ
-    private final int mittausMaara = 37;    /// Robotin mittaukset per 180 astetta // 37 = 5 asteen välein
-    
+
+    private final int infraKantama = 800;   /// Robotin infrapunasensorin kantama MILLIMETREISSÄ
+    private final int mittausMaara = 1+180/5; /// Robotti mittaa 5 asteen välein.
+
     JsimData mittaus;                       /// luodaan mittaa()-metodilla, käytetään seuraavan mittauspaikan valitsemiseksi
     JsimRoboNakyma nakyma;                  /// luodaan mittaa()-metodilla, debugausta
-    
-    
+
     /*
      * Konstruktorit
      */
-    
-    public JsimRobo(){                      /// Peruskonstruktori
+
+    public JsimRobo(){
         Random r = new Random();    
-        suunta = r.nextInt(360);            /// Sattumanvarainen alkusuunta
-        paikka = new Point2D.Float(0,0);    /// Alkukoordinaatti 0,0
+        suunta = 0;
+        paikka = new Point2D.Float(0,0);
     }
+
     public JsimRobo(float suunta, Point2D.Float paikka){
         this.suunta = suunta;
         this.paikka = paikka;
     }
+
     public JsimRobo(float suunta, int x, int y){
         this.suunta = suunta;
-        paikka = new Point2D.Float(x,y);
-        
+        paikka = new Point2D.Float(x,y);        
     }
     
     /*
@@ -110,6 +49,7 @@ public class JsimRobo {
     public float getSuunta(){
         return suunta;
     }
+
     public void setSuunta(float suunta){
         this.suunta = suunta;
     }
@@ -117,71 +57,44 @@ public class JsimRobo {
     public Point2D.Float getPaikka(){
         return paikka;
     }
+    
     public void setPaikka(int x, int y){
         paikka = new Point2D.Float(x,y);
     }
-    
-    
     
     /*
      * Liikuntametodit:
      */
     
     /**
+     * Lasketaan uudet x- ja y-koordinaatit vanhojen koordinaattien
+     * ja suunnan perusteella. esim.
+     * (uusi X) = (vanha X) + (kuljettava matka)*sin(nykyinen suunta)
+     * 
      * @param matka on MILLIMETREISSÄ.
      * @return uuden paikan Point2D.Float-oliona.
      */
     public Point2D.Float etene(float matka){
-        
-        /*
-         * Lasketaan uudet x- ja y-koordinaatit vanhojen koordinaattien
-         * ja suunnan perusteella.
-         * esim.
-         * (uusi X) = (vanha X) + (kuljettava matka)*sin(nykyinen suunta)
-         */
-        
         float x = (float)(paikka.x + matka*Math.sin((suunta*(Math.PI/180)))); //Mathin funktiot ottaa radiaaneja
         float y = (float)(paikka.y + matka*Math.cos((suunta*(Math.PI/180))));
         
-        
-        /*
-        if (x < 0.00001){ //hoho
-            x = 0;
-        }
-        if (y < 0.00001){
-            y = 0;
-        }
-         */
         paikka = new Point2D.Float(x,y);
         return paikka;
     }
 
     /** 
+     * Käytetään käännyKohti-metodia oikean suunnan asettamiseksi, jonka
+     * jälkeen liikutaan "tangentin" pituus pythagoraan lauseeseen perustuen:
+     * 
+     * sqrt((x1+x2)²+(y1+y2)²)
+     *
      * @param on kohteena oleva paikka.
      * @return uuden paikan Point2D.Float-oliona.
      * @note Robotti kääntyy pistettä kohti ja "ajaa" siihen. Ei mitään pathfindingiä.
      */
     public Point2D.Float etenePisteeseen(Point2D.Float kohde){
-        
-        /*
-         * Käytetään käännyKohti-metodia oikean suunnan asettamiseksi, jonka
-         * jälkeen liikutaan "tangentin" pituus pythagoraan lauseeseen perustuen:
-         * 
-         * sqrt((x1+x2)²+(y1+y2)²)
-         */
-        
-        käännyKohti(kohde,0);
-        //return etene((float)Math.sqrt(Math.pow(paikka.x+kohde.x,2)+(Math.pow(paikka.y+kohde.y,2))));
+        käännyKohti(kohde, 0);
         return etene((float)Math.sqrt(Math.pow(kohde.x-paikka.x,2)+(Math.pow(kohde.y-paikka.y,2))));
-    }
-    
-    public Point2D.Float teleport(Point2D.Float kohde){
-        /*
-         * Mä en hiffaa enää mitään eli nyt kusetetaan
-         * (käytännössä setPaikka)
-         */
-        paikka = kohde;
-        return paikka;
     }
     
     /** 
@@ -196,12 +109,11 @@ public class JsimRobo {
          */
         
         suunta = suunta + aste;
-            if (suunta > 359){
-                suunta = suunta - 360;
-            } else if (suunta < 0){
-                suunta = suunta + 360;
-            }
-        System.out.println("jantusen suunta:" + suunta);
+        if (suunta > 359){
+            suunta = suunta - 360;
+        } else if (suunta < 0){
+            suunta = suunta + 360;
+        }
         return suunta;
     }
     
@@ -217,8 +129,6 @@ public class JsimRobo {
          * alpha = tan⁻¹((x1+x2)/(y1+y2))
          */
 
-            //float aste = (float)((Math.atan((paikka.x+kohde.x)/(paikka.y+kohde.y))));
-        
         if (kohde.x == paikka.x){   //tähdätään y-akselin suuntaan
             if (kohde.y > paikka.y){
                 return käänny(-suunta);
@@ -257,7 +167,6 @@ public class JsimRobo {
                 }
             }
             
-        
           /* // float aste = (float)((Math.atan((kohde.x-paikka.x)/(kohde.y-paikka.y))));
             //aste = (float)(aste*(180/Math.PI)); //käännetään radiaanit asteiksi
             System.out.println("aste:" + aste); //debug
@@ -265,22 +174,6 @@ public class JsimRobo {
             */
         }
     }
-    
-    public float osoitaSuuntaan(float suunta){
-        /*
-         * teleportille kusetuspartneri
-         * (käytännössä setSuunta)
-         */
-        this.suunta = suunta;
-        return suunta;
-    }
-    
-    
-    /*
-     * Seuraavan pisteen valinta
-     */
-    
-    //TODO
     
     public JsimData valitseUusiPiste(JsimKartta JSKkartta){
         

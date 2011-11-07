@@ -171,7 +171,8 @@ public class JsimRoboTest {
         float suunta = 45.0F;
         JsimRobo instance = new JsimRobo();
         float expResult = 45.0F;
-        float result = instance.osoitaSuuntaan(suunta);
+        instance.setSuunta(suunta);
+        float result = instance.getSuunta();
         assertEquals(expResult, result, 0.0);
         // TODO review the generated test code and remove the default call to fail.
     }
