@@ -2,6 +2,7 @@ package slam;
 
 import java.awt.Point;
 import java.awt.geom.Point2D;
+import javax.swing.UIManager;
 
 /**
  *
@@ -76,5 +77,13 @@ public class Komentaja {
         roboNakyma1.repaint();
         roboNakyma2.repaint();
         karttaNakyma.repaint();
+    }
+    
+    public static void main(String[] args) {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch(Exception e) {}
+        Komentaja komentaja = new Komentaja();
+        UI ui = new UI(komentaja);
     }
 }
