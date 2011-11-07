@@ -1,6 +1,3 @@
-/**
- * Command
- */
 package slam;
 
 import java.awt.Point;
