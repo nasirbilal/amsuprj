@@ -70,7 +70,6 @@ public class JsimRoboNakyma {
         
         float x, y, a1, a2, b1, b2;
     
-    
         if (nakoviiva.y2 == nakoviiva.y1 && karttaviiva.y2 == karttaviiva.y1) return null; // horizontal parallel
         if (nakoviiva.x2 == nakoviiva.x1 && karttaviiva.x2 == karttaviiva.x1) return null; // vertical parallel
 
