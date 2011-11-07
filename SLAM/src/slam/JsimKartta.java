@@ -1,6 +1,5 @@
 
 package slam;
-import java.awt.geom.Point2D.Float;
 import java.awt.geom.Point2D;
 import java.awt.geom.Line2D;
 

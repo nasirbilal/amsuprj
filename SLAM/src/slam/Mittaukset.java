@@ -14,21 +14,5 @@ public class Mittaukset {
     
     public float[] getTaulu(){
         return mittaukset;
-    }
-    
-    /*
-    public float valitseUusiSuunta(){
-        int i = 0;
-        int tyhjyys = 0;
-        
-        while (i < mittaukset.length){
-            
-            if (mittaukset[i])
-            
-            i++;
-        }
-        */
-  //  }
-
-    
+    }    
 }
