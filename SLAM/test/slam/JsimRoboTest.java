@@ -72,6 +72,36 @@ public class JsimRoboTest {
         Float result = instance.etenePisteeseen(kohde);
         assertEquals(expResult, result);
     }
+    @Test
+    public void testEtenePisteeseen3() {
+        System.out.println("etenePisteeseen");
+        Point2D.Float kohde = new Point2D.Float(10f,10);
+        JsimRobo instance = new JsimRobo(0,0,0);
+        Point2D.Float expResult = new Point2D.Float(10f,10);
+        Float result = instance.etenePisteeseen(kohde);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+    }
+    @Test
+    public void testEtenePisteeseen4() {
+        System.out.println("etenePisteeseen");
+        Point2D.Float kohde = new Point2D.Float(-10,-10);
+        JsimRobo instance = new JsimRobo(0,0,0);
+        Point2D.Float expResult = new Point2D.Float(-10,-10);
+        Float result = instance.etenePisteeseen(kohde);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+    }
+    @Test
+    public void testEtenePisteeseen5() {
+        System.out.println("etenePisteeseen");
+        Point2D.Float kohde = new Point2D.Float(-10,10);
+        JsimRobo instance = new JsimRobo(0,0,0);
+        Point2D.Float expResult = new Point2D.Float(-10,10);
+        Float result = instance.etenePisteeseen(kohde);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+    }
 
     /**
      * Test of teleport method, of class JsimRobo.
@@ -123,6 +153,16 @@ public class JsimRoboTest {
         float bonusaste = 0.0F;
         JsimRobo instance = new JsimRobo(0,0,0);
         float expResult = 45.0F;
+        float result = instance.käännyKohti(kohde, bonusaste);
+        assertEquals(expResult, result, 0.0);
+    }
+    @Test
+    public void testKäännyKohti3() {
+        System.out.println("k\u00e4\u00e4nnyKohti");
+        Point2D.Float kohde = new Point2D.Float(-10,10);
+        float bonusaste = 0.0F;
+        JsimRobo instance = new JsimRobo(0,0,0);
+        float expResult = 315.0F;
         float result = instance.käännyKohti(kohde, bonusaste);
         assertEquals(expResult, result, 0.0);
     }

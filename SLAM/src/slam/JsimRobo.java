@@ -218,10 +218,52 @@ public class JsimRobo {
          */
 
             //float aste = (float)((Math.atan((paikka.x+kohde.x)/(paikka.y+kohde.y))));
-            float aste = (float)((Math.atan((kohde.x-paikka.x)/(kohde.y-paikka.y))));
-            aste = (float)(aste*(180/Math.PI)); //käännetään radiaanit asteiksi
+        
+        if (kohde.x == paikka.x){   //tähdätään y-akselin suuntaan
+            if (kohde.y > paikka.y){
+                return käänny(-suunta);
+            } else {
+                return käänny(180-suunta);
+            }
+        }else if (kohde.y == paikka.y){ //tähdätään x-akselin suuntaan
+            if (kohde.x > paikka.x){
+                return käänny(90-suunta);
+            } else {
+                return käänny(270-suunta);
+            }
+        } else {
+            
+            float aste;
+            
+            if (kohde.x > paikka.x){
+                if (kohde.y > paikka.y){
+                    aste = (float)((Math.atan((kohde.x-paikka.x)/(kohde.y-paikka.y))));
+                    aste = (float)(aste*(180/Math.PI)); //käännetään radiaanit asteiksi
+                    return käänny(-suunta+aste);
+                } else { // if (kohde.y < paikka.y){
+                    aste = (float)((Math.atan((kohde.x-paikka.x)/(kohde.y-paikka.y))));
+                    aste = (float)(aste*(180/Math.PI)); //käännetään radiaanit asteiksi
+                    return käänny(-suunta+180+aste);
+                }
+            } else { // if (kohde.x < paikka.x){
+                if (kohde.y > paikka.y){
+                    aste = (float)((Math.atan((kohde.x-paikka.x)/(kohde.y-paikka.y))));
+                    aste = (float)(aste*(180/Math.PI)); //käännetään radiaanit asteiksi
+                    return käänny(-suunta+aste);
+                } else { // if (kohde.y < paikka.y){
+                    aste = (float)((Math.atan((kohde.x-paikka.x)/(kohde.y-paikka.y))));
+                    aste = (float)(aste*(180/Math.PI)); //käännetään radiaanit asteiksi
+                    return käänny(-suunta+180+aste);
+                }
+            }
+            
+        
+          /* // float aste = (float)((Math.atan((kohde.x-paikka.x)/(kohde.y-paikka.y))));
+            //aste = (float)(aste*(180/Math.PI)); //käännetään radiaanit asteiksi
             System.out.println("aste:" + aste); //debug
             return käänny(aste+bonusaste);
+            */
+        }
     }
     
     public float osoitaSuuntaan(float suunta){
