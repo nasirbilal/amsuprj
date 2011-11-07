@@ -21,7 +21,7 @@ public class JsimRoboNakyma {
      * @param  on mittausten määrä (default 37 eli 5 asteen välein)
      * @param  on IR-sensorin kantama (default 800mm)
      */
-    public JsimRoboNakyma(Point2D.Float paikka, float katsesuunta, int mittausmäärä, int infraEtaisyys){
+    public JsimRoboNakyma(Point2D.Float paikka, float katsesuunta, int mittausmaara, int infraEtaisyys){
         
         /*
          * Tässä luodaan robotin näkyöviivoista robon suuntaan ja paikkaan
@@ -31,8 +31,8 @@ public class JsimRoboNakyma {
          * 
          */
         
-        katsetaulu = new Line2D.Float[mittausmäärä]; //näköviivojen taulukko
-        float katsekulma = 180/(mittausmäärä-1);     //kuinka suuri kulma jää katseviivojen väliin
+        katsetaulu = new Line2D.Float[mittausmaara]; //näköviivojen taulukko
+        float katsekulma = 180/(mittausmaara-1);     //kuinka suuri kulma jää katseviivojen väliin
         katsesuunta = katsesuunta - 90;              //katse vasemmalle
         
         for (int i = 0; i < katsetaulu.length; i++){
