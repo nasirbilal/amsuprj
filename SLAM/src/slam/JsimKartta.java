@@ -12,7 +12,7 @@ public class JsimKartta {
     private Line2D.Float kartta[];
     
     public JsimKartta(){
-        kartta = new Line2D.Float[20];
+        kartta = new Line2D.Float[22];
         asetaKartta();
     }
     
@@ -45,6 +45,11 @@ public class JsimKartta {
         kartta[18] = new Line2D.Float(new Point2D.Float(-350,350), new Point2D.Float(-350,300));
         kartta[19] = new Line2D.Float(new Point2D.Float(-350,300), new Point2D.Float(-300,300));
         
+        kartta[20] = new Line2D.Float(new Point2D.Float(-500,0), new Point2D.Float(0,500)); //Näillä testataan mitä tapahtuu kun
+        kartta[21] = new Line2D.Float(new Point2D.Float(0,500), new Point2D.Float(500,0));  //kaikki roboviivat näkee jotain
+        
+        
+        //kartta[0] = new Line2D.Float(new Point2D.Float(1000,1000), new Point2D.Float(1001,1001));
         
         
         // kartta[16] = new Line2D.Float(new Point2D.Float(-50,500), new Point2D.Float(50,500));

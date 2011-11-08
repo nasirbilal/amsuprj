@@ -171,6 +171,13 @@ public class JsimRobo {
         }
     }
     
+    boolean edettytäyteen=false; //(navigointiin) Jos (false)-> edetään täyteen näkymään, =true; jos (true) -> käännytään 180, =false.
+    /*Tätä booleania käytetään valitseUusiPiste-metodissa.
+     * Tää saattaa jotain pienimuotosia ongelmia kehittää
+     * kun tää on tässä, mutta ne todennäkösesti korjautuu
+     * ittestään.
+     */
+    
     public JsimData valitseUusiPiste(JsimKartta JSKkartta){
         
         
@@ -184,6 +191,8 @@ public class JsimRobo {
         int tyhjyysalku = 0;
         int tyhjyysmuisti = 0;
         int tyhjyysalkumuisti = 0;
+        
+        
         
         for (int i = 0; i < mtaulu.length; i++){
             if (mtaulu[i] == 9999){                 //jos ei nähdä mitään
@@ -208,14 +217,14 @@ public class JsimRobo {
          * Jos ei mitään haivaittu missään
          *  niin edetään 65cm
          */
-        boolean edettytäyteen=false; //Jos (false)-> edetään täyteen näkymään, =true; jos (true) -> käännytään 180, =false.
-        if (tyhjyysmuisti == mtaulu.length){ // ei mitään havaittu missään
+        
+        if (tyhjyyslaskuri == mtaulu.length){ // ei mitään havaittu missään
             etene(650);
             System.out.println("ei mitään");
             return mittaus;
         } else if (tyhjyysmuisti == 0){ //kaikki havaitaittu kaikkialla
             System.out.print("kaikki kaikkialla, ");
-            if (edettytäyteen){
+            if (edettytäyteen){     //BOOLEAN EDETTYTÄYTEEN on siirretty tämän metodin ulkopuolelle
                 System.out.println("ETtrue");
                 edettytäyteen = false;
                 käänny(180);
@@ -229,23 +238,36 @@ public class JsimRobo {
         } else {
             System.out.println("normi");
             
-            System.out.println("käänny("+((tyhjyysalkumuisti*5)-90)+((tyhjyysmuisti/2)*5)+")"); //debug
+            System.out.println("käänny("+(((tyhjyysalkumuisti*5)-90)+((tyhjyysmuisti/2)*5))+")"); //debug
             
             käänny( ((tyhjyysalkumuisti*5)-90)+((tyhjyysmuisti/2)*5) ); //witness the true power of mathematics!!!
             
             System.out.println("tam:"+tyhjyysalkumuisti);       //lisää debugia
-            System.out.println("mtaulu[tam-1]=" + mtaulu[tyhjyysalkumuisti-1]);
+            if ((tyhjyysalkumuisti-1) >= 0){
+                System.out.println("mtaulu[tam-1]=" + mtaulu[tyhjyysalkumuisti-1]);
+            } else {
+                System.out.println("tam-1=" + (tyhjyysalkumuisti-1));
+            }
             System.out.println("tm:"+tyhjyysmuisti);
             System.out.println("tam+tm:"+(tyhjyysalkumuisti+tyhjyysmuisti));
             System.out.println("mtaulu[tam+tm]"+mtaulu[tyhjyysalkumuisti+tyhjyysmuisti]);
-            System.out.println("etene("+ ((mtaulu[tyhjyysalkumuisti-1]+mtaulu[tyhjyysalkumuisti+tyhjyysmuisti])/2) + ");"); //debug out
+            if ((tyhjyysalkumuisti-1) >= 0){
+                System.out.println("etene("+ ((mtaulu[tyhjyysalkumuisti-1]+mtaulu[tyhjyysalkumuisti+tyhjyysmuisti])/2) + ");"); //debug out
+            } else {
+                System.out.println("etene("+ ((mtaulu[tyhjyysalkumuisti+tyhjyysmuisti])/2 ) + ")");
+            }
             
-            etene( (mtaulu[tyhjyysalkumuisti-1]+mtaulu[tyhjyysalkumuisti+tyhjyysmuisti])/2 );
+            if ((tyhjyysalkumuisti-1) >= 0){
+                etene( (mtaulu[tyhjyysalkumuisti-1]+mtaulu[tyhjyysalkumuisti+tyhjyysmuisti])/2 );
+            } else {
+                etene( (0+mtaulu[tyhjyysalkumuisti+tyhjyysmuisti])/2 );
+            }
             //yksinkertaistettu. tekosyy: tää kuluttaa vähemmän rosessoria
             //ja näin myös vältytään toivottavasti seiniin törmäilyltä paremmin
             return mittaus;
         }
     }
+    
     /*
      * tämä on melkein obsolete muttei poisteta vielä, jos vaikka tarvii tulevaisuudessa
      */
@@ -336,7 +358,5 @@ public class JsimRobo {
         
         return mittaus;
     }
-    
-    
-    
+
 }
