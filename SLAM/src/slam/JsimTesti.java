@@ -25,6 +25,7 @@ public class JsimTesti {
         System.out.println("7. etenePisteeseen()-testi");
         System.out.println("8. kuutostestit sekottaa mun pään, pakko alottaa uus");
         System.out.println("9. tezitezi");
+        System.out.println("10. nav-testi");
         int valinta = s.nextInt();
         
         if (valinta == 1){
@@ -436,6 +437,27 @@ public class JsimTesti {
             for (int i = 0; i < 37; i++){
                 System.out.println("dk=" + i + ";ak="+(int)(jantunen.getSuunta()+((i))*5-90) +";ls=" + taulu1[i]);
             }
+            
+        } else if (valinta == 10){
+            
+            Point2D.Float paikka = jantunen.getPaikka();
+            System.out.print("***ROBON paikka("+ paikka.x + "," + paikka.y + ")");
+            System.out.println("-suunta:" + jantunen.getSuunta()+"***");
+            System.out.println("-------------------");
+            
+            
+            System.out.println("valitseUusiPiste:");
+            JsimData data1 = jantunen.valitseUusiPiste(kartta);
+            paikka = jantunen.getPaikka();
+            System.out.print("***ROBON paikka("+ paikka.x + "," + paikka.y + ")");
+            System.out.println("-suunta:" + jantunen.getSuunta()+"***");
+            System.out.println("-------------------");
+            float taulu1[] = data1.getData();
+            
+            for (int i = 0; i < 37; i++){
+                System.out.println("dk=" + i + ";ak="+(int)(jantunen.getSuunta()+((i))*5-90) +";ls=" + taulu1[i]);
+            }
+
         }
     }  
 }

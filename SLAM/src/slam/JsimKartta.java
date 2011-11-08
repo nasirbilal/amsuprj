@@ -40,10 +40,10 @@ public class JsimKartta {
         kartta[14] = new Line2D.Float(new Point2D.Float(50,550), new Point2D.Float(50,500));
         kartta[15] = new Line2D.Float(new Point2D.Float(50,500), new Point2D.Float(-50,500));
         
-        kartta[16] = new Line2D.Float(new Point2D.Float(-600,600), new Point2D.Float(600,600));
-        kartta[17] = new Line2D.Float(new Point2D.Float(600,600), new Point2D.Float(600,-600));
-        kartta[18] = new Line2D.Float(new Point2D.Float(600,-600), new Point2D.Float(-600,-600));
-        kartta[19] = new Line2D.Float(new Point2D.Float(-600,-600), new Point2D.Float(-600,600));
+        kartta[16] = new Line2D.Float(new Point2D.Float(-300,300), new Point2D.Float(-300,350));
+        kartta[17] = new Line2D.Float(new Point2D.Float(-300,350), new Point2D.Float(-350,350));
+        kartta[18] = new Line2D.Float(new Point2D.Float(-350,350), new Point2D.Float(-350,300));
+        kartta[19] = new Line2D.Float(new Point2D.Float(-350,300), new Point2D.Float(-300,300));
         
         
         

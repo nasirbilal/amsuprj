@@ -86,7 +86,7 @@ public class JsimRobo {
      * Käytetään käännyKohti-metodia oikean suunnan asettamiseksi, jonka
      * jälkeen liikutaan "tangentin" pituus pythagoraan lauseeseen perustuen:
      * 
-     * sqrt((x1+x2)²+(y1+y2)²)
+     * sqrt((x2-x1)²+(y2-y1)²)
      *
      * @param on kohteena oleva paikka.
      * @return uuden paikan Point2D.Float-oliona.
@@ -126,7 +126,9 @@ public class JsimRobo {
         
         /*
          * koska tan(alpha) = a/b, niin
-         * alpha = tan⁻¹((x1+x2)/(y1+y2))
+         * alpha = tan⁻¹((x2-x1)/(y2-y1))
+         * -tässähän meillä on tietenkin 360-astetta
+         *  hoidettavana, mistä johtuen pakko vääntää iffeillä eri ilmansuunnat
          */
 
         if (kohde.x == paikka.x){   //tähdätään y-akselin suuntaan
@@ -166,12 +168,6 @@ public class JsimRobo {
                     return käänny(-suunta+180+aste);
                 }
             }
-            
-          /* // float aste = (float)((Math.atan((kohde.x-paikka.x)/(kohde.y-paikka.y))));
-            //aste = (float)(aste*(180/Math.PI)); //käännetään radiaanit asteiksi
-            System.out.println("aste:" + aste); //debug
-            return käänny(aste+bonusaste);
-            */
         }
     }
     
@@ -215,26 +211,41 @@ public class JsimRobo {
         boolean edettytäyteen=false; //Jos (false)-> edetään täyteen näkymään, =true; jos (true) -> käännytään 180, =false.
         if (tyhjyysmuisti == mtaulu.length){ // ei mitään havaittu missään
             etene(650);
+            System.out.println("ei mitään");
             return mittaus;
         } else if (tyhjyysmuisti == 0){ //kaikki havaitaittu kaikkialla
+            System.out.print("kaikki kaikkialla, ");
             if (edettytäyteen){
+                System.out.println("ETtrue");
                 edettytäyteen = false;
                 käänny(180);
                 return mittaus;
             } else {
+                System.out.println("ETfalse");
                 etene(mtaulu[19]/2);    // edetään suoraan eteenpäin puolet eteenpäin mitatusta pituudesta
                 edettytäyteen = true;
                 return mittaus;
             }
         } else {
-            käänny(((tyhjyysalkumuisti+tyhjyysmuisti)/2)*5-90);
-            etene( (mtaulu[tyhjyysalkumuisti]+mtaulu[tyhjyysalkumuisti+tyhjyysmuisti])/2 ); //yksinkertaistettu. tekosyy: tää kuluttaa vähemmän rosessoria
+            System.out.println("normi");
+            
+            System.out.println("käänny("+((tyhjyysalkumuisti*5)-90)+((tyhjyysmuisti/2)*5)+")"); //debug
+            
+            käänny( ((tyhjyysalkumuisti*5)-90)+((tyhjyysmuisti/2)*5) ); //witness the true power of mathematics!!!
+            
+            System.out.println("tam:"+tyhjyysalkumuisti);       //lisää debugia
+            System.out.println("mtaulu[tam-1]=" + mtaulu[tyhjyysalkumuisti-1]);
+            System.out.println("tm:"+tyhjyysmuisti);
+            System.out.println("tam+tm:"+(tyhjyysalkumuisti+tyhjyysmuisti));
+            System.out.println("mtaulu[tam+tm]"+mtaulu[tyhjyysalkumuisti+tyhjyysmuisti]);
+            System.out.println("etene("+ ((mtaulu[tyhjyysalkumuisti-1]+mtaulu[tyhjyysalkumuisti+tyhjyysmuisti])/2) + ");"); //debug out
+            
+            etene( (mtaulu[tyhjyysalkumuisti-1]+mtaulu[tyhjyysalkumuisti+tyhjyysmuisti])/2 );
+            //yksinkertaistettu. tekosyy: tää kuluttaa vähemmän rosessoria
+            //ja näin myös vältytään toivottavasti seiniin törmäilyltä paremmin
             return mittaus;
         }
-
     }
-    
-    
     /*
      * tämä on melkein obsolete muttei poisteta vielä, jos vaikka tarvii tulevaisuudessa
      */
