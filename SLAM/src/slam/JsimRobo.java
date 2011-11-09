@@ -14,7 +14,6 @@ public class JsimRobo {
     
     private float suunta;                   /// Robotin suunta, range: 0-359, jossa 0 ON POHJOINEN
     private Point2D.Float paikka;           /// Robotin paikka Point-oliona MILLIMETREISSÄ
-    private Point2D.Float kohde;
 
     private final int infraKantama = 800;   /// Robotin infrapunasensorin kantama MILLIMETREISSÄ
     private final int mittausMaara = 1+180/5; /// Robotti mittaa 5 asteen välein.
