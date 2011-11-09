@@ -19,6 +19,7 @@ public class JsimRobo {
     private final int infraKantama = 800;   /// Robotin infrapunasensorin kantama MILLIMETREISSÄ
     private final int mittausMaara = 1+180/5; /// Robotti mittaa 5 asteen välein.
 
+    JsimKartta JSKkartta = new JsimKartta();
     JsimData mittaus;                       /// luodaan mittaa()-metodilla, käytetään seuraavan mittauspaikan valitsemiseksi
     JsimRoboNakyma nakyma;                  /// luodaan mittaa()-metodilla, debugausta
 
@@ -178,12 +179,12 @@ public class JsimRobo {
      * ittestään.
      */
     
-    public JsimData valitseUusiPiste(JsimKartta JSKkartta){
+    public JsimData valitseUusiPiste(){
         
         
         
         
-        mittaus = mittaa(JSKkartta);            //mittaus on osa näitä navigointihommia
+        mittaus = mittaa();            //mittaus on osa näitä navigointihommia
         float mtaulu[] = mittaus.getData();     //tiedot edessäolevasta kamasta
         
         
@@ -310,7 +311,7 @@ public class JsimRobo {
      * Mittaus
      */
     
-    public JsimData mittaa(JsimKartta JSKkartta){
+    public JsimData mittaa(){
         /*
          * Tässä olis ideana, että verrataan robotin yhtä "näköviivaa" kaikkiin kartan viivoihin vuoron perään ja jos leikkaus
          * löytyy niin tallennetaan se pieninleikkaus-muuttujaan, jota vertaillaan tuleviin leikkauspituuksiin. Sitten tallennetaan
@@ -354,7 +355,7 @@ public class JsimRobo {
                 taulu[i] = pieninleikkaus; // pistetään lyhyin etäisyys muistiin
         }
         
-        mittaus = new JsimData(suunta,taulu); //annetaan etäisyystaulukko JsimDatalle, josta se toivottavasti pistetään johonkin muistiin
+        mittaus = new JsimData(suunta,taulu, paikka); //annetaan etäisyystaulukko JsimDatalle, josta se toivottavasti pistetään johonkin muistiin
         
         return mittaus;
     }

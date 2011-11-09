@@ -1,5 +1,6 @@
 
 package slam;
+import java.awt.geom.Point2D;
 
 /**
  *
@@ -13,14 +14,16 @@ public class JsimData {
     
     private float robosuunta;
     private float data[];
+    private Point2D.Float paikka;
     
         /**
          * @param parametri robotin suunta
          * @param parametri mittaus-taulukko
          */
-    public JsimData(float suunta, float[] data){
+    public JsimData(float suunta, float[] data, Point2D.Float paikka){
         robosuunta = suunta;
         this.data = data;
+        this.paikka = paikka;
     }
     
     /**
@@ -28,6 +31,9 @@ public class JsimData {
      */
     public float getRobosuunta(){
         return robosuunta;
+    }
+    public Point2D.Float getPaikka(){
+        return paikka;
     }
 
     /**

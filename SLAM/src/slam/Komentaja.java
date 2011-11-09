@@ -98,6 +98,16 @@ public class Komentaja {
         // välille: roboNakyma1.piirraEtaisyydet(p). Sen jälkeen mittaustulokset annetaan
         // Kokoajalle, joka sylkee uuden kartan, joka sitten piirretään ruudulle.
         // Lopuksi säie kutsuu paivitaNakymat().
+        JsimRobo robo = new JsimRobo(); //robotti
+        Mittaustulokset sailio = new Mittaustulokset(); //sailio mihin tallennetaan mittaustulokset
+        Kerailija kerailija = new Kerailija(robo,sailio); //luodaan keräilijä säie
+        kerailija.start();
+        try{
+            Thread.sleep(1000);
+        }catch(Exception e){}
+        kerailija.lopeta();
+        sailio.tulosta();
+        
         
         // EXTRAAAAA JA BOOONUSTA:
         // robotti ei tiedä, missä se on. Tietokone laskee robotin todellisen sijainnin
