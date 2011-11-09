@@ -4,6 +4,12 @@
  */
 package slam;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import lejos.pc.comm.NXTCommLogListener;
+import lejos.pc.comm.NXTConnector;
+
 /**
  *
  * @author Mudi
@@ -19,14 +25,15 @@ public class BTYhteys {
 
         conn.addLogListener(new NXTCommLogListener() {
 
+            @Override
             public void logEvent(String message) {
                 System.out.println("RobottiOrja Log.listener: " + message);
 
             }
 
+            @Override
             public void logEvent(Throwable throwable) {
                 System.out.println("RobottiOrja Log.listener - stack trace: ");
-                throwable.printStackTrace();
             }
         });
         // Luodaan yhteys Jantuseen
@@ -44,7 +51,7 @@ public class BTYhteys {
         long startingTime = System.nanoTime();
         for (int i = 0; i < 16; i++) {
             try {
-                dos.writeInt(i);
+                dos.write
                 dos.flush();
 
             } catch (IOException ioe) {
