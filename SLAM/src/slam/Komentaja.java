@@ -1,6 +1,5 @@
 package slam;
 
-import java.awt.Point;
 import java.awt.geom.Point2D;
 import javax.swing.UIManager;
 
@@ -88,7 +87,7 @@ public class Komentaja {
     }
 
     void yhdista() {
-        // luoda kartan eli kokoajan
+        // luoda kartta eli kokoaja
         // luoda jsimrobot
         // arpoa robolle sijainti
         // jokaiselle robotille luodaan säie, joka kuuntelee robotilta tulevia

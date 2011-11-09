@@ -11,14 +11,14 @@ import javax.swing.*;
  *
  * @author Olli Koskinen
  */
-public class UIRoboNakyma extends JPanel {
+public class RoboNakyma extends JPanel {
 
     private Point2D.Double[] pisteet;
 
     /**
      * 
      */
-    public UIRoboNakyma() {
+    public RoboNakyma() {
         this.pisteet = null;
         final float katko[] = {10.0f};
         final BasicStroke katkoV = new BasicStroke(1.0f,
