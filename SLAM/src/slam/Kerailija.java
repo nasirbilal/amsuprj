@@ -41,6 +41,10 @@ public class Kerailija extends Thread{
         valmis = true;
     }
     
+    public laskePisteet(){
+        
+    }
+    
 }
 
 

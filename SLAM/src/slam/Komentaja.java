@@ -103,7 +103,7 @@ public class Komentaja {
         Kerailija kerailija = new Kerailija(robo,sailio); //luodaan keräilijä säie
         kerailija.start();
         try{
-            Thread.sleep(1000);
+            Thread.sleep(100000);
         }catch(Exception e){}
         kerailija.lopeta();
         sailio.tulosta();
