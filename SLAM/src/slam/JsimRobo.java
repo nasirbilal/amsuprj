@@ -12,11 +12,14 @@ import java.awt.geom.Line2D;
 
 public class JsimRobo {
     
+    private final int infraKantama = 800;   /// Robotin infrapunasensorin kantama MILLIMETREISSÄ
+    private final int mittausMaara = 1+180/5; /// Robotti mittaa 5 asteen välein.
+
+    private int id;                         /// Robotin yksilöllinen tunnus.
     private float suunta;                   /// Robotin suunta, range: 0-359, jossa 0 ON POHJOINEN
     private Point2D.Float paikka;           /// Robotin paikka Point-oliona MILLIMETREISSÄ
 
-    private final int infraKantama = 800;   /// Robotin infrapunasensorin kantama MILLIMETREISSÄ
-    private final int mittausMaara = 1+180/5; /// Robotti mittaa 5 asteen välein.
+    private static int id_count = 0;        /// Robotin yksilötunnuksen juokseva numero.
 
     JsimKartta JSKkartta = new JsimKartta();
     JsimData mittaus;                       /// luodaan mittaa()-metodilla, käytetään seuraavan mittauspaikan valitsemiseksi
@@ -27,17 +30,20 @@ public class JsimRobo {
      */
 
     public JsimRobo(){
+        id = id_count++;
         Random r = new Random();    
         suunta = 0;
         paikka = new Point2D.Float(0,0);
     }
 
     public JsimRobo(float suunta, Point2D.Float paikka){
+        id = id_count++;
         this.suunta = suunta;
         this.paikka = paikka;
     }
 
     public JsimRobo(float suunta, int x, int y){
+        id = id_count++;
         this.suunta = suunta;
         paikka = new Point2D.Float(x,y);        
     }
