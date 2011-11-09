@@ -21,36 +21,45 @@ public class JsimRobo {
 
     private static int id_count = 0;        /// Robotin yksilötunnuksen juokseva numero.
 
-    JsimKartta JSKkartta = new JsimKartta();
-    JsimData mittaus;                       /// luodaan mittaa()-metodilla, käytetään seuraavan mittauspaikan valitsemiseksi
-    JsimRoboNakyma nakyma;                  /// luodaan mittaa()-metodilla, debugausta
+    private JsimKartta JSKkartta = new JsimKartta();
+    private JsimData mittaus;                       /// luodaan mittaa()-metodilla, käytetään seuraavan mittauspaikan valitsemiseksi
+    private JsimRoboNakyma nakyma;                  /// luodaan mittaa()-metodilla, debugausta
 
+    private String nimi;                           /// nimen pitaa vastata Robotin bluetooth-tunnusta
     /*
      * Konstruktorit
      */
 
-    public JsimRobo(){
+    public JsimRobo(String nimi){
         id = id_count++;
         Random r = new Random();    
         suunta = 0;
         paikka = new Point2D.Float(0,0);
+        this.nimi = nimi;
     }
 
-    public JsimRobo(float suunta, Point2D.Float paikka){
+    public JsimRobo(float suunta, Point2D.Float paikka, String nimi){
         id = id_count++;
         this.suunta = suunta;
         this.paikka = paikka;
+        this.nimi = nimi;
     }
 
-    public JsimRobo(float suunta, int x, int y){
+    public JsimRobo(float suunta, int x, int y, String nimi){
         id = id_count++;
         this.suunta = suunta;
-        paikka = new Point2D.Float(x,y);        
+        paikka = new Point2D.Float(x,y);   
+        this.nimi = nimi;
     }
     
     /*
      * Getterit ja setterit
      */
+    
+    //Bluetoothia varten
+    public String getNimi(){
+        return nimi;
+    }
     
     public float getSuunta(){
         return suunta;

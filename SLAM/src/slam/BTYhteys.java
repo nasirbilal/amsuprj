@@ -16,10 +16,16 @@ import lejos.pc.comm.NXTConnector;
  */
 public class BTYhteys extends Thread {
     private volatile boolean jatkuu;
+    private JsimRobo robo;
+    private BTPaketti paketti;
 
-    public BTYhteys() {
+    public BTYhteys(JsimRobo robo) {
         this.jatkuu = true;
+        this.robo = robo;
+        this.paketti = null;
     }
+
+ 
 
     @Override
     public void run() {
@@ -32,13 +38,12 @@ public class BTYhteys extends Thread {
                 NXTConnector conn = new NXTConnector();
 
 
-                // Luodaan yhteys Jantuseen
-                boolean yhteys = conn.connectTo("Jantunen");
+                // Luodaan yhteys robottiin nimen perusteella
+                boolean yhteys = conn.connectTo(robo.getNimi());
                 if (!yhteys) {
                     System.err.println("YhdataSisaantaminen epaonnistui");
                     System.exit(-1);
                 }
-
 
                 //Luodaan input/output streamit
                 DataOutputStream dataUlos = conn.getDataOut();
