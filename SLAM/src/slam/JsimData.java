@@ -43,4 +43,25 @@ public class JsimData {
         return data;
     }
     
+    /**
+     * @return data Point2D.Float olioina
+     */
+    public Point2D.Float[] getPisteet(){
+        
+        Point2D.Float[] datapisteet = new Point2D.Float[data.length];
+        
+        for (int i = 0; i < data.length; i++){
+            
+            float x = (float)(paikka.x + data[i]*Math.sin( (robosuunta + (i*5) - 90)*(Math.PI/180) )) ;
+            float y = (float)(paikka.y + data[i]*Math.cos( (robosuunta + (i*5) - 90)*(Math.PI/180) )) ;
+            
+            datapisteet[i] = new Point2D.Float(x,y);
+            
+        }
+        
+        return datapisteet;
+        
+    }
+    
+    
 }

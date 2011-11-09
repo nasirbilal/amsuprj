@@ -109,6 +109,8 @@ public class Komentaja {
         sailio.tulosta();
         
         
+        
+        
         // EXTRAAAAA JA BOOONUSTA:
         // robotti ei tiedä, missä se on. Tietokone laskee robotin todellisen sijainnin
         // mittausetäisyyksien perusteella. Säie luettuaan robotin mittaustulokset

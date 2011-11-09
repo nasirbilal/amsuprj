@@ -40,11 +40,4 @@ public class Kerailija extends Thread{
     public void lopeta(){
         valmis = true;
     }
-    
-    public laskePisteet(){
-        
-    }
-    
 }
-
-
