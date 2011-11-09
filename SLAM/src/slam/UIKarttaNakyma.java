@@ -26,6 +26,9 @@ public class UIKarttaNakyma extends JPanel {
 
         //TODO: poista testit kun nakyman saato on valmis
         //TestiNeliö
+        
+        
+        
         g2.drawLine(30, getHeight() - 30, 400, getHeight() - 30);
         g2.drawLine(400, getHeight() - 30, 400, getHeight() - 400);
         g2.drawLine(400, getHeight() - 400, 30, getHeight() - 400);

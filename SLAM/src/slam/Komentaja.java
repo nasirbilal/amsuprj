@@ -12,11 +12,13 @@ public class Komentaja {
     private UIRoboNakyma roboNakyma1;
     private UIRoboNakyma roboNakyma2;
     private UIKarttaNakyma karttaNakyma;
+    
 
     /**
      * 
      */
     public Komentaja() {
+    
     }
 
     //TODO: poista testit kun nakyman saato on valmis
@@ -96,7 +98,7 @@ public class Komentaja {
         // välille: roboNakyma1.piirraEtaisyydet(p). Sen jälkeen mittaustulokset annetaan
         // Kokoajalle, joka sylkee uuden kartan, joka sitten piirretään ruudulle.
         // Lopuksi säie kutsuu paivitaNakymat().
-
+        
         // EXTRAAAAA JA BOOONUSTA:
         // robotti ei tiedä, missä se on. Tietokone laskee robotin todellisen sijainnin
         // mittausetäisyyksien perusteella. Säie luettuaan robotin mittaustulokset
