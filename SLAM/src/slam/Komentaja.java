@@ -98,7 +98,7 @@ public class Komentaja {
         // välille: roboNakyma1.piirraEtaisyydet(p). Sen jälkeen mittaustulokset annetaan
         // Kokoajalle, joka sylkee uuden kartan, joka sitten piirretään ruudulle.
         // Lopuksi säie kutsuu paivitaNakymat().
-        JsimRobo robo = new JsimRobo(); //robotti
+        JsimRobo robo = new JsimRobo("Jantunen"); //robotti
         Mittaustulokset sailio = new Mittaustulokset(); //sailio mihin tallennetaan mittaustulokset
         Kerailija kerailija = new Kerailija(robo,sailio); //luodaan keräilijä säie
         kerailija.start();
