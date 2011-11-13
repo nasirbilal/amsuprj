@@ -11,10 +11,25 @@ package slam;
  * ja kerätyt mittaustulokset. Luokka vastaa mittaustulosten yhdistämisestä
  * robotin henkilökohtaisesti kartoittamaksi kartaksi ja sen perusteella robotin
  * laskennallisen sijainnin määrittämisestä. Kaikki kommunikointi robotin kanssa
- * tapahtuu tämän luokan kautta.
- * 
- * @author L
+ * tapahtuu tämän luokan kautta. Jokaista robottia vastaa yksi RoboOhjain-
+ * loukan ilmentymä.
  */
-public class RoboOhjain {
-    
+public class RoboOhjain extends Thread {
+
+    private volatile boolean stop = false;
+    private BTYhteys bt = null;
+
+    RoboOhjain(BTYhteys bt) {
+        this.bt = bt;
+    }
+
+    @Override
+    public void run(){
+        while (!stop) {
+            data = robo.valitseUusiPiste();
+            sailio.uusiMittaus(data);
+        }
+    }
+
+    public void stop() { stop = true; }
 }
