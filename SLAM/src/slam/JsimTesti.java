@@ -12,22 +12,25 @@ public class JsimTesti {
     
     public static void main(String[] args) {
     
-        JsimRobo jantunen = new JsimRobo(0,0,0);
+        //JsimRobo jantunen = new JsimRobo(0,0,0);
+        JsimRobo jantunen = new JsimRobo(0,0,0, "lol");
         JsimKartta kartta = new JsimKartta();
         Scanner s = new Scanner(System.in);
         
-        System.out.println("1. ongelmia etene():ssä(//WANHA)");
-        System.out.println("2. teleport-versio(//WANHA)");
-        System.out.println("3. leikkaako()-testi(//WANHA)");
-        System.out.println("4. etene()-testi(//WANHA)");
-        System.out.println("5. Math.* testaus(//WANHA)");
-        System.out.println("6. radianisoidut koodit testi");
-        System.out.println("7. etenePisteeseen()-testi");
-        System.out.println("8. kuutostestit sekottaa mun pään, pakko alottaa uus");
-        System.out.println("9. tezitezi");
-        System.out.println("10. nav-testi");
-        int valinta = s.nextInt();
+        System.out.println("1. ongelmia etene():ssä(//WANHA)(//poistettu)");
+        System.out.println("2. teleport-versio(//WANHA)(//poistettu)");
+        System.out.println("3. leikkaako()-testi(//WANHA)(//poistettu)");
+        System.out.println("4. etene()-testi(//WANHA)(//poistettu)");
+        System.out.println("5. Math.* testaus(//WANHA)(//poistettu)");
+        System.out.println("6. radianisoidut koodit testi(//poistettu)");
+        System.out.println("7. etenePisteeseen()-testi(//poistettu)");
+        System.out.println("8. kuutostestit sekottaa mun pään, pakko alottaa uus(//poistettu)");
+        System.out.println("9. tezitezi(//poistettu)");
+        System.out.println("10. nav-testi(//poistettu)");
+        System.out.println("11. getPisteet-testi");
         
+        int valinta = s.nextInt();
+        /*
         if (valinta == 1){
         
             Point2D.Float paikka = jantunen.getPaikka();
@@ -60,7 +63,7 @@ public class JsimTesti {
             /*
              * toi funktio on laskimella testattu ja se antaa pisteen arvoiksi
              * -400,58 ja 200,77 vaikka pitäs tulla 0 ja 0
-             */
+             
 
             System.out.println("Robon paikka liikkumisen JÄLKEEN: (" + jantunen.getPaikka().x + "," + jantunen.getPaikka().y + ")");
             System.out.println("Robon suunta liikkumisen JÄLKEEN: " + jantunen.getSuunta());
@@ -108,7 +111,7 @@ public class JsimTesti {
             System.out.println("robotin suunta on: " + jantunen.getSuunta());
             
             System.out.println("alkupisteessä ollaan!");
-            /* mittaa muutettu privateksi
+             mittaa muutettu privateksi
             System.out.println("otetaan mittaus ja rukoillaan:");
             JsimData testidata = jantunen.mittaa(kartta);
             float taulu[] = testidata.getData();
@@ -120,16 +123,16 @@ public class JsimTesti {
             }
             
              * Outoa dataa taas.
-             */
+             
             
         } else if (valinta == 3){ // elikkä leikkaako() toimii niin kuin pitääkin
-            /* suorakulmaleikkaus toimii
+             suorakulmaleikkaus toimii
             JsimRoboNäkymä testijsrn = new JsimRoboNäkymä(new Point2D.Float(0,0), 0, 37, 800);
             Point2D.Float testipiste = testijsrn.leikkaako(new Line2D.Float(0,-100,0,100),new Line2D.Float(-100,0,100,0));
             
             System.out.println("x:"+testipiste.x);
             System.out.println("y:"+testipiste.y);
-            */
+            
             
             //Näyttää leikkauspisteetkin toimivan
             JsimRoboNakyma testijsrn = new JsimRoboNakyma(new Point2D.Float(0,0), 0, 37, 800);
@@ -226,9 +229,9 @@ public class JsimTesti {
             
             System.out.println("sin(pi)="+Math.sin(Math.PI));
             
-            /*
+            
              * Siis Math.sinit tahtoo parametrinä radiaaneja, olis pitäny pikkasen tarkemmin katella
-             */
+             
 
         } else if (valinta == 6){
             
@@ -281,7 +284,7 @@ public class JsimTesti {
             
             System.out.println("OK");
             System.out.println("-------------");
-            /* TOIMI
+             TOIMI
             System.out.println("!!!MITTAUSTESTI!!! ken tästä käy saa kaiken toivon heittää");
             
             System.out.println("otetaan mittaus ja rukoillaan:");
@@ -293,7 +296,7 @@ public class JsimTesti {
             for (int i = 0; i < 37; i++){
                 System.out.println("datakulma=" + i + "||lähin seinä=" + taulu[i]);
             }
-            */
+            
             
             System.out.println("!!!NAVIGOINTITESTI!!!");
             
@@ -315,7 +318,7 @@ public class JsimTesti {
             
             System.out.println("!!!UUDESTAAN!!!");
             
-            testidata = jantunen.mittaa(kartta); //testi
+            //testidata = jantunen.mittaa(kartta); //testi
             
             float taulu2[] = testidata.getData();
             
@@ -323,7 +326,7 @@ public class JsimTesti {
                 System.out.println("datakulma=" + i + "("+(int)(jantunen.getSuunta()+((i))*5-90)+")" +"||lähin seinä=" + taulu[i]);
             }
             
-            jantunen.valitseUusiPiste(kartta);
+           // jantunen.valitseUusiPiste(kartta);
             
             System.out.println("Jantusen suunta ja paikka = (" + 
                     jantunen.getPaikka().x + "," + jantunen.getPaikka().y + 
@@ -342,7 +345,7 @@ public class JsimTesti {
             System.out.println("eteenpäin 500mm ja mitataan");
             jantunen.etene(500);
             
-            testidata = jantunen.mittaa(kartta);
+           // testidata = jantunen.mittaa(kartta);
             float taulu3[] = testidata.getData();
             
             System.out.println("Jantusen suunta ja paikka = (" + 
@@ -391,7 +394,7 @@ public class JsimTesti {
             System.out.println("-------------");
             
             
-            JsimData data1 = jantunen.valitseUusiPiste(kartta);
+           // JsimData data1 = jantunen.valitseUusiPiste(kartta);
             
             float taulu1[] = data1.getData();
             
@@ -405,7 +408,7 @@ public class JsimTesti {
                     "), " + jantunen.getSuunta());
             System.out.println("-------------");
             
-            JsimData data2 = jantunen.valitseUusiPiste(kartta);
+          //  JsimData data2 = jantunen.valitseUusiPiste(kartta);
             
             float taulu2[] = data2.getData();
             
@@ -430,7 +433,7 @@ public class JsimTesti {
             System.out.println("robotin paikka on nyt: (" + paikka.x + "," + paikka.y + ")");
             System.out.println("robotin suunta on: " + jantunen.getSuunta());
             
-            JsimData data1 = jantunen.mittaa(kartta);
+        //    JsimData data1 = jantunen.mittaa(kartta);
             
             float taulu1[] = data1.getData();
             
@@ -447,7 +450,7 @@ public class JsimTesti {
             
             
             System.out.println("valitseUusiPiste:");
-            JsimData data1 = jantunen.valitseUusiPiste(kartta);
+         //   JsimData data1 = jantunen.valitseUusiPiste(kartta);
             paikka = jantunen.getPaikka();
             System.out.print("***ROBON paikka("+ paikka.x + "," + paikka.y + ")");
             System.out.println("-suunta:" + jantunen.getSuunta()+"***");
@@ -460,7 +463,7 @@ public class JsimTesti {
             }
             System.out.println("-------------------");
             System.out.println("valitseUusiPiste:");
-            JsimData data2 = jantunen.valitseUusiPiste(kartta);
+          //  JsimData data2 = jantunen.valitseUusiPiste(kartta);
             paikka = jantunen.getPaikka();
             System.out.print("***ROBON paikka("+ paikka.x + "," + paikka.y + ")");
             System.out.println("-suunta:" + jantunen.getSuunta()+"***");
@@ -473,7 +476,7 @@ public class JsimTesti {
             
             System.out.println("-------------------");
             System.out.println("valitseUusiPiste:");
-            JsimData data3 = jantunen.valitseUusiPiste(kartta);
+           // JsimData data3 = jantunen.valitseUusiPiste(kartta);
             paikka = jantunen.getPaikka();
             System.out.print("***ROBON paikka("+ paikka.x + "," + paikka.y + ")");
             System.out.println("-suunta:" + jantunen.getSuunta()+"***");
@@ -486,7 +489,7 @@ public class JsimTesti {
             System.out.println("-------------------");
             
             System.out.println("valitseUusiPiste:");
-            JsimData data4 = jantunen.valitseUusiPiste(kartta);
+          //  JsimData data4 = jantunen.valitseUusiPiste(kartta);
             paikka = jantunen.getPaikka();
             System.out.print("***ROBON paikka("+ paikka.x + "," + paikka.y + ")");
             System.out.println("-suunta:" + jantunen.getSuunta()+"***");
@@ -499,31 +502,58 @@ public class JsimTesti {
             System.out.println("-------------------");
             
             System.out.println("valitseUusiPiste:");
-            JsimData data5 = jantunen.valitseUusiPiste(kartta);
+           // JsimData data5 = jantunen.valitseUusiPiste(kartta);
             paikka = jantunen.getPaikka();
             System.out.print("***ROBON paikka("+ paikka.x + "," + paikka.y + ")");
             System.out.println("-suunta:" + jantunen.getSuunta()+"***");
             System.out.println("-------------------");
             
-            float taulu5[] = data5.getData();
+          //  float taulu5[] = data5.getData();
             for (int i = 0; i < 37; i++){
                 System.out.println("dk=" + i + ";ak="+(int)(jantunen.getSuunta()+((i))*5-90) +";ls=" + taulu5[i]);
             }
             System.out.println("-------------------");
             
             System.out.println("valitseUusiPiste:");
-            JsimData data6 = jantunen.valitseUusiPiste(kartta);
+           // JsimData data6 = jantunen.valitseUusiPiste(kartta);
             paikka = jantunen.getPaikka();
             System.out.print("***ROBON paikka("+ paikka.x + "," + paikka.y + ")");
             System.out.println("-suunta:" + jantunen.getSuunta()+"***");
             System.out.println("-------------------");
             
-            float taulu6[] = data6.getData();
+           // float taulu6[] = data6.getData();
             for (int i = 0; i < 37; i++){
                 System.out.println("dk=" + i + ";ak="+(int)(jantunen.getSuunta()+((i))*5-90) +";ls=" + taulu6[i]);
             }
             System.out.println("-------------------");
+            */
+        if (valinta == 11){
             
+            JsimData data1 = jantunen.mittaa();
+            
+            Point2D.Float ptaulu[] = data1.getPisteet();
+            
+            for (int i = 0; i < ptaulu.length; i++){
+                System.out.println("ptaulu["+i+"]=("+ptaulu[i].x+" , "+ptaulu[i].y+")");
+            }
+            
+            System.out.println("toimii, käännytään 180astetta");
+            jantunen.käänny(180);
+            
+            JsimData data2 = jantunen.mittaa();
+            
+            Point2D.Float ptaulu2[] = data2.getPisteet();
+            
+            Point2D.Float paikka = jantunen.getPaikka();
+            System.out.println();
+            System.out.print("***ROBON paikka("+ paikka.x + "," + paikka.y + ")");
+            System.out.println("-suunta:" + jantunen.getSuunta()+"***");
+            System.out.println("-------------------");
+            
+            for (int i = 0; i < ptaulu.length; i++){
+                System.out.println("ptaulu2["+i+"]=("+ptaulu2[i].x+" , "+ptaulu2[i].y+")");
+            }
+        
         }
     }  
 }
