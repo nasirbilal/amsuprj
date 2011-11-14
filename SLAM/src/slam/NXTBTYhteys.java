@@ -14,12 +14,12 @@ import lejos.pc.comm.NXTConnector;
  *
  * @author Mudi
  */
-public class BTYhteys extends Thread implements BTYhteys {
+public class NXTBTYhteys extends Thread implements BTYhteys {
     private volatile boolean jatkuu;
     private JsimRobo robo;
     private BTPaketti paketti;
 
-    public BTYhteys(JsimRobo robo) {
+    public NXTBTYhteys(JsimRobo robo) {
         this.jatkuu = true;
         this.robo = robo;
         this.paketti = null;
@@ -88,5 +88,15 @@ public class BTYhteys extends Thread implements BTYhteys {
                 }
             }
         }
+    }
+
+    @Override
+    public Mittaustulokset haeMittaustulokset() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public boolean Laheta(BTPaketti paketti) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }
