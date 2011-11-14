@@ -24,7 +24,7 @@ public class JsimBTYhteys extends Thread implements BTYhteys {
     public void run() {
         ObjectOutputStream objUlos = null;
         ObjectInputStream objSisaan = null;
-        if (robo != null){
+        if (robo != null) {
             while (jatkuu) {
 
 
@@ -85,19 +85,13 @@ public class JsimBTYhteys extends Thread implements BTYhteys {
         }
     }
 
-        @Override
-        public Mittaustulokset haeMittaustulokset
-        
-            () {
+    @Override
+    public Mittaustulokset haeMittaustulokset() {
         throw new UnsupportedOperationException("Not supported yet.");
-        }
+    }
 
-        @Override
-        public boolean Laheta
-        (BTPaketti paketti
-        
-            ) {
+    @Override
+    public boolean laheta(BTPaketti paketti) {
         throw new UnsupportedOperationException("Not supported yet.");
-        }
-    
+    }
 }
