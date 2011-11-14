@@ -61,7 +61,7 @@ public class RoboOhjain {
     /// mittaukset tehtyä ja vastaanottaa mittaustulokset BT:n kautta.
     ///
     /// @return True, jos kaikki meni hyvin ja false, jos mittaustuloksia ei
-    ///         saatu odotusajan umpeuduttua.
+    ///  saatu odotusajan umpeuduttua.
     public boolean teeMittaukset() {
         return false;
     }
