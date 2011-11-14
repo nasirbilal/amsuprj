@@ -8,5 +8,5 @@ public interface BTYhteys {
 
 
     public Mittaustulokset haeMittaustulokset();
-    public boolean Laheta(BTPaketti paketti);
+    public boolean laheta(BTPaketti paketti);
 }
