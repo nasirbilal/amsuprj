@@ -5,74 +5,79 @@
 package slam;
 
 import java.awt.geom.Point2D;
-import java.awt.geom.Point2D.Float;
 import java.io.Serializable;
 
 /**
+ * @brief Paketti on perusyksikkö, joka kulkee tietokoneen ja robotin välillä.
  *
- * @author Mudi
+ *Kohteen ID: int id
+ *    Jos bluetooth-viestin siirto on broadcast-tyyppinen
+ *Robotin nykyinen sijainti: java.awt.Point2D.Float
+ *    Robotilta tietokoneelle siirrettäessä sisältää robotin arvion omasta
+ *        sijainnistaan perustuen moottoreiden liikkumaan määrään.
+ *    Tietokoneelta robotille siirrettäessä sisiltää robotin laskennallisen
+ *        sijainnin suhteessa robotin lähtöpisteeseen.
+ *    Tämä siksi, että robotin sisäisen kirjanpidon mukainen sijainti voi olla
+ *        eri kuin havaintojen perusteella laskettu sijainti, jolloin robotille
+ *        pitäisi lähettää joko siirtymä tai sitten sekä todellinen sijainti
+ *        ETTÄ uusi sijainti.
+ *Robotin seuraava mittauspiste: java.awt.Point2D.Float
+ *    Tietokoneelta robotin suuntaan siirrettäessä merkitsee robotin siirtymää
+ *      eteenpäin ja oikealle nykyisen katsomissuunnan suhteen.
+ *    Robotilta tietokoneelle siirrettäessä arvoilla ei ole merkitystä.
+ *Robotin suunta : java.awt.Point2D.Float
+ *    Piste, jota kohden robotti katsoo (kohtisuoraan).
+ *    Robotti kääntyy katsomaan tätä pistettä liikuttuaan uuteen sijaintiin
+ *        mutta ennen mittausten tekemistä.
+ *Mittausetäisyydet: int[]
+ *    Robotilta lähetettäessä sisältää mittauskulmista mitatut etäisyydet.
+ *    Tietokonelta robotille lähetettäessä arvoilla ei ole merkitystä.
+ *
+ * @author Mudi & L
  */
-//Kohteen ID: int id
-//				Jos bluetooth-viestin siirto on broadcast-tyyppinen
-//			Robotin sijainti: java.awt.Point
-//				Tietokoneelta robotin suuntaan siirrettäessä merkitsee robotin siirtymää eteenpäin ja
-//					vaakasuuntaan nykyisen katsomissuunnan suhteen.
-//					Tämä siksi, että robotin sisäisen kirjanpidon mukainen sijainti voi olla eri
-//					kuin havaintojen perusteella laskettu sijainti, jolloin robotille pitäisi
-//					lähettää joko siirtymä tai sitten sekä todellinen sijainti ETTÄ uusi sijainti.
-//			Robotin suunta : float angle
-//				Katsomissuunta asteina, arvot [0, 360[.
-//				Tietokoneelta robotin suuntaan siirrettäessä arvo 0.
-//				Kääntymän määrä lasketaan kaavalla rot = (rotM + rotC1 - rotC0) / 2, jossa
-//					rotM = robotin kääntyessä moottoreista mitattu kääntymisen määrä,
-//					rotC0 = robotin kompassin antama suunta ennen kääntymistä,
-//					rotC1 = robotin kompassin antama suunta kääntymisen jälkeen.
-//				Palautettava arvo lasketaan kaavalla angle = rotC0 + rot.
-//				Jos robotissa ei ole kompassia, rotC0 = rotC1 = 0.
-//				Tietokoneelta robotin suuntaan siirrettäessä merkitsee suuntaa, josta robotin pitäisi
-//					suorittaa uudet mittaukset.
 public class BTPaketti implements Serializable {
 
-    private int[] mittaukset;
-    private Point2D.Float sijaiti;
-    private float suunta;
+    private final int MAARA = 37;
     private int id;
+    private Point2D.Float nykySijaiti;
+    private Point2D.Float uusiSijaiti;
+    private Point2D.Float mittausSuunta;
+    private int[] etaisyydet;
 
-    public BTPaketti(float suunta, int id) {
-        this.suunta = suunta;
+    public BTPaketti(int id) {
         this.id = id;
-        this.mittaukset = new int[37];
+        this.etaisyydet = new int[MAARA];
     }
 
-    public int[] getMittaukset() {
-        return mittaukset;
+    public Point2D.Float getNykySijaiti() {
+        return nykySijaiti;
     }
 
-    public void setMittaukset(int[] mittaukset) {
-        this.mittaukset = mittaukset;
+    public void setNykySijaiti(Point2D.Float nykySijaiti) {
+        this.nykySijaiti = nykySijaiti;
     }
 
-    public int getId() {
-        return id;
+    public Point2D.Float getUusiSijaiti() {
+        return uusiSijaiti;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setUusiSijaiti(Point2D.Float uusiSijaiti) {
+        this.uusiSijaiti = uusiSijaiti;
     }
 
-    public Float getSijaiti() {
-        return sijaiti;
+    public Point2D.Float getMittausSuunta() {
+        return mittausSuunta;
     }
 
-    public void setSijaiti(Float sijaiti) {
-        this.sijaiti = sijaiti;
+    public void setMittausSuunta(Point2D.Float mittausSuunta) {
+        this.mittausSuunta = mittausSuunta;
     }
 
-    public float getSuunta() {
-        return suunta;
+    public int[] getEtaisyydet() {
+        return etaisyydet;
     }
 
-    public void setSuunta(float suunta) {
-        this.suunta = suunta;
+    public void setEtaisyydet(int[] etaisyydet) {
+        this.etaisyydet = etaisyydet;
     }
 }
