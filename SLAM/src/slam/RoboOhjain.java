@@ -4,6 +4,7 @@
  */
 package slam;
 
+import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 
 /**
@@ -20,7 +21,8 @@ public class RoboOhjain {
 
     private int odotusMs; /// Kauanko BT-yhteyttä odotetaan ennen time outia.
     private BTYhteys bt; /// BT-yhteys oikeaan tai simuloituun robottiin.
-   
+    private boolean onMuuttunut; /// Onko tullut BT:ltä uutta dataa.
+
     RoboOhjain(BTYhteys bt, int odotusMilliSek) {
         this.odotusMs = odotusMilliSek;
         this.bt = bt;
@@ -40,6 +42,18 @@ public class RoboOhjain {
         return new Point2D.Float[37];
     }
 
+    /// @brief Muodostaa robotin mittaustuloksista yhtenäisen kartan.
+    ///
+    /// Robotin kokoamista mittaustuloksista kootaan yksi yhtenäinen kartta.
+    /// Jos uusia mittaustuloksia ei ole saapunut, palautetaan viimeksi kasattu
+    /// kartta. Karttojen origo on sama kuin robotin 1. mittauspiste.
+    ///
+    /// @return Taulukko robotin havaitsemista seinistä/esteistä.
+    public Line2D.Float[] haeKartta() { return new Line2D.Float[0]; }
+
+    /// @return True jos uutta dataa on saapunut viime kyselyn jälkeen.
+    public boolean onMuuttunut() { return onMuuttunut; }
+
     /// @brief Robotti siirretään uuteen sijaintiin ja suoritetaan mittaukset.
     ///
     /// Robotille lasketaan uusi mittauspiste ja mittaussuunta. Tiedot
@@ -47,7 +61,7 @@ public class RoboOhjain {
     /// mittaukset tehtyä ja vastaanottaa mittaustulokset BT:n kautta.
     ///
     /// @return True, jos kaikki meni hyvin ja false, jos mittaustuloksia ei
-    ///         saatu odotusajan umpeuduttua
+    ///         saatu odotusajan umpeuduttua.
     public boolean teeMittaukset() {
         return false;
     }
