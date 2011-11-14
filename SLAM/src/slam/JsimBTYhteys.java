@@ -13,11 +13,19 @@ public class JsimBTYhteys extends Thread implements BTYhteys {
     private volatile boolean jatkuu;
     private JsimRobo robo;
     private BTPaketti paketti;
+    private NXTConnector yhteys;
+    private DataOutputStream dataUlos;
+    private DataInputStream dataSisaan;
 
     public JsimBTYhteys(JsimRobo robo) {
         this.jatkuu = true;
         this.robo = robo;
         this.paketti = null;
+        this.yhteys = new NXTConnector();
+        
+        //Luodaan input/output streamit
+        this.dataUlos = yhteys.getDataOut();
+        this.dataSisaan = yhteys.getDataIn();
     }
 
     @Override
@@ -27,29 +35,17 @@ public class JsimBTYhteys extends Thread implements BTYhteys {
         if (robo != null) {
             while (jatkuu) {
 
-
                 try {
-                    NXTConnector conn = new NXTConnector();
-
-
                     // Luodaan yhteys robottiin nimen perusteella
-                    boolean yhteys = conn.connectTo(robo.getNimi());
-                    if (!yhteys) {
-                        System.err.println("YhdataSisaantaminen epaonnistui");
+                    if (yhteys.connectTo(robo.getNimi())) {
+                        System.err.println("Yhdistaminen epaonnistui");
                         System.exit(-1);
                     }
-
-                    //Luodaan input/output streamit
-                    DataOutputStream dataUlos = conn.getDataOut();
-                    DataInputStream dataSisaan = conn.getDataIn();
-                    objUlos = new ObjectOutputStream(dataUlos);
-                    objSisaan = new ObjectInputStream(dataSisaan);
-
 
                     long startingTime = System.nanoTime();
                     //Kirjoitetaan dataa Streamiin
                     try {
-                        objUlos.writeObject(conn);
+                        objUlos.writeObject(yhteys);
                         objUlos.flush();
                     } catch (IOException ioe) {
                         System.out.println("IO Exception kirjoittaessa:");
@@ -67,12 +63,12 @@ public class JsimBTYhteys extends Thread implements BTYhteys {
                     try {
                         dataSisaan.close();
                         dataUlos.close();
-                        conn.close();
+                        yhteys.close();
                     } catch (IOException ioe) {
                         System.out.println("IOException sulkiessa yhteytta:");
                         System.out.println(ioe.getMessage());
                     }
-                } catch (IOException ex) {
+                } catch (Exception ex) {
                     Logger.getLogger(BTYhteys.class.getName()).log(Level.SEVERE, null, ex);
                 } finally {
                     try {

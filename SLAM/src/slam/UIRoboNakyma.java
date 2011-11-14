@@ -25,9 +25,9 @@ public class UIRoboNakyma extends JPanel {
                 BasicStroke.CAP_BUTT,
                 BasicStroke.JOIN_MITER,
                 10.0f, katko, 0.0f);
-
     }
 
+    
     @Override
     public void paintComponent(Graphics g) {
 
