@@ -18,9 +18,15 @@ public class RoboOhjain extends Thread {
 
     private volatile boolean stop = false;
     private BTYhteys bt = null;
+    private JsimData data;
+    private Mittaustulokset sailio;
+    private JsimRobo robo;
 
-    RoboOhjain(BTYhteys bt) {
+    RoboOhjain(BTYhteys bt,JsimRobo robo,JsimData data, Mittaustulokset sailio) {
         this.bt = bt;
+        this.data = data;
+        this.sailio = sailio;
+        this.robo = robo;
     }
 
     @Override
@@ -31,5 +37,5 @@ public class RoboOhjain extends Thread {
         }
     }
 
-    public void stop() { stop = true; }
+    public void lopeta() { stop = true; }
 }
