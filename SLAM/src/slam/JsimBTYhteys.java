@@ -86,12 +86,12 @@ public class JsimBTYhteys extends Thread implements BTYhteys {
     }
 
     @Override
-    public Mittaustulokset haeMittaustulokset() {
+    public BTPaketti lahetaJaVastaanota(BTPaketti paketti, int odotusAikaMs) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public boolean laheta(BTPaketti paketti) {
+    public void uudelleenKaynnista() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 }
