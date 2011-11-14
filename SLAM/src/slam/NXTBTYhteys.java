@@ -7,7 +7,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import lejos.pc.comm.NXTCommLogListener;
 import lejos.pc.comm.NXTConnector;
 
 /**
@@ -96,7 +95,7 @@ public class NXTBTYhteys extends Thread implements BTYhteys {
     }
 
     @Override
-    public boolean Laheta(BTPaketti paketti) {
+    public boolean laheta(BTPaketti paketti) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 }
