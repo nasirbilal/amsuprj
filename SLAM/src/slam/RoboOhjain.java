@@ -46,7 +46,9 @@ public class RoboOhjain {
     ///
     /// Robotin kokoamista mittaustuloksista kootaan yksi yhtenäinen kartta.
     /// Jos uusia mittaustuloksia ei ole saapunut, palautetaan viimeksi kasattu
-    /// kartta. Karttojen origo on sama kuin robotin 1. mittauspiste.
+    /// kartta. Karttojen origo on sama kuin robotin 1. mittauspiste. Kartan
+    /// perättäiset pisteet muodostavat esteen reunaviivan. Kahden esteen
+    /// välistä tyhjää tilaa kuvaa null-alkio.
     ///
     /// @return Taulukko robotin havaitsemista seinistä/esteistä.
     public Line2D.Float[] haeKartta() { return new Line2D.Float[0]; }
