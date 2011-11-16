@@ -37,7 +37,7 @@ import java.io.Serializable;
  */
 public class BTPaketti implements Serializable {
 
-    private final int MAARA = 37;
+    public static final int MAARA = 37;
     private int id;
     private Point2D.Float nykySijaiti;
     private Point2D.Float uusiSijaiti;
