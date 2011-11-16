@@ -235,42 +235,42 @@ public class JsimRobo {
         
         if (tyhjyyslaskuri == mtaulu.length){ // ei mitään havaittu missään
             etene(650);
-            System.out.println("ei mitään");
+        //    System.out.println("ei mitään");
             return mittaus;
         } else if (tyhjyysmuisti == 0){ //kaikki havaitaittu kaikkialla
-            System.out.print("kaikki kaikkialla, ");
+        //    System.out.print("kaikki kaikkialla, ");
             if (edettytäyteen){     //BOOLEAN EDETTYTÄYTEEN on siirretty tämän metodin ulkopuolelle
-                System.out.println("ETtrue");
+        //        System.out.println("ETtrue");
                 edettytäyteen = false;
                 käänny(180);
                 return mittaus;
             } else {
-                System.out.println("ETfalse");
+        //        System.out.println("ETfalse");
                 etene(mtaulu[19]/2);    // edetään suoraan eteenpäin puolet eteenpäin mitatusta pituudesta
                 edettytäyteen = true;
                 return mittaus;
             }
         } else {
-            System.out.println("normi");
+        //    System.out.println("normi");
             
-            System.out.println("käänny("+(((tyhjyysalkumuisti*5)-90)+((tyhjyysmuisti/2)*5))+")"); //debug
+        //    System.out.println("käänny("+(((tyhjyysalkumuisti*5)-90)+((tyhjyysmuisti/2)*5))+")"); //debug
             
             käänny( ((tyhjyysalkumuisti*5)-90)+((tyhjyysmuisti/2)*5) ); //witness the true power of mathematics!!!
             
-            System.out.println("tam:"+tyhjyysalkumuisti);       //lisää debugia
-            if ((tyhjyysalkumuisti-1) >= 0){
-                System.out.println("mtaulu[tam-1]=" + mtaulu[tyhjyysalkumuisti-1]);
-            } else {
-                System.out.println("tam-1=" + (tyhjyysalkumuisti-1));
-            }
-            System.out.println("tm:"+tyhjyysmuisti);
-            System.out.println("tam+tm:"+(tyhjyysalkumuisti+tyhjyysmuisti));
-            System.out.println("mtaulu[tam+tm]"+mtaulu[tyhjyysalkumuisti+tyhjyysmuisti]);
-            if ((tyhjyysalkumuisti-1) >= 0){
-                System.out.println("etene("+ ((mtaulu[tyhjyysalkumuisti-1]+mtaulu[tyhjyysalkumuisti+tyhjyysmuisti])/2) + ");"); //debug out
-            } else {
-                System.out.println("etene("+ ((mtaulu[tyhjyysalkumuisti+tyhjyysmuisti])/2 ) + ")");
-            }
+        //    System.out.println("tam:"+tyhjyysalkumuisti);       //lisää debugia
+        //    if ((tyhjyysalkumuisti-1) >= 0){
+        //        System.out.println("mtaulu[tam-1]=" + mtaulu[tyhjyysalkumuisti-1]);
+        //    } else {
+        //        System.out.println("tam-1=" + (tyhjyysalkumuisti-1));
+        //    }
+        //    System.out.println("tm:"+tyhjyysmuisti);
+        //    System.out.println("tam+tm:"+(tyhjyysalkumuisti+tyhjyysmuisti));
+        //    System.out.println("mtaulu[tam+tm]"+mtaulu[tyhjyysalkumuisti+tyhjyysmuisti]);
+        //    if ((tyhjyysalkumuisti-1) >= 0){
+        //        System.out.println("etene("+ ((mtaulu[tyhjyysalkumuisti-1]+mtaulu[tyhjyysalkumuisti+tyhjyysmuisti])/2) + ");"); //debug out
+        //    } else {
+        //        System.out.println("etene("+ ((mtaulu[tyhjyysalkumuisti+tyhjyysmuisti])/2 ) + ")");
+        //    }
             
             if ((tyhjyysalkumuisti-1) >= 0){
                 etene( (mtaulu[tyhjyysalkumuisti-1]+mtaulu[tyhjyysalkumuisti+tyhjyysmuisti])/2 );
@@ -346,22 +346,22 @@ public class JsimRobo {
         
         Line2D.Float kartta[] = JSKkartta.getKartta();
         
-        System.out.println("luuppaus alkaa");//debug
+        //System.out.println("luuppaus alkaa");//debug
         
         for (int i = 0; i < nakyma.getNakotaulu().length; i++){ //iteroidaan JsimRoboNäkymän Näkötaulun näköviivoja
             pieninleikkaus = 9999; //jos mikään ei leikkaa annetaan arvo 9999
             for (int k = 0; k < kartta.length; k++){ //iteroidaan kartan viivoja
                 if (nakyma.getNakoviiva(i).intersectsLine(kartta[k])){ //JOS näköviiva leikkaan karttaviivan:
-                    System.out.print("kartta["+k+"] leikkaa näköviiva["+i+"]");
+        //            System.out.print("kartta["+k+"] leikkaa näköviiva["+i+"]");
                     Point2D.Float leikkauspiste = nakyma.leikkaako(nakyma.getNakoviiva(i), kartta[k]); //pistetään leikkauspiste muistiin
                     
-                    System.out.print(" paikassa("+leikkauspiste.x+","+leikkauspiste.y+"), ");
+        //            System.out.print(" paikassa("+leikkauspiste.x+","+leikkauspiste.y+"), ");
                     
                     if (pieninleikkaus > Math.sqrt(Math.pow(paikka.x-leikkauspiste.x,2)+(Math.pow(paikka.y-leikkauspiste.y,2)))){
                     //jos leikkauspiste on pienempi kuin muistissa oleva lyhyin matka leikkauspisteeseen
                         pieninleikkaus = (float)Math.sqrt(Math.pow(paikka.x-leikkauspiste.x,2)+(Math.pow(paikka.y-leikkauspiste.y,2)));
                         //overwritataan wanha kaukaisempi leikkauspiste uudella lyhyemmällä
-                        System.out.println("pit:"+pieninleikkaus);
+        //                System.out.println("pit:"+pieninleikkaus);
                     }
                     
                 }

@@ -44,6 +44,18 @@ public class JsimData {
     }
 
     /**
+     * @return robotin luoman data-taulukon integgerinä
+     */
+    public int[] getIntData(){
+        System.out.println("***getintdata***");
+        int[] dtaulu = new int[data.length];
+        for (int i = 0; i < data.length; i++){
+            dtaulu[i] = (int)data[i];
+        }
+        return dtaulu;
+    }
+    
+    /**
      * Palauttaa datan pisteinä. Jos pistettä ei ole,
      * palauttaa pisteen (666666,666666)
      * 

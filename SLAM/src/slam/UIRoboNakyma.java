@@ -14,6 +14,7 @@ import javax.swing.*;
 public class UIRoboNakyma extends JPanel {
 
     private Point2D.Double[] pisteet;
+    Point2D.Double sailio;
 
     /**
      * 
@@ -78,7 +79,41 @@ public class UIRoboNakyma extends JPanel {
      */
     //TODO: pisteet etäisyyksistä
     public void piirraEtaisyydet(Point2D.Double[] pisteet) {
+        
+        System.out.println("piirraetaisyydet");
+        System.out.println(pisteet[0]);
         this.pisteet = pisteet;
         repaint();
     }
+    
+    public Point2D.Double[] etaisyydetPisteiksi(int etaisyydet[]){
+        
+        Point2D.Double[] pistetaulu = new Point2D.Double[etaisyydet.length];
+
+        double x;
+        double y;
+        System.out.println("etaisyydetpisteiks");
+        for (int i = 0; i < etaisyydet.length; i++){
+            
+            if (etaisyydet[i] < 790){
+             //   if (i == 0){
+                    sailio = new Point2D.Double(-etaisyydet[i]/4, 0);
+                } else if (i < 36){
+                    x = (etaisyydet[i]*Math.sin(((i*5)-90)*(Math.PI/180)))/4;
+                    y = (etaisyydet[i]*Math.cos(((i*5)-90)*(Math.PI/180)))/4;
+                    sailio = new Point2D.Double(x,y);
+                } else { //if (i == 36)
+                    sailio = new Point2D.Double(etaisyydet[i]/4, 0);
+                }
+                pistetaulu[i]=sailio;
+                System.out.println(sailio);
+            //} else {
+                //lol
+             //   System.out.println("!!!!!NULL!!!!!");
+           // }
+        }
+        
+        return pistetaulu;
+    }
+    
 }

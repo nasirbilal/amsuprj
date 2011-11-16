@@ -100,12 +100,10 @@ public class Komentaja {
         // Lopuksi säie kutsuu paivitaNakymat().
         JsimRobo robo = new JsimRobo("Jantunen"); //robotti
         Mittaustulokset sailio = new Mittaustulokset(); //sailio mihin tallennetaan mittaustulokset
-        Kerailija kerailija = new Kerailija(robo,sailio); //luodaan keräilijä säie
+        Kerailija kerailija = new Kerailija(robo,sailio,roboNakyma1); //luodaan keräilijä säie
         kerailija.start();
-        try{
-            Thread.sleep(100000);
-        }catch(Exception e){}
-        kerailija.lopeta();
+        
+        //kerailija.lopeta();
         sailio.tulosta();
         
         
