@@ -5,16 +5,25 @@
 package slam;
 
 import java.awt.geom.Line2D;
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
 
 /**
- * Kokoaja yhdistää robottien yksityiset kartat kokonaiseksi yhteiskartaksi.
+ * @brief Kokoaja yhdistää robottien yksityiset kartat yhdeksi kokonaiskartaksi.
+ * 
+ * Kokoaja vastaanottaa yksittäisten robottien tutkimia alueita kuvaavat kartat
+ * ja yhdistää ne sopivasta molemmista kartoista löytyvästä vastaavuuskohdasta
+ * toisiinsa. Jos kartat ovat täysin erilliset tai algoritmi muutoin epäonnistuu
+ * yhteisen alueen/kohdan löytämisessä, erilliset kartat asetellaan
+ * sattumanvaraisesti päällekkäin.
+ * 
+ * Robottien tutkiman ympäristön oletetaan koostuvan suorista seinistä, jotka
+ * ovat aina suorassa kulmassa toisiinsa nähden. Seinillä on oletuspaksuus,
+ * jota lähempänä kaksi seinää ei koskaan ole ellei niillä ole ainakin yhtä
+ * yhteistä kulmaa (jonka suuruus siis on aina 90 asteen moninkerta).
  * 
  * @author L
  */
@@ -22,8 +31,6 @@ public class Kokoaja {
     private static List<Line2D.Float> kartta;
     private static Map<Integer, Line2D.Float[] > roboKartta;
     private static boolean onMuuttunut;
-
-    private static final int TARKKUUSASTEET = 8;
 
     Kokoaja() {
         kartta = new ArrayList<Line2D.Float>();
@@ -47,9 +54,9 @@ public class Kokoaja {
         ArrayList<Line2D.Float[] > kartat = (ArrayList<Line2D.Float[] >) roboKartta.values();
         kartta.addAll(Arrays.asList(kartat.get(0)));
 
-        for (int k = 1; k < kartat.size(); ++k) // kartat[0] lisättiin äsken.
-          for (int tark = TARKKUUSASTEET; tark >= 0 ; --tark )
-            for (int kulma = 0; kulma < 360; kulma += (1 + tark) * 10) {
+        // kartat[0] lisättiin äsken. Aloita indeksistä 1.
+        for (int k = 1; k < kartat.size(); ++k)
+            for (int kulma = 0; kulma < 360; kulma += 90) {
             
             // Siirrä pisteitä kunnes ne ovat origossa.
             // Liitä pisteet karttaan.
