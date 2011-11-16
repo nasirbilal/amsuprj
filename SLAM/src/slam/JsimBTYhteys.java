@@ -22,7 +22,7 @@ public class JsimBTYhteys extends Thread implements BTYhteys {
         this.robo = robo;
         this.paketti = null;
         this.yhteys = new NXTConnector();
-        
+
         //Luodaan input/output streamit
         this.dataUlos = yhteys.getDataOut();
         this.dataSisaan = yhteys.getDataIn();
@@ -33,15 +33,15 @@ public class JsimBTYhteys extends Thread implements BTYhteys {
         ObjectOutputStream objUlos = null;
         ObjectInputStream objSisaan = null;
         if (robo != null) {
-            while (jatkuu) {
 
-                try {
-                    // Luodaan yhteys robottiin nimen perusteella
-                    if (yhteys.connectTo(robo.getNimi())) {
-                        System.err.println("Yhdistaminen epaonnistui");
-                        System.exit(-1);
-                    }
+            try {
+                // Luodaan yhteys robottiin nimen perusteella
+                if (yhteys.connectTo(robo.getNimi())) {
+                    System.err.println("Yhdistaminen epaonnistui");
+                    System.exit(-1);
+                }
 
+                while (jatkuu) {
                     long startingTime = System.nanoTime();
                     //Kirjoitetaan dataa Streamiin
                     try {
@@ -67,16 +67,16 @@ public class JsimBTYhteys extends Thread implements BTYhteys {
                     } catch (IOException ioe) {
                         System.out.println("IOException sulkiessa yhteytta:");
                         System.out.println(ioe.getMessage());
-                    }
-                } catch (Exception ex) {
-                    Logger.getLogger(BTYhteys.class.getName()).log(Level.SEVERE, null, ex);
-                } finally {
-                    try {
-                        objUlos.close();
-                    } catch (IOException ex) {
-                        Logger.getLogger(BTYhteys.class.getName()).log(Level.SEVERE, null, ex);
+                    } finally {
+                        try {
+                            objUlos.close();
+                        } catch (IOException ex) {
+                            Logger.getLogger(BTYhteys.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }
                 }
+            } catch (Exception ex) {
+                Logger.getLogger(BTYhteys.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
