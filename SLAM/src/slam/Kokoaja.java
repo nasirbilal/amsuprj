@@ -54,7 +54,8 @@ public class Kokoaja {
         ArrayList<Line2D.Float[] > kartat = (ArrayList<Line2D.Float[] >) roboKartta.values();
         kartta.addAll(Arrays.asList(kartat.get(0)));
 
-        // kartat[0] lisättiin äsken. Aloita indeksistä 1.
+        // kartat[0] on alkukartta, johon lisätään muut karttapalat yksi
+        // kerrallaan. Aloitetaan heti seuraavasta kartasta, eli [1]:stä.
         for (int k = 1; k < kartat.size(); ++k)
             for (int kulma = 0; kulma < 360; kulma += 90) {
             
