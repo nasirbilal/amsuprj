@@ -46,8 +46,7 @@ public class NXTBTYhteys extends Thread implements BTYhteys {
     public void run() {
         if (robo != null) {
             while (jatkuu) {
-              
-                
+
             }
         }
     }
