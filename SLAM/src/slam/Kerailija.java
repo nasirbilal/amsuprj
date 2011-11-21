@@ -31,7 +31,7 @@ public class Kerailija extends Thread{
     public void run(){
         while(!valmis){
             // Mitataan ja tallennetaan mittaukset säiliöön
-            data = robo.valitseUusiPiste(); //robotti valitsee uuden pisteen ja liikkuu sinne ja palauttaa etäisyydet
+            data = robo.valitseUusiPiste(37); //robotti valitsee uuden pisteen ja liikkuu sinne ja palauttaa etäisyydet
             
             sailio.uusiMittaus(data);
             System.out.println("runneri");

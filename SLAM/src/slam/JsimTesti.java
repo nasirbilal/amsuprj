@@ -529,7 +529,7 @@ public class JsimTesti {
             */
         if (valinta == 11){
             
-            JsimData data1 = jantunen.mittaa();
+            JsimData data1 = jantunen.mittaa(37);
             
             Point2D.Float ptaulu[] = data1.getPisteet();
             
@@ -540,7 +540,7 @@ public class JsimTesti {
             System.out.println("toimii, käännytään 180astetta");
             jantunen.käänny(180);
             
-            JsimData data2 = jantunen.mittaa();
+            JsimData data2 = jantunen.mittaa(37);
             
             Point2D.Float ptaulu2[] = data2.getPisteet();
             

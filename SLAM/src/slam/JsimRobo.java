@@ -2,6 +2,7 @@
 package slam;
 
 import java.awt.geom.Point2D;
+import java.awt.geom.Point2D.Float;
 import java.util.Random;
 import java.awt.geom.Line2D;
 
@@ -13,7 +14,6 @@ import java.awt.geom.Line2D;
 public class JsimRobo {
     
     private final int infraKantama = 800;   /// Robotin infrapunasensorin kantama MILLIMETREISSÄ
-    private final int mittausMaara = 1+180/5; /// Robotti mittaa 5 asteen välein.
 
     private int id;                         /// Robotin yksilöllinen tunnus.
     private float suunta;                   /// Robotin suunta, range: 0-359, jossa 0 ON POHJOINEN
@@ -57,6 +57,10 @@ public class JsimRobo {
      */
     
     //Bluetoothia varten
+    public int getID() {
+        return id;
+    }
+    
     public String getNimi(){
         return nimi;
     }
@@ -73,8 +77,12 @@ public class JsimRobo {
         return paikka;
     }
     
-    public void setPaikka(int x, int y){
+    public void setPaikka(float x, float y){
         paikka = new Point2D.Float(x,y);
+    }
+
+    void setPaikka(Point2D.Float paikka) {
+        setPaikka(paikka.x, paikka.y);
     }
     
     /*
@@ -108,7 +116,7 @@ public class JsimRobo {
      * @note Robotti kääntyy pistettä kohti ja "ajaa" siihen. Ei mitään pathfindingiä.
      */
     public Point2D.Float etenePisteeseen(Point2D.Float kohde){
-        käännyKohti(kohde, 0);
+        käännyKohti(kohde);
         return etene((float)Math.sqrt(Math.pow(kohde.x-paikka.x,2)+(Math.pow(kohde.y-paikka.y,2))));
     }
     
@@ -137,7 +145,7 @@ public class JsimRobo {
      * @param on mahdollinen lisäkääntyminen, anna 0 jos ei tarvetta
      * @return uuden suunnan.
      */
-    public float käännyKohti(Point2D.Float kohde, float bonusaste){
+    public float käännyKohti(Point2D.Float kohde){
         
         /*
          * koska tan(alpha) = a/b, niin
@@ -193,12 +201,12 @@ public class JsimRobo {
      * ittestään.
      */
     
-    public JsimData valitseUusiPiste(){
+    public JsimData valitseUusiPiste(int mittausMaara){
         
         
         
         
-        mittaus = mittaa();            //mittaus on osa näitä navigointihommia
+        mittaus = mittaa(mittausMaara);         //mittaus on osa näitä navigointihommia
         float mtaulu[] = mittaus.getData();     //tiedot edessäolevasta kamasta
         
         
@@ -314,7 +322,7 @@ public class JsimRobo {
         System.out.println("2jantusen sijainti nyt:(" + etenemiskohde.x + "," + etenemiskohde.y + ")");
         System.out.println("2jantusen suunta nyt:" + suunta);
         
-        käännyKohti(new Point2D.Float(x1,y1),90);
+        käännyKohti(new Point2D.Float(x1,y1));
         
         System.out.println("3jantusen sijainti nyt:(" + etenemiskohde.x + "," + etenemiskohde.y + ")");
         System.out.println("3jantusen suunta nyt:" + suunta);
@@ -325,7 +333,7 @@ public class JsimRobo {
      * Mittaus
      */
     
-    public JsimData mittaa(){
+    public JsimData mittaa(int mittausMaara){
         /*
          * Tässä olis ideana, että verrataan robotin yhtä "näköviivaa" kaikkiin kartan viivoihin vuoron perään ja jos leikkaus
          * löytyy niin tallennetaan se pieninleikkaus-muuttujaan, jota vertaillaan tuleviin leikkauspituuksiin. Sitten tallennetaan

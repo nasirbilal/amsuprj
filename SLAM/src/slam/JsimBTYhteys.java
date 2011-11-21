@@ -1,93 +1,34 @@
 package slam;
 
-import java.io.*;
-import java.util.logging.*;
-import lejos.pc.comm.*;
-
 /**
  *
  * @author Mudi
  */
-public class JsimBTYhteys extends Thread implements BTYhteys {
+public class JsimBTYhteys implements BTYhteys {
 
-    private volatile boolean jatkuu;
     private JsimRobo robo;
-    private BTPaketti paketti;
-    private NXTConnector yhteys;
-    private DataOutputStream dataUlos;
-    private DataInputStream dataSisaan;
 
-    public JsimBTYhteys(JsimRobo robo) {
-        this.jatkuu = true;
-        this.robo = robo;
-        this.paketti = null;
-        this.yhteys = new NXTConnector();
-
-        //Luodaan input/output streamit
-        this.dataUlos = yhteys.getDataOut();
-        this.dataSisaan = yhteys.getDataIn();
-    }
-
-    @Override
-    public void run() {
-        ObjectOutputStream objUlos = null;
-        ObjectInputStream objSisaan = null;
-        if (robo != null) {
-
-            try {
-                // Luodaan yhteys robottiin nimen perusteella
-                if (yhteys.connectTo(robo.getNimi())) {
-                    System.err.println("Yhdistaminen epaonnistui");
-                    System.exit(-1);
-                }
-
-                while (jatkuu) {
-                    long startingTime = System.nanoTime();
-                    //Kirjoitetaan dataa Streamiin
-                    try {
-                        objUlos.writeObject(yhteys);
-                        objUlos.flush();
-                    } catch (IOException ioe) {
-                        System.out.println("IO Exception kirjoittaessa:");
-                        System.out.println(ioe.getMessage());
-                    }
-                    //luetaan dataa
-                    try {
-                        objSisaan.readInt();
-                    } catch (IOException ioe) {
-                        System.out.println("IO Exception lukiessa:");
-                        System.out.println(ioe.getMessage());
-                    }
-                    long endingTime = System.nanoTime();
-                    System.out.println("Lähetettiin 100000 lukua ajassa " + (endingTime - startingTime) + " millisekunttia");
-                    try {
-                        dataSisaan.close();
-                        dataUlos.close();
-                        yhteys.close();
-                    } catch (IOException ioe) {
-                        System.out.println("IOException sulkiessa yhteytta:");
-                        System.out.println(ioe.getMessage());
-                    } finally {
-                        try {
-                            objUlos.close();
-                        } catch (IOException ex) {
-                            Logger.getLogger(BTYhteys.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    }
-                }
-            } catch (Exception ex) {
-                Logger.getLogger(BTYhteys.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
+    public JsimBTYhteys() {
+        this.robo = new JsimRobo("JsimRobo");
     }
 
     @Override
     public BTPaketti lahetaJaVastaanota(BTPaketti paketti, int odotusAikaMs) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        robo.setPaikka(paketti.getNykySijaiti());
+        robo.etenePisteeseen(paketti.getUusiSijaiti());
+        robo.käännyKohti(paketti.getMittausSuunta());
+        JsimData data = robo.mittaa(paketti.getEtaisyydet().length);
+        int[] etäisyydet = new int[paketti.getEtaisyydet().length];
+        for (int i = 0; i < data.getData().length; ++i)
+            etäisyydet[i] = (int)(100.0f*data.getData()[i]); // Muuta milleiksi.
+        
+        paketti.setNykySijaiti(data.getPaikka());
+        paketti.setEtaisyydet(etäisyydet);
+        return paketti;
     }
 
     @Override
     public void uudelleenKaynnista() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        this.robo = new JsimRobo("JsimRobo");
     }
 }
