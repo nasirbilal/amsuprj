@@ -44,9 +44,17 @@ public class BTPaketti implements Serializable {
     private Point2D.Float mittausSuunta;
     private int[] etaisyydet;
 
+    public int getId() {
+        return id;
+    }
+
     public BTPaketti(int id) {
         this.id = id;
         this.etaisyydet = new int[MAARA];
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Point2D.Float getNykySijaiti() {
