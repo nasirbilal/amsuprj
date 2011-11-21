@@ -21,6 +21,8 @@ public class Komentaja {
      * 
      */
     public void TESTIroboNakymaTESTI() {
+        // TODO: tee RoboOhjaimen yksikkötestit ja syötä tulos tänne samalla!
+        
         java.util.Random r = new java.util.Random();
         Point2D.Double[] p = new Point2D.Double[9];
         Point2D.Double[] p2 = new Point2D.Double[9];
@@ -44,7 +46,6 @@ public class Komentaja {
         roboNakyma2.piirraEtaisyydet(p2);
     }
 
-    //TODO: poista testit kun nakyman saato on valmis
     /**
      * 
      * @param rb
@@ -82,5 +83,6 @@ public class Komentaja {
 
         Komentaja komentaja = new Komentaja();
         UI ui = new UI(komentaja);
+        komentaja.TESTIroboNakymaTESTI();
     }
 }

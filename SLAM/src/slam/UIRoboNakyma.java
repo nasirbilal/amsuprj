@@ -16,9 +16,6 @@ public class UIRoboNakyma extends JPanel {
     private Point2D.Double[] pisteet;
     Point2D.Double sailio;
 
-    /**
-     * 
-     */
     public UIRoboNakyma() {
         this.pisteet = null;
         final float katko[] = {10.0f};
@@ -48,23 +45,23 @@ public class UIRoboNakyma extends JPanel {
         // 'origosta' ensimmäiseen ja viimeiseen pisteeseen
         // tämä siis simuloi aluetta, jonka robotti näkee
         if (pisteet != null) {
-            Point2D.Double temp = null, ensimmainen = null, viimeinen = null;
+            Point2D.Double edellinen = null, ensimmainen = null, viimeinen = null;
             for (Point2D.Double piste : pisteet) {
                 if (ensimmainen == null) {
                     ensimmainen = piste;
                 }
                 viimeinen = piste;
 
-                if (temp != null) {
-                    g2.drawLine((int)temp.x, (int)temp.y, (int)piste.x, (int)piste.y);
+                if (edellinen != null) {
+                    g2.drawLine((int)edellinen.x, (int)edellinen.y,
+                                (int)piste.x, (int)piste.y);
                 }
-                temp = piste;
+                edellinen = piste;
             }
-            if (ensimmainen == null) {
-                JOptionPane.showMessageDialog(this, "Point-ensimmäinen is null");
-            }
+
             g2.setStroke(katkoV);
             g2.setColor(Color.red);
+
             //Pitää olla int,int,int,int ; ei int,int,double,double, tämä vain temp korjaus
             g2.drawLine((getWidth()/2), getHeight(), (int)ensimmainen.x, (int)ensimmainen.y);
             g2.drawLine((getWidth()/2), getHeight(), (int)viimeinen.x, (int)viimeinen.y);
@@ -79,15 +76,11 @@ public class UIRoboNakyma extends JPanel {
      */
     //TODO: pisteet etäisyyksistä
     public void piirraEtaisyydet(Point2D.Double[] pisteet) {
-        
-        System.out.println("piirraetaisyydet");
-        System.out.println(pisteet[0]);
         this.pisteet = pisteet;
         repaint();
     }
     
     public Point2D.Double[] etaisyydetPisteiksi(int etaisyydet[]){
-        
         Point2D.Double[] pistetaulu = new Point2D.Double[etaisyydet.length];
 
         double x;
