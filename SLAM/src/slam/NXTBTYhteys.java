@@ -35,12 +35,11 @@ public class NXTBTYhteys extends Thread implements BTYhteys {
 
     private void alustaYhteys() {
         this.yhteys = new NXTConnector();
-
         try {
             // Luodaan yhteys robottiin nimen perusteella
-            if (!yhteys.connectTo(robo.getNimi())) {
+            if(!yhteys.connectTo(robo.getNimi())) {
                 System.err.println("Yhdistaminen epaonnistui");
-                System.exit(-1);
+                //uudelleenKaynnista();
             }
         } catch (Exception e) {
         }

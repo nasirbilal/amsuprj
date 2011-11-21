@@ -4,6 +4,8 @@
  */
 package slam;
 
+import java.awt.geom.Point2D;
+
 /**
  *
  * @author 
@@ -36,9 +38,12 @@ public class Kerailija extends Thread{
             sailio.uusiMittaus(data);
             System.out.println("runneri");
             
-            System.out.println("r.ep(d.gid); "+robonaky.etaisyydetPisteiksi(data.getIntData()));
-            System.out.println("d.gid: "+data.getIntData());
-            robonaky.piirraEtaisyydet(robonaky.etaisyydetPisteiksi(data.getIntData()));
+           // System.out.println("r.ep(d.gid); "+robonaky.etaisyydetPisteiksi(data.getIntData()));
+           // System.out.println("d.gid: "+data.getIntData());
+            //robonaky.piirraEtaisyydet(robonaky.etaisyydetPisteiksi(data.getIntData()));
+            Point2D.Double[] pisteet = {new Point2D.Double(100,40), new Point2D.Double(150,80)};
+            
+            robonaky.piirraEtaisyydet(pisteet);
             int[] lol =data.getIntData();
             System.out.println("getintdata: "+lol[0]);
             System.out.println("runneri");

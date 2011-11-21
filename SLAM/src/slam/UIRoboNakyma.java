@@ -85,6 +85,7 @@ public class UIRoboNakyma extends JPanel {
 
         double x;
         double y;
+
         System.out.println("etaisyydetpisteiks");
         for (int i = 0; i < etaisyydet.length; i++){
             
@@ -92,8 +93,9 @@ public class UIRoboNakyma extends JPanel {
              //   if (i == 0){
                     sailio = new Point2D.Double(-etaisyydet[i]/4, 0);
                 } else if (i < 36){
-                    x = (etaisyydet[i]*Math.sin(((i*5)-90)*(Math.PI/180)))/4;
-                    y = (etaisyydet[i]*Math.cos(((i*5)-90)*(Math.PI/180)))/4;
+                    x = (etaisyydet[i]*Math.sin(((i*5)-90)*(Math.PI/180)))/10;
+                    y = (etaisyydet[i]*Math.cos(((i*5)-90)*(Math.PI/180)));
+
                     sailio = new Point2D.Double(x,y);
                 } else { //if (i == 36)
                     sailio = new Point2D.Double(etaisyydet[i]/4, 0);
