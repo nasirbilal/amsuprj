@@ -138,7 +138,7 @@ public class JsimRoboTest {
         float bonusaste = 0.0F;
         JsimRobo instance = new JsimRobo(0,0,0,"jantunen");
         float expResult = 90.0F;
-        float result = instance.käännyKohti(kohde, bonusaste);
+        float result = instance.käännyKohti(kohde);
         assertEquals(expResult, result, 0.0);
     }
     @Test
@@ -148,7 +148,7 @@ public class JsimRoboTest {
         float bonusaste = 0.0F;
         JsimRobo instance = new JsimRobo(0,0,0,"jantunen");
         float expResult = 45.0F;
-        float result = instance.käännyKohti(kohde, bonusaste);
+        float result = instance.käännyKohti(kohde);
         assertEquals(expResult, result, 0.0);
     }
     @Test
@@ -158,7 +158,7 @@ public class JsimRoboTest {
         float bonusaste = 0.0F;
         JsimRobo instance = new JsimRobo(0,0,0,"jantunen");
         float expResult = 315.0F;
-        float result = instance.käännyKohti(kohde, bonusaste);
+        float result = instance.käännyKohti(kohde);
         assertEquals(expResult, result, 0.0);
     }
 
@@ -186,7 +186,7 @@ public class JsimRoboTest {
         JsimKartta JSKkartta = null;
         JsimRobo instance = new JsimRobo("jantunen");
         JsimData expResult = null;
-        JsimData result = instance.valitseUusiPiste(JSKkartta);
+        JsimData result = instance.valitseUusiPiste(37);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("ValitseUusiPiste ei ole valmis");
@@ -199,9 +199,9 @@ public class JsimRoboTest {
     public void testMittaa() {
         System.out.println("mittaa");
         JsimKartta JSKkartta = null;
-        JsimRobo instance = new JsimRobo();
+        JsimRobo instance = new JsimRobo("Jaska");
         JsimData expResult = null;
-        JsimData result = instance.mittaa(JSKkartta);
+        JsimData result = instance.mittaa(37);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
