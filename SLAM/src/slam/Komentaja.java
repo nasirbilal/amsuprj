@@ -13,12 +13,7 @@ public class Komentaja {
     private UIRoboNakyma roboNakyma2;
     private UIKarttaNakyma karttaNakyma;
     
-
-    /**
-     * 
-     */
     public Komentaja() {
-    
     }
 
     //TODO: poista testit kun nakyman saato on valmis
@@ -84,35 +79,8 @@ public class Komentaja {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch(Exception e) {}
+
         Komentaja komentaja = new Komentaja();
         UI ui = new UI(komentaja);
-    }
-
-    void yhdista() {
-        // luoda kartta eli kokoaja
-        // luoda jsimrobot
-        // arpoa robolle sijainti
-        // jokaiselle robotille luodaan säie, joka kuuntelee robotilta tulevia
-        // mittaustuloksia ja kun uudet tulokset tulevat, annetaan ne
-        // ensin roboNakymalle, joka piirtää viivat robotin mittaamien pisteiden
-        // välille: roboNakyma1.piirraEtaisyydet(p). Sen jälkeen mittaustulokset annetaan
-        // Kokoajalle, joka sylkee uuden kartan, joka sitten piirretään ruudulle.
-        // Lopuksi säie kutsuu paivitaNakymat().
-        JsimRobo robo = new JsimRobo("Jantunen"); //robotti
-        Mittaustulokset sailio = new Mittaustulokset(); //sailio mihin tallennetaan mittaustulokset
-        Kerailija kerailija = new Kerailija(robo,sailio,roboNakyma1); //luodaan keräilijä säie
-        kerailija.start();
-        
-        //kerailija.lopeta();
-        sailio.tulosta();
-        
-        
-        
-        
-        // EXTRAAAAA JA BOOONUSTA:
-        // robotti ei tiedä, missä se on. Tietokone laskee robotin todellisen sijainnin
-        // mittausetäisyyksien perusteella. Säie luettuaan robotin mittaustulokset
-        // laskee robotin sijainnin, uuden mittauspisteen ja käskee robotin mennä
-        // uuteen pisteeseen mittaamaan. Sitten säie alkaa alusta.
     }
 }

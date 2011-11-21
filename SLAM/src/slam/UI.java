@@ -29,7 +29,7 @@ public class UI extends JFrame {
     private JTextArea debugTekstit;
     private Border reunus;
     private JScrollPane scrollPane;
-    private JButton suljeYhteysN, yhdistaN, debugValitsinN,
+    private JButton suljeYhteysN, debugValitsinN,
             paivitaNakymaN, tallennaKarttaN, lopetaN;
     private boolean debug;
     private GridBagConstraints gbc;
@@ -76,7 +76,6 @@ public class UI extends JFrame {
 
         //isoon N-kirjaimeen loppuvat muuttujat ovat nappuloita.
         suljeYhteysN = new JButton("Sulje yhteys");
-        yhdistaN = new JButton("Yhdistä");
         debugValitsinN = new JButton("Debug OFF");
         paivitaNakymaN = new JButton("Päivitä Näkymä");
         tallennaKarttaN = new JButton("Tallenna Kartta");
@@ -85,7 +84,6 @@ public class UI extends JFrame {
         //Asetukset 
         nappulaPaneeli.setPreferredSize(new Dimension(140,20));
         suljeYhteysN.setMinimumSize(new Dimension(140, 20));
-        yhdistaN.setMinimumSize(new Dimension(140, 20));
         debugValitsinN.setMinimumSize(new Dimension(140, 20));
         paivitaNakymaN.setMinimumSize(new Dimension(140, 20));
         tallennaKarttaN.setMinimumSize(new Dimension(140, 20));
@@ -108,7 +106,6 @@ public class UI extends JFrame {
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.insets = new Insets(5, 5, 5, 5);
-        nappulaPaneeli.add(yhdistaN,gbc);
         gbc.gridy = 1;
         nappulaPaneeli.add(suljeYhteysN,gbc);
         gbc.gridy = 2;
@@ -127,14 +124,6 @@ public class UI extends JFrame {
         paaPaneeli.add(scrollPane, BorderLayout.SOUTH);
 
         //Nappuloiden toiminnot
-        yhdistaN.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                komentaja.yhdista();
-            }
-        });
-
         suljeYhteysN.addActionListener(new ActionListener() {
 
             @Override
