@@ -22,6 +22,8 @@ public class RoboOhjain {
     private int odotusMs; /// Kauanko BT-yhteyttä odotetaan ennen time outia.
     private BTYhteys bt; /// BT-yhteys oikeaan tai simuloituun robottiin.
     private boolean onMuuttunut; /// Onko tullut BT:ltä uutta dataa.
+    
+    BTPaketti paketti; // mistä tää tulee?
 
     RoboOhjain(BTYhteys bt, int odotusMilliSek) {
         this.odotusMs = odotusMilliSek;
@@ -39,7 +41,17 @@ public class RoboOhjain {
     ///         estettä ei havaittu eli mittausetäisyys on ääretön, kyseinen
     ///         koordinaatti on null.
     public Point2D.Float[] haeEtaisyydet() {
-        return new Point2D.Float[37];
+        
+        int etaisyydet[] = paketti.getEtaisyydet();
+        Point2D.Float pisteet[] = new Point2D.Float[etaisyydet.length];
+        
+        for (int i = 0; i < etaisyydet.length; i++){
+            float x = (float)(etaisyydet[i] * Math.cos(i*5 - 90));
+            float y = -(float)(etaisyydet[i] * Math.sin(i*5 - 90));
+            pisteet[i] = new Point2D.Float(x,y);
+        }
+        
+        return pisteet;
     }
 
     /// @brief Muodostaa robotin mittaustuloksista yhtenäisen kartan.
