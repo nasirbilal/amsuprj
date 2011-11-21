@@ -278,7 +278,7 @@ public class Kokoaja {
                 }
 
                 // Jana[1] EHKÄ alkaa jana[0]:n läheltä. Varmista läheisyys.
-                if (l0.ptLineDist(l1.getP1()) > delta)
+                if (l0.ptSegDist(l1.getP1()) > delta)
                     continue;
 
                 // Valitse loppupisteeksi l0.P1():stä kauimmaisin piste.
