@@ -45,7 +45,7 @@ public class RoboOhjain extends Thread {
         this.paketti.setNykySijaiti(new Point2D.Float(0, 0));
         this.paketti.setUusiSijaiti(new Point2D.Float(0, 0));
         this.paketti.setMittausSuunta(new Point2D.Float(0, 0));
-        this.roboNakyma = new Point2D.Double[paketti.getEtaisyydet().length];
+        this.roboNakyma = new Point2D.Double[BTPaketti.MAARA];
         this.kartta = new ArrayList<Line2D.Float>();
 
         JsimRoboNakyma nakyma = new JsimRoboNakyma(new Point2D.Float(0, 0),
@@ -74,6 +74,7 @@ public class RoboOhjain extends Thread {
             if (etaisyydet[i] > maxEtaisyys) {
                 roboNakyma[i] = null;
             } else {
+                roboNakyma[i] = new Point2D.Double();
                 roboNakyma[i].x = mittausJanat[i].x2 * etaisyydet[i];
                 roboNakyma[i].y = mittausJanat[i].y2 * etaisyydet[i];
             }

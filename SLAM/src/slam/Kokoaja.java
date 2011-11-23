@@ -121,8 +121,7 @@ public class Kokoaja {
         ArrayList<Line2D.Float> vaaka1 = new ArrayList<Line2D.Float>();
 
         kartta.clear();
-        ArrayList<Line2D.Float[]> kartat =
-                (ArrayList<Line2D.Float[]>) roboKartta.values();
+        ArrayList<Line2D.Float[]> kartat =new ArrayList<Line2D.Float[]>(roboKartta.values());
         kartta.addAll(Arrays.asList(kartat.get(0)));
 
         // Erittele alkulartta vaakasuoriin ja pystysuoriin seiniin.
