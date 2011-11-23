@@ -29,8 +29,8 @@ public class UI extends JFrame {
     private JTextArea debugTekstit;
     private Border reunus;
     private JScrollPane scrollPane;
-    private JButton suljeYhteysN, debugValitsinN,
-            paivitaNakymaN, tallennaKarttaN, lopetaN;
+    private JButton debugValitsinN,
+            paivitaNakymaN, lopetaN;
     private boolean debug;
     private GridBagConstraints gbc;
 
@@ -75,18 +75,14 @@ public class UI extends JFrame {
         scrollPane = new JScrollPane(debugTekstit);
 
         //isoon N-kirjaimeen loppuvat muuttujat ovat nappuloita.
-        suljeYhteysN = new JButton("Sulje yhteys");
         debugValitsinN = new JButton("Debug OFF");
         paivitaNakymaN = new JButton("Päivitä Näkymä");
-        tallennaKarttaN = new JButton("Tallenna Kartta");
         lopetaN = new JButton("Lopeta");
 
         //Asetukset 
         nappulaPaneeli.setPreferredSize(new Dimension(140,20));
-        suljeYhteysN.setMinimumSize(new Dimension(140, 20));
         debugValitsinN.setMinimumSize(new Dimension(140, 20));
         paivitaNakymaN.setMinimumSize(new Dimension(140, 20));
-        tallennaKarttaN.setMinimumSize(new Dimension(140, 20));
         lopetaN.setMinimumSize(new Dimension(140, 20));
 
         robo1.setPreferredSize(new Dimension(200, 200));
@@ -107,13 +103,11 @@ public class UI extends JFrame {
         gbc.gridy = 0;
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.gridy = 1;
-        nappulaPaneeli.add(suljeYhteysN,gbc);
         gbc.gridy = 2;
         nappulaPaneeli.add(debugValitsinN,gbc);
         gbc.gridy = 3;
         nappulaPaneeli.add(paivitaNakymaN,gbc);
         gbc.gridy = 4;
-        nappulaPaneeli.add(tallennaKarttaN,gbc);
         gbc.gridy = 5;
         nappulaPaneeli.add(lopetaN,gbc);
         roboPaneeli.add(robo1, BorderLayout.NORTH);
@@ -124,12 +118,6 @@ public class UI extends JFrame {
         paaPaneeli.add(scrollPane, BorderLayout.SOUTH);
 
         //Nappuloiden toiminnot
-        suljeYhteysN.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-            }
-        });
 
         debugValitsinN.addActionListener(new ActionListener() {
 
@@ -157,12 +145,6 @@ public class UI extends JFrame {
             }
         });
 
-        tallennaKarttaN.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-            }
-        });
 
         lopetaN.addActionListener(new ActionListener() {
 

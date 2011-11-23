@@ -41,7 +41,7 @@ public class Kerailija extends Thread{
            // System.out.println("r.ep(d.gid); "+robonaky.etaisyydetPisteiksi(data.getIntData()));
            // System.out.println("d.gid: "+data.getIntData());
             //robonaky.piirraEtaisyydet(robonaky.etaisyydetPisteiksi(data.getIntData()));
-            Point2D.Double[] pisteet = {new Point2D.Double(100,40), new Point2D.Double(150,80)};
+            Point2D.Double[] pisteet = {new Point2D.Double(100,40), new Point2D.Double(150,80),new Point2D.Double(190,20)};
             
             robonaky.piirraEtaisyydet(pisteet);
             int[] lol =data.getIntData();
