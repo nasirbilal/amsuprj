@@ -20,28 +20,35 @@ public class NXTBTYhteys extends Thread implements BTYhteys {
     private DataInputStream dataSisaan;
     private int odotusAikaMS;  //default odotusaika on 5 sek
     private volatile boolean lahetys;
+    private int yrityksia;
 
     public NXTBTYhteys(JsimRobo robo) {
-        this.jatkuu = true;
+        this.yrityksia = 0;
+        this.jatkuu = true;                             //NXTBYhteys main looppi
         this.robo = robo;
-        this.paketti = null;
-        this.tempEtaisyydet = new int[BTPaketti.MAARA];
-        this.odotusAikaMS = 5;
-        this.lahetys = false;
-        this.lukuMaara = BTPaketti.MAARA + 1;  //Etaisyyksien maara + id ja itse maara lukema
+        this.paketti = null;                            //BTPaketti
+        this.tempEtaisyydet = new int[BTPaketti.MAARA]; 
+        this.odotusAikaMS = 5;                          //"Connection timeout" -EI IMPLEMENTOITU
+        this.lahetys = false;                           //Lähetetäänkö tavaraa
+        this.lukuMaara = BTPaketti.MAARA + 1;           //Etaisyyksien maara + id ja itse maara lukema
+        this.yhteys = new NXTConnector();
         alustaYhteys();
 
     }
 
-    private void alustaYhteys() {
-        this.yhteys = new NXTConnector();
+    private void alustaYhteys() {  
         try {
             // Luodaan yhteys robottiin nimen perusteella
             if(!yhteys.connectTo(robo.getNimi())) {
+                yrityksia++;
                 System.err.println("Yhdistaminen epaonnistui");
-                //uudelleenKaynnista();
+                if(yrityksia<5){
+                uudelleenKaynnista();
+                }
+                System.exit(-1);
             }
         } catch (Exception e) {
+            e.printStackTrace();
         }
         //Luodaan input/output streamit
         this.dataUlos = yhteys.getDataOut();
@@ -49,7 +56,7 @@ public class NXTBTYhteys extends Thread implements BTYhteys {
     }
 
     //Itse lähetys ja vastaanotto tapahtuu täällä
-    /*vastaanottojärjestys:
+    /*Lukujärjestys
      *1. ID
      *2. itse etäisyydet
      *3. nykysijainti
@@ -64,15 +71,22 @@ public class NXTBTYhteys extends Thread implements BTYhteys {
                 if (lahetys) {
                     try {
                         dataUlos.writeInt(paketti.getId());
+                        dataUlos.flush();
                         dataUlos.writeFloat(paketti.getNykySijaiti().x);
+                        dataUlos.flush();
                         dataUlos.writeFloat(paketti.getNykySijaiti().y);
+                        dataUlos.flush();
                         dataUlos.writeFloat(paketti.getUusiSijaiti().x);
+                        dataUlos.flush();
                         dataUlos.writeFloat(paketti.getUusiSijaiti().y);
-                        dataUlos.writeFloat(paketti.getMittausSuunta().y);
+                        dataUlos.flush();
+                        dataUlos.writeFloat(paketti.getMittausSuunta().x);
+                        dataUlos.flush();
                         dataUlos.writeFloat(paketti.getMittausSuunta().y);
                         dataUlos.flush();
                     } catch (Exception e) {
-                        uudelleenKaynnista();
+                        e.printStackTrace();
+                        //uudelleenKaynnista();
                     }
                     try {
                         for (int i = 0; i < lukuMaara; i++) {
@@ -88,7 +102,7 @@ public class NXTBTYhteys extends Thread implements BTYhteys {
                         paketti.setMittausSuunta(new Point2D.Float(dataSisaan.readFloat(), dataSisaan.readFloat()));
 
                     } catch (Exception e){
-                        uudelleenKaynnista();
+                       // uudelleenKaynnista();
                     }
                     lahetys = false;
                 }
@@ -113,6 +127,6 @@ public class NXTBTYhteys extends Thread implements BTYhteys {
 
     @Override
     public void uudelleenKaynnista() {
-        alustaYhteys();
+     //   alustaYhteys();
     }
 }

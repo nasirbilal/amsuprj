@@ -4,8 +4,7 @@
  */
 package slam;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import java.awt.geom.Point2D;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -14,52 +13,29 @@ import static org.junit.Assert.*;
  * @author Mudi
  */
 public class NXTBTYhteysTest {
-    
-    public NXTBTYhteysTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() throws Exception {
-    }
-
-    @AfterClass
-    public static void tearDownClass() throws Exception {
-    }
-
-    /**
-     * Test of run method, of class NXTBTYhteys.
-     */
-    @Test
-    public void testRun() {
-        System.out.println("run");
-        NXTBTYhteys instance = new NXTBTYhteys(new JsimRobo("Jantunen"));
-        instance.start();
-        assert true;
-    }
-
+   
     /**
      * Test of lahetaJaVastaanota method, of class NXTBTYhteys.
      */
     @Test
     public void testLahetaJaVastaanota() {
         System.out.println("lahetaJaVastaanota");
-        BTPaketti paketti = new BTPaketti(1);
+        BTPaketti paketti = new BTPaketti(-1);
+        paketti.setMittausSuunta(new Point2D.Float(9.0f,10.0f));
+        paketti.setNykySijaiti(new Point2D.Float(11.0f,12.0f));
+        paketti.setUusiSijaiti(new Point2D.Float(13.0f,14.0f));
+        
+        int etaisyydet[] = new int[BTPaketti.MAARA];
+        for(int i = 0; i< BTPaketti.MAARA; i++){
+            etaisyydet[i] = 80;
+        }
+        
+        paketti.setEtaisyydet(etaisyydet);
         int odotusAikaMs = 5;
         NXTBTYhteys instance = new NXTBTYhteys(new JsimRobo("Jantunen"));
         instance.start();
         BTPaketti result = instance.lahetaJaVastaanota(paketti, odotusAikaMs);
-        assertEquals(1, result.getId());
-    }
-
-    /**
-     * Test of uudelleenKaynnista method, of class NXTBTYhteys.
-     */
-    @Test
-    public void testUudelleenKaynnista() {
-        System.out.println("uudelleenKaynnista");
-        NXTBTYhteys instance = null;
-        instance.uudelleenKaynnista();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        System.out.println(result.getId());
+                assertEquals(1, result.getId());
     }
 }
