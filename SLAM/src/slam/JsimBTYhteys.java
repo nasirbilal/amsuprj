@@ -20,7 +20,7 @@ public class JsimBTYhteys implements BTYhteys {
         JsimData data = robo.mittaa(paketti.getEtaisyydet().length);
         int[] etäisyydet = new int[paketti.getEtaisyydet().length];
         for (int i = 0; i < data.getData().length; ++i) {
-            etäisyydet[i] = (int) (100.0f * data.getData()[i]); // Muuta milleiksi.
+            etäisyydet[i] = (int) (data.getData()[i]); // data valmiiksi milleissä.
         }
         paketti.setNykySijaiti(data.getPaikka());
         paketti.setEtaisyydet(etäisyydet);
