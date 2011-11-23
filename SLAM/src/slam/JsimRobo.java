@@ -1,5 +1,6 @@
 package slam;
 
+import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import java.awt.geom.Line2D;
 
@@ -15,6 +16,8 @@ public class JsimRobo {
     private JsimData mittaus;               /// luodaan mittaa()-metodilla, käytetään seuraavan mittauspaikan valitsemiseksi
     private JsimRoboNakyma nakyma;          /// luodaan mittaa()-metodilla, debugausta
 
+    /// Kartta maailmasta, jossa robotti kulkee. 
+    private final Rectangle      reunat =  new Rectangle(0, 0, 135, 200);                        
     private final Line2D.Float[] kartta = {new Line2D.Float(44,  0, 44, 75),
                                            new Line2D.Float(44, 75, 87, 75),
                                            new Line2D.Float(87, 75, 87, 55),
@@ -43,24 +46,25 @@ public class JsimRobo {
         id = id_count++;
         this.infraKantama = infraKantama;
         this.suunta = suunta;
+
+        Point2D.Float p = new Point2D.Float(0, 0);
+        while (true) {
+            p.x = reunat.x + (int)(reunat.width *Math.random());
+            p.y = reunat.y + (int)(reunat.height*Math.random());
+
+            // Create a line from the point to the left
+            Line2D.Float l = new Line2D.Float(p.x, p.y, p.x - reunat.width, p.y);
+
+            int count = 0;
+            for (Line2D.Float kl : kartta) // Count intersections
+              count += l.intersectsLine(kl) ? 1 : 0;
+
+            if (count % 2 == 1)
+                break; // We are inside if the number of intersections is odd.
+        }
         
-        boolean sisalla = false;
-        do {
-//            if (p.x < boundingRect.x || p.y < boundingRect.y) return false;
-//            if (p.x > boundingRect.x + boundingRect.width
-//                || p.y > boundingRect.y + boundingRect.height) return false;
-//
-//            // Create a line from the point to the left
-//            Line l = new Line(p.x, p.y, p.x - boundingRect.width, p.y);
-//
-//            // Count intersections
-//            int count = 0;
-//            for (int i = 0; i < lines.length; i++) {
-//              if (lines[i].intersectsAt(l) != null) count++;
-//            }
-//            // We are inside if the number of intersections is odd
-//            return count % 2 == 1;
-        } while (sisalla);
+        this.paikka = p;
+        System.err.println(p.toString());
     }
 
     public int getID() {
