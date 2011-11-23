@@ -179,6 +179,7 @@ public class RoboOhjain extends Thread {
         dy = Math.min(dy, 10); // Kymmenen senttiä (?) eteenpäin.
         paketti.setUusiSijaiti(new Point2D.Float(x + dx, y + dy));
 
+        onMuuttunut = true;
         return true;
     }
 
