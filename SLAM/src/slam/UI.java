@@ -30,7 +30,7 @@ public class UI extends JFrame {
     private Border reunus;
     private JScrollPane scrollPane;
     private JButton debugValitsinN,
-            paivitaNakymaN, lopetaN;
+            paivitaNakymaN;
     private boolean debug;
     private GridBagConstraints gbc;
 
@@ -77,13 +77,11 @@ public class UI extends JFrame {
         //isoon N-kirjaimeen loppuvat muuttujat ovat nappuloita.
         debugValitsinN = new JButton("Debug OFF");
         paivitaNakymaN = new JButton("Päivitä Näkymä");
-        lopetaN = new JButton("Lopeta");
 
         //Asetukset 
         nappulaPaneeli.setPreferredSize(new Dimension(140,20));
         debugValitsinN.setMinimumSize(new Dimension(140, 20));
         paivitaNakymaN.setMinimumSize(new Dimension(140, 20));
-        lopetaN.setMinimumSize(new Dimension(140, 20));
 
         robo1.setPreferredSize(new Dimension(200, 200));
         robo2.setPreferredSize(new Dimension(200, 200));
@@ -109,7 +107,6 @@ public class UI extends JFrame {
         nappulaPaneeli.add(paivitaNakymaN,gbc);
         gbc.gridy = 4;
         gbc.gridy = 5;
-        nappulaPaneeli.add(lopetaN,gbc);
         roboPaneeli.add(robo1, BorderLayout.NORTH);
         roboPaneeli.add(robo2, BorderLayout.SOUTH);
         paaPaneeli.add(nappulaPaneeli, BorderLayout.EAST);
@@ -146,14 +143,6 @@ public class UI extends JFrame {
         });
 
 
-        lopetaN.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.gc();
-                System.exit(0);
-            }
-        });
 
         setContentPane(paaPaneeli);
         setVisible(true);
