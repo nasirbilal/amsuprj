@@ -19,14 +19,14 @@ import java.util.Calendar;
  * tapahtuu tämän luokan kautta. Jokaista robottia vastaa yksi RoboOhjain-
  * loukan ilmentymä.
  */
-public class RoboOhjain implements Runnable {
+public class RoboOhjain extends Thread {
 
     private int odotusMs; /// Kauanko BT-yhteyttä odotetaan ennen time outia.
     private boolean onMuuttunut; /// Onko tullut BT:ltä uutta dataa.
     private int maxEtaisyys; /// Etäisyys, jota kauempia esteitä ei havaita.
     private BTYhteys bt; /// BT-yhteys oikeaan tai simuloituun robottiin.
     private BTPaketti paketti; /// Viimeisin saatu tulos Bluetoothilta.
-    private Point2D.Float[] roboNakyma; /// Mittaustulokset koordinaatistossa.
+    private Point2D.Double[] roboNakyma; /// Mittaustulokset koordinaatistossa.
     private Line2D.Float[] mittausJanat; /// Robotin mittaussuuntien janat.
     private ArrayList<Line2D.Float> kartta; /// Robotin tutkima alue.
 
@@ -45,7 +45,7 @@ public class RoboOhjain implements Runnable {
         this.paketti.setNykySijaiti(new Point2D.Float(0, 0));
         this.paketti.setUusiSijaiti(new Point2D.Float(0, 0));
         this.paketti.setMittausSuunta(new Point2D.Float(0, 0));
-        this.roboNakyma = new Point2D.Float[paketti.getEtaisyydet().length];
+        this.roboNakyma = new Point2D.Double[paketti.getEtaisyydet().length];
         this.kartta = new ArrayList<Line2D.Float>();
 
         JsimRoboNakyma nakyma = new JsimRoboNakyma(new Point2D.Float(0, 0),
@@ -64,7 +64,7 @@ public class RoboOhjain implements Runnable {
      *         estettä ei havaittu eli mittausetäisyys on ääretön, kyseinen
      *         koordinaatti on null.
      */
-    public Point2D.Float[] haeEtaisyydet() {
+    public Point2D.Double[] haeEtaisyydet() {
         if (!onMuuttunut) {
             return roboNakyma;
         }

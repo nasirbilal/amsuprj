@@ -4,6 +4,7 @@
 package slam;
 
 import java.awt.*;
+import java.awt.geom.Line2D.Float;
 import java.util.Random;
 import javax.swing.*;
 
@@ -38,5 +39,8 @@ public class UIKarttaNakyma extends JPanel {
             g2.drawRect((r.nextInt(300) + 30), (r.nextInt(300) + 30), 50, 50);
         }
         g.setColor(Color.black);
+    }
+
+    void piirraKartta(Float[] yhdista) {
     }
 }

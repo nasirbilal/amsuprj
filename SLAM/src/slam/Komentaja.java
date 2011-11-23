@@ -85,6 +85,31 @@ public class Komentaja extends Thread {
 
     @Override
     public void run() {
-        
+        JsimBTYhteys b1 = new JsimBTYhteys();
+        JsimBTYhteys b2 = new JsimBTYhteys();
+        RoboOhjain r1 = new RoboOhjain(b1, 1, 10*1000, 80*10);
+        RoboOhjain r2 = new RoboOhjain(b2, 2, 10*1000, 80*10);
+        r1.start();
+        r2.start();
+
+        Kokoaja.asetaVirhemitat(Math.toRadians(5.0), 1.0*10);
+        while (roboNakyma1 != null && roboNakyma2 != null) {
+            boolean muuttunut = false;
+            
+            if (r1.onMuuttunut()) {
+             roboNakyma1.piirraEtaisyydet(r1.haeEtaisyydet());
+             Kokoaja.asetaKartta(1, r1.haeKartta());
+             muuttunut = true;
+            }
+            
+            if (r2.onMuuttunut()) {
+             roboNakyma2.piirraEtaisyydet(r2.haeEtaisyydet());
+             Kokoaja.asetaKartta(2, r2.haeKartta());
+             muuttunut = true;
+            }
+
+            if (muuttunut)
+                karttaNakyma.piirraKartta(Kokoaja.yhdista());
+        }
     }
 }
