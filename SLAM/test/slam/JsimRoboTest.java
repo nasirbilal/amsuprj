@@ -129,10 +129,10 @@ public class JsimRoboTest {
     }
 
     /**
-     * Test of käännyKohti method, of class JsimRobo.
+     * Test of kaannyKohti method, of class JsimRobo.
      */
     @Test
-    public void testKäännyKohti1() {
+    public void testkaannyKohti1() {
         System.out.println("k\u00e4\u00e4nnyKohti");
         Point2D.Float kohde = new Point2D.Float(500.0f,0.0f);
         float bonusaste = 0.0F;
@@ -142,7 +142,7 @@ public class JsimRoboTest {
         assertEquals(expResult, result, 0.0);
     }
     @Test
-    public void testKäännyKohti2() {
+    public void testkaannyKohti2() {
         System.out.println("k\u00e4\u00e4nnyKohti");
         Point2D.Float kohde = new Point2D.Float(500.0f,500.0f);
         float bonusaste = 0.0F;
@@ -152,7 +152,7 @@ public class JsimRoboTest {
         assertEquals(expResult, result, 0.0);
     }
     @Test
-    public void testKäännyKohti3() {
+    public void testkaannyKohti3() {
         System.out.println("k\u00e4\u00e4nnyKohti");
         Point2D.Float kohde = new Point2D.Float(-10,10);
         float bonusaste = 0.0F;
