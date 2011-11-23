@@ -6,6 +6,8 @@ package slam;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.Random;
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -139,6 +141,15 @@ public class UI extends JFrame {
                 komentaja.roboNakymaKoe();
                 java.util.Random r = new Random();
                 asetaDebugTeksti("Este havaittu pisteessä: " + r.nextInt(80) + ", " + r.nextInt(80));
+            }
+        });
+        //ESCillä close
+       getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+            KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "Cancel"); 
+        getRootPane().getActionMap().put("Cancel", new AbstractAction(){ 
+           
+            public void actionPerformed(ActionEvent e){
+                System.exit(0);
             }
         });
 
