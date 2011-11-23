@@ -32,7 +32,7 @@ public class NXTBTYhteysTest {
 
         paketti.setEtaisyydet(etaisyydet);
         int odotusAikaMs = 5;
-        NXTBTYhteys instance = new NXTBTYhteys(new JsimRobo("Jantunen"));
+        NXTBTYhteys instance = new NXTBTYhteys(new JsimRobo());
         instance.start();
         BTPaketti result = instance.lahetaJaVastaanota(paketti, odotusAikaMs);
         System.out.println(result.getId());

@@ -12,7 +12,7 @@ public class JsimTesti {
     public static void main(String[] args) {
 
         //JsimRobo jantunen = new JsimRobo(0,0,0);
-        JsimRobo jantunen = new JsimRobo(0, 0, 0, "lol");
+        JsimRobo jantunen = new JsimRobo(0, 800);
         JsimKartta kartta = new JsimKartta();
         Scanner s = new Scanner(System.in);
 

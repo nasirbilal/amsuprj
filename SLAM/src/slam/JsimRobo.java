@@ -10,12 +10,12 @@ import java.awt.geom.Line2D;
  */
 public class JsimRobo {
 
-    private final int infraKantama = 800;   /// Robotin infrapunasensorin kantama MILLIMETREISSÄ
+    private final int infraKantama;   /// Robotin infrapunasensorin kantama MILLIMETREISSÄ
     private int id;                         /// Robotin yksilöllinen tunnus.
     private float suunta;                   /// Robotin suunta, range: 0-359, jossa 0 ON POHJOINEN
     private Point2D.Float paikka;           /// Robotin paikka Point-oliona MILLIMETREISSÄ
-    private static int id_count = 0;        /// Robotin yksilötunnuksen juokseva numero.
-    private JsimKartta JSKkartta = new JsimKartta();
+    private static int id_count;        /// Robotin yksilötunnuksen juokseva numero.
+    private JsimKartta JSKkartta;
     private JsimData mittaus;                       /// luodaan mittaa()-metodilla, käytetään seuraavan mittauspaikan valitsemiseksi
     private JsimRoboNakyma nakyma;                  /// luodaan mittaa()-metodilla, debugausta
     private String nimi;                           /// nimen pitaa vastata Robotin bluetooth-tunnusta
@@ -23,38 +23,23 @@ public class JsimRobo {
      * Konstruktorit
      */
 
-    public JsimRobo(String nimi) {
-        id = id_count++;
-        Random r = new Random();
-        suunta = 0;
-        paikka = new Point2D.Float(0, 0);
-        this.nimi = nimi;
+    public JsimRobo() {
+        this(0, 800);
     }
 
-    public JsimRobo(float suunta, Point2D.Float paikka, String nimi) {
+    public JsimRobo(float suunta, int infraKantama) {
         id = id_count++;
+        this.infraKantama = infraKantama;
         this.suunta = suunta;
-        this.paikka = paikka;
-        this.nimi = nimi;
+        JSKkartta = new JsimKartta();
     }
 
-    public JsimRobo(float suunta, int x, int y, String nimi) {
-        id = id_count++;
-        this.suunta = suunta;
-        paikka = new Point2D.Float(x, y);
-        this.nimi = nimi;
-    }
-
-    /*
-     * Getterit ja setterit
-     */
-    //Bluetoothia varten
     public int getID() {
         return id;
     }
 
     public String getNimi() {
-        return nimi;
+        return "JsimRobo[" + getID() + "]";
     }
 
     public float getSuunta() {
