@@ -4,7 +4,7 @@
 package slam;
 
 import java.awt.*;
-import java.awt.geom.Line2D.Float;
+import java.awt.geom.Line2D;
 import java.util.Random;
 import javax.swing.*;
 
@@ -14,33 +14,54 @@ import javax.swing.*;
  */
 public class UIKarttaNakyma extends JPanel {
 
+    private Line2D.Float[] janat;
     private Random r = new Random();
 
     @Override
     public void paintComponent(Graphics g) {
 
-        //2D -kuvioiden piirtämistä varten, duh
+        if (janat == null)
+            return;
+
         Graphics2D g2 = (Graphics2D) g;
         g2.setColor(Color.red);
         g2.setStroke(new BasicStroke(4));
         super.paintComponent(g);
 
-        //TODO: poista testit kun nakyman saato on valmis
-        //TestiNeliö
+        // Laske sovituskertoimet saadulle datalle niin, että se mahtuu
+        // ikkunaan. Tässä pitäisi data skaalata jotenkin muutein kuin koko
+        // ikkunan kokoiseksi, esim. maksimietäisyyden mukaan, mutta tämä
+        // hoitakoon homman toistaiseksi.
+        float xmin = Float.MAX_VALUE;
+        float xmax = Float.MIN_VALUE;
+        float ymin = Float.MAX_VALUE;
+        float ymax = Float.MIN_VALUE;
+        for (Line2D.Float l : janat)
+            if (l != null) {
+                    xmin = xmin > l.x1 ? l.x1 : xmin;
+                    xmax = xmax < l.x1 ? l.x1 : xmax;
+                    ymin = ymin > l.y1 ? l.y1 : ymin;
+                    ymax = ymax < l.y1 ? l.y1 : ymax;
+                    xmin = xmin > l.x2 ? l.x2 : xmin;
+                    xmax = xmax < l.x2 ? l.x2 : xmax;
+                    ymin = ymin > l.y2 ? l.y2 : ymin;
+                    ymax = ymax < l.y2 ? l.y2 : ymax;
+                }
+        double xratio = getWidth()/(xmax - xmin);
+        double yratio = getHeight()/(ymax - ymin);
 
+        for (Line2D.Float l : janat)
+            if (l != null)
+                g2.drawLine((int)l.x1 + getWidth() / 2,
+                        (int)l.y1 + getHeight(),
+                        (int)l.x2 + getWidth() / 2,
+                        (int)l.y2 + getHeight());
 
-
-        g2.drawLine(30, getHeight() - 30, 400, getHeight() - 30);
-        g2.drawLine(400, getHeight() - 30, 400, getHeight() - 400);
-        g2.drawLine(400, getHeight() - 400, 30, getHeight() - 400);
-        g2.drawLine(30, getHeight() - 400, 30, getHeight() - 30);
-
-        if (r.nextFloat() > 0.6f) {
-            g2.drawRect((r.nextInt(300) + 30), (r.nextInt(300) + 30), 50, 50);
-        }
         g.setColor(Color.black);
     }
 
-    void piirraKartta(Float[] yhdista) {
+    void piirraKartta(Line2D.Float[] janat) {
+        this.janat = janat;
+        repaint();
     }
 }
