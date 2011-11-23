@@ -124,7 +124,6 @@ public class UI extends JFrame {
 
             @Override
             public void mouseClicked(MouseEvent e) {
-                throw new UnsupportedOperationException("Not supported yet.");
             }
 
             @Override
@@ -132,18 +131,15 @@ public class UI extends JFrame {
             }
 
             @Override
-            public void mouseReleased(MouseEvent e) {
-                throw new UnsupportedOperationException("Not supported yet.");
+            public void mouseReleased(MouseEvent e) { 
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                throw new UnsupportedOperationException("Not supported yet.");
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                throw new UnsupportedOperationException("Not supported yet.");
             }
         });
         
