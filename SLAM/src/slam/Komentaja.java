@@ -12,6 +12,7 @@ public class Komentaja extends Thread {
     private UIRoboNakyma roboNakyma1;
     private UIRoboNakyma roboNakyma2;
     private UIKarttaNakyma karttaNakyma;
+    private UI ui;
 
     public Komentaja() {
     }
@@ -77,7 +78,6 @@ public class Komentaja extends Thread {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
         }
-
         Komentaja komentaja = new Komentaja();
         UI ui = new UI(komentaja);
         komentaja.start();

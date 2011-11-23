@@ -8,6 +8,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.Random;
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -116,9 +119,37 @@ public class UI extends JFrame {
         paaPaneeli.add(karttaNakyma, BorderLayout.CENTER);
         paaPaneeli.add(scrollPane, BorderLayout.SOUTH);
 
+        
+        karttaNakyma.addMouseListener(new MouseListener() {
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+        });
+        
         //Nappuloiden toiminnot
 
-        debugValitsinN.addActionListener(new ActionListener() {
+       /* debugValitsinN.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -130,7 +161,7 @@ public class UI extends JFrame {
                     debugValitsinN.setText("Debug OFF");
                 }
             }
-        });
+        });*/
 
         paivitaNakymaN.addActionListener(new ActionListener() {
 
@@ -153,8 +184,7 @@ public class UI extends JFrame {
             }
         });
 
-
-
+        
         setContentPane(paaPaneeli);
         setVisible(true);
     }

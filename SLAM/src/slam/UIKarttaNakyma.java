@@ -4,6 +4,7 @@
 package slam;
 
 import java.awt.*;
+import java.awt.event.MouseListener;
 import java.awt.geom.Line2D;
 import java.util.Random;
 import javax.swing.*;
@@ -59,6 +60,9 @@ public class UIKarttaNakyma extends JPanel {
 
         g.setColor(Color.black);
     }
+
+    
+    
 
     void piirraKartta(Line2D.Float[] janat) {
         this.janat = janat;
