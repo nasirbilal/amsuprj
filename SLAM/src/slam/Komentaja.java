@@ -7,7 +7,7 @@ import javax.swing.UIManager;
  *
  * @author Olli Koskinen
  */
-public class Komentaja {
+public class Komentaja extends Thread {
 
     private UIRoboNakyma roboNakyma1;
     private UIRoboNakyma roboNakyma2;
@@ -80,6 +80,11 @@ public class Komentaja {
 
         Komentaja komentaja = new Komentaja();
         UI ui = new UI(komentaja);
-        komentaja.roboNakymaKoe();
+        komentaja.start();
+    }
+
+    @Override
+    public void run() {
+        
     }
 }
