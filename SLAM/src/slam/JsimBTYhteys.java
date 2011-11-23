@@ -9,8 +9,10 @@ public class JsimBTYhteys implements BTYhteys {
     private JsimRobo robo;
 
     public JsimBTYhteys() {
-        this.robo = new JsimRobo("JsimRobo");
+        this.robo = new JsimRobo();
     }
+
+    public int getRoboID() { return robo != null ? robo.getID() : -1; }
 
     @Override
     public BTPaketti lahetaJaVastaanota(BTPaketti paketti, int odotusAikaMs) {
@@ -29,6 +31,6 @@ public class JsimBTYhteys implements BTYhteys {
 
     @Override
     public void uudelleenKaynnista() {
-        this.robo = new JsimRobo("JsimRobo");
+        this.robo = new JsimRobo();
     }
 }

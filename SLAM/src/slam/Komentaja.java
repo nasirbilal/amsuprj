@@ -87,8 +87,8 @@ public class Komentaja extends Thread {
     public void run() {
         JsimBTYhteys b1 = new JsimBTYhteys();
         JsimBTYhteys b2 = new JsimBTYhteys();
-        RoboOhjain r1 = new RoboOhjain(b1, 1, 10*1000, 80*10);
-        RoboOhjain r2 = new RoboOhjain(b2, 2, 10*1000, 80*10);
+        RoboOhjain r1 = new RoboOhjain(b1, b1.getRoboID(), 10*1000, 80*10);
+        RoboOhjain r2 = new RoboOhjain(b2, b2.getRoboID(), 10*1000, 80*10);
         r1.start();
         r2.start();
 
@@ -98,13 +98,13 @@ public class Komentaja extends Thread {
             
             if (r1.onMuuttunut()) {
              roboNakyma1.piirraEtaisyydet(r1.haeEtaisyydet());
-             Kokoaja.asetaKartta(1, r1.haeKartta());
+             Kokoaja.asetaKartta(b1.getRoboID(), r1.haeKartta());
              muuttunut = true;
             }
             
             if (r2.onMuuttunut()) {
              roboNakyma2.piirraEtaisyydet(r2.haeEtaisyydet());
-             Kokoaja.asetaKartta(2, r2.haeKartta());
+             Kokoaja.asetaKartta(b2.getRoboID(), r2.haeKartta());
              muuttunut = true;
             }
 
