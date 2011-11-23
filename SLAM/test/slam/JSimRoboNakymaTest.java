@@ -18,9 +18,9 @@ import static org.junit.Assert.*;
  *
  * @author Olli
  */
-public class JsimRoboNäkymäTest {
-    
-    public JsimRoboNäkymäTest() {
+public class JSimRoboNakymaTest {
+
+    public JSimRoboNakymaTest() {
     }
 
     @BeforeClass
@@ -30,11 +30,11 @@ public class JsimRoboNäkymäTest {
     @AfterClass
     public static void tearDownClass() throws Exception {
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
     }
@@ -46,7 +46,7 @@ public class JsimRoboNäkymäTest {
     public void testGetNäkötaulu() {
         System.out.println("getN\u00e4k\u00f6taulu");
         JsimRoboNakyma instance = new JsimRoboNakyma(new Point2D.Float(66, 99),
-                                                     45f, 10, 80);
+                45f, 10, 80);
         Line2D.Float[] expResult = null;
         Line2D.Float[] result = instance.getNakotaulu();
         assertEquals(expResult, result);

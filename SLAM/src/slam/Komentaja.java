@@ -8,16 +8,17 @@ import javax.swing.UIManager;
  * @author Olli Koskinen
  */
 public class Komentaja {
+
     private UIRoboNakyma roboNakyma1;
     private UIRoboNakyma roboNakyma2;
     private UIKarttaNakyma karttaNakyma;
-    
+
     public Komentaja() {
     }
 
     public void roboNakymaKoe() {
         // TODO: tee RoboOhjaimen yksikkötestit ja syötä tulos tänne samalla!
-        
+
         java.util.Random r = new java.util.Random();
         Point2D.Double[] p = new Point2D.Double[9];
         Point2D.Double[] p2 = new Point2D.Double[9];
@@ -25,7 +26,7 @@ public class Komentaja {
         double dist;
         for (int i = 0; i < angles.length; i++) {
             p[i] = new Point2D.Double();
-            dist = 60+r.nextInt(20);
+            dist = 60 + r.nextInt(20);
             p[i].y = -(Math.cos(Math.toRadians(angles[i])) * dist);
             p[i].x = (Math.sin(Math.toRadians(angles[i])) * dist);
         }
@@ -33,8 +34,8 @@ public class Komentaja {
 
         for (int i = 0; i < p2.length; i++) {
             p2[i] = new Point2D.Double();
-            
-            dist = 60+r.nextInt(20);
+
+            dist = 60 + r.nextInt(20);
             p2[i].y = -(Math.cos(Math.toRadians(angles[i])) * dist);
             p2[i].x = (Math.sin(Math.toRadians(angles[i])) * dist);
         }
@@ -70,11 +71,12 @@ public class Komentaja {
         roboNakyma2.repaint();
         karttaNakyma.repaint();
     }
-    
+
     public static void main(String[] args) {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch(Exception e) {}
+        } catch (Exception e) {
+        }
 
         Komentaja komentaja = new Komentaja();
         UI ui = new UI(komentaja);

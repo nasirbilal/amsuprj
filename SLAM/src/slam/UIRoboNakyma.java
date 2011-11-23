@@ -24,7 +24,6 @@ public class UIRoboNakyma extends JPanel {
                 10.0f, katko, 0.0f);
     }
 
-    
     @Override
     public void paintComponent(Graphics g) {
 
@@ -50,10 +49,10 @@ public class UIRoboNakyma extends JPanel {
                 }
 
                 if (edellinen != null) {
-                    g2.drawLine((int)edellinen.x+getWidth()/2,
-                                (int)edellinen.y+getHeight(),
-                                (int)piste.x+getWidth()/2,
-                                (int)piste.y+getHeight());
+                    g2.drawLine((int) edellinen.x + getWidth() / 2,
+                            (int) edellinen.y + getHeight(),
+                            (int) piste.x + getWidth() / 2,
+                            (int) piste.y + getHeight());
                 }
 
                 viimeinen = edellinen = piste;
@@ -63,17 +62,17 @@ public class UIRoboNakyma extends JPanel {
             g2.setColor(Color.red);
 
             //Pitää olla int,int,int,int ; ei int,int,double,double, tämä vain temp korjaus
-            g2.drawLine(getWidth()/2, getHeight(),
-                       (int)ensimmainen.x+getWidth()/2,
-                       (int)ensimmainen.y+getHeight());
-            g2.drawLine(getWidth()/2, getHeight(),
-                       (int)viimeinen.x+getWidth()/2,
-                       (int)viimeinen.y+getHeight());
+            g2.drawLine(getWidth() / 2, getHeight(),
+                    (int) ensimmainen.x + getWidth() / 2,
+                    (int) ensimmainen.y + getHeight());
+            g2.drawLine(getWidth() / 2, getHeight(),
+                    (int) viimeinen.x + getWidth() / 2,
+                    (int) viimeinen.y + getHeight());
             g2.setStroke(new BasicStroke(1));
             g2.setColor(Color.black);
         }
     }
-    
+
     /**
      * 
      * @param pisteet

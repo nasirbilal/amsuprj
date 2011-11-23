@@ -81,7 +81,7 @@ public class UI extends JFrame {
         paivitaNakymaN = new JButton("Päivitä Näkymä");
 
         //Asetukset 
-        nappulaPaneeli.setPreferredSize(new Dimension(140,20));
+        nappulaPaneeli.setPreferredSize(new Dimension(140, 20));
         debugValitsinN.setMinimumSize(new Dimension(140, 20));
         paivitaNakymaN.setMinimumSize(new Dimension(140, 20));
 
@@ -104,9 +104,9 @@ public class UI extends JFrame {
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.gridy = 1;
         gbc.gridy = 2;
-        nappulaPaneeli.add(debugValitsinN,gbc);
+        nappulaPaneeli.add(debugValitsinN, gbc);
         gbc.gridy = 3;
-        nappulaPaneeli.add(paivitaNakymaN,gbc);
+        nappulaPaneeli.add(paivitaNakymaN, gbc);
         gbc.gridy = 4;
         gbc.gridy = 5;
         roboPaneeli.add(robo1, BorderLayout.NORTH);
@@ -144,11 +144,11 @@ public class UI extends JFrame {
             }
         });
         //ESCillä close
-       getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-            KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "Cancel"); 
-        getRootPane().getActionMap().put("Cancel", new AbstractAction(){ 
-           
-            public void actionPerformed(ActionEvent e){
+        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+                KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "Cancel");
+        getRootPane().getActionMap().put("Cancel", new AbstractAction() {
+
+            public void actionPerformed(ActionEvent e) {
                 System.exit(0);
             }
         });

@@ -27,7 +27,7 @@ public class NXTBTYhteys extends Thread implements BTYhteys {
         this.jatkuu = true;                             //NXTBYhteys main looppi
         this.robo = robo;
         this.paketti = null;                            //BTPaketti
-        this.tempEtaisyydet = new int[BTPaketti.MAARA]; 
+        this.tempEtaisyydet = new int[BTPaketti.MAARA];
         this.odotusAikaMS = 5;                          //"Connection timeout" -EI IMPLEMENTOITU
         this.lahetys = false;                           //Lähetetäänkö tavaraa
         this.lukuMaara = BTPaketti.MAARA + 1;           //Etaisyyksien maara + id ja itse maara lukema
@@ -36,14 +36,14 @@ public class NXTBTYhteys extends Thread implements BTYhteys {
 
     }
 
-    private void alustaYhteys() {  
+    private void alustaYhteys() {
         try {
             // Luodaan yhteys robottiin nimen perusteella
-            if(!yhteys.connectTo(robo.getNimi())) {
+            if (!yhteys.connectTo(robo.getNimi())) {
                 yrityksia++;
                 System.err.println("Yhdistaminen epaonnistui");
-                if(yrityksia<5){
-                uudelleenKaynnista();
+                if (yrityksia < 5) {
+                    uudelleenKaynnista();
                 }
                 System.exit(-1);
             }
@@ -101,24 +101,23 @@ public class NXTBTYhteys extends Thread implements BTYhteys {
                         paketti.setUusiSijaiti(new Point2D.Float(dataSisaan.readFloat(), dataSisaan.readFloat()));
                         paketti.setMittausSuunta(new Point2D.Float(dataSisaan.readFloat(), dataSisaan.readFloat()));
 
-                    } catch (Exception e){
-                       // uudelleenKaynnista();
+                    } catch (Exception e) {
+                        // uudelleenKaynnista();
                     }
                     lahetys = false;
                 }
             }
         }
     }
-    
+
     //lahetaJaVastaanota vastaanottaa paketin josta lähetetään tieto robotille ja 
     //johon kirjoitetaan uudet tiedot
-    
     @Override
     public BTPaketti lahetaJaVastaanota(BTPaketti paketti, int odotusAikaMs) {
         this.paketti = paketti;
         this.odotusAikaMS = odotusAikaMs;
         this.lahetys = true;
-        
+
         //odotetaan kunnes paketti on päivitetty
         while (lahetys) {
         }
@@ -127,6 +126,6 @@ public class NXTBTYhteys extends Thread implements BTYhteys {
 
     @Override
     public void uudelleenKaynnista() {
-     //   alustaYhteys();
+        //   alustaYhteys();
     }
 }

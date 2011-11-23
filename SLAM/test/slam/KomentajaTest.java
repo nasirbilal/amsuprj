@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
  * @author Olli
  */
 public class KomentajaTest {
-    
+
     public KomentajaTest() {
     }
 
@@ -27,11 +27,11 @@ public class KomentajaTest {
     @AfterClass
     public static void tearDownClass() throws Exception {
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
     }

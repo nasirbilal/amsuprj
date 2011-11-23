@@ -16,7 +16,7 @@ import org.junit.runners.Suite;
  * @author Olli
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({KomentajaTest.class, JsimRoboNäkymäTest.class, JsimRoboTest.class, KarttaNakymaTest.class})
+@Suite.SuiteClasses({KomentajaTest.class, JSimRoboNakymaTest.class, JsimRoboTest.class, KarttaNakymaTest.class})
 public class SlamSuite {
 
     @BeforeClass
@@ -34,5 +34,4 @@ public class SlamSuite {
     @After
     public void tearDown() throws Exception {
     }
-    
 }

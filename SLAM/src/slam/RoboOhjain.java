@@ -49,7 +49,7 @@ public class RoboOhjain implements Runnable {
         this.kartta = new ArrayList<Line2D.Float>();
 
         JsimRoboNakyma nakyma = new JsimRoboNakyma(new Point2D.Float(0, 0),
-            0, paketti.getEtaisyydet().length, 1);
+                0, paketti.getEtaisyydet().length, 1);
         this.mittausJanat = nakyma.getNakotaulu();
     }
 
@@ -65,17 +65,19 @@ public class RoboOhjain implements Runnable {
      *         koordinaatti on null.
      */
     public Point2D.Float[] haeEtaisyydet() {
-        if (!onMuuttunut)
+        if (!onMuuttunut) {
             return roboNakyma;
+        }
 
         final int[] etaisyydet = paketti.getEtaisyydet();
-        for (int i = 0; i < mittausJanat.length; ++i)
-            if (etaisyydet[i] > maxEtaisyys)
+        for (int i = 0; i < mittausJanat.length; ++i) {
+            if (etaisyydet[i] > maxEtaisyys) {
                 roboNakyma[i] = null;
-            else {
+            } else {
                 roboNakyma[i].x = mittausJanat[i].x2 * etaisyydet[i];
                 roboNakyma[i].y = mittausJanat[i].y2 * etaisyydet[i];
             }
+        }
 
         onMuuttunut = false;
         return roboNakyma;
@@ -94,7 +96,9 @@ public class RoboOhjain implements Runnable {
     }
 
     /** @return True jos uutta dataa on saapunut viime kyselyn jälkeen. */
-    public boolean onMuuttunut() { return onMuuttunut; }
+    public boolean onMuuttunut() {
+        return onMuuttunut;
+    }
 
     /** @brief Robotti siirretään uuteen sijaintiin ja suoritetaan mittaukset.
      *
@@ -107,8 +111,9 @@ public class RoboOhjain implements Runnable {
      */
     private boolean teeMittaukset() {
         BTPaketti vastaus = bt.lahetaJaVastaanota(paketti, odotusMs);
-        if (vastaus == null)
+        if (vastaus == null) {
             return false;
+        }
 
         paketti = vastaus; // Talleta uusimmat tulokset.
         float dx = paketti.getMittausSuunta().x - paketti.getNykySijaiti().x;
@@ -116,18 +121,20 @@ public class RoboOhjain implements Runnable {
         int maara = paketti.getEtaisyydet().length;
         int[] etaisyydet = paketti.getEtaisyydet();
         JsimRoboNakyma nakyma = new JsimRoboNakyma(paketti.getNykySijaiti(),
-                (float)Math.atan2(dx, dy), maara, 1);
+                (float) Math.atan2(dx, dy), maara, 1);
         Line2D.Float[] sateet = nakyma.getNakotaulu();
 
         // Lisää robotin havaitsemat esteet karttaan.
-        for (int i = 1; i < maara; ++i)
-            if (etaisyydet[i-1] < maxEtaisyys && etaisyydet[i] < maxEtaisyys)
-                kartta.add(new Line2D.Float(sateet[i-1].getP2(),
-                                            sateet[i].getP2()));
-        
+        for (int i = 1; i < maara; ++i) {
+            if (etaisyydet[i - 1] < maxEtaisyys && etaisyydet[i] < maxEtaisyys) {
+                kartta.add(new Line2D.Float(sateet[i - 1].getP2(),
+                        sateet[i].getP2()));
+            }
+        }
+
         // Laske robotin sijainti kartan datan perusteella.
         // TODO.
-        
+
         // Laske robotille uusi mittauspiste ja -suunta.
         // Luo neljä sädettä robotista pääilmansuuntiin ja suunnista kohti sitä
         // loppupistettä, joka on etäämmällä robotista.
@@ -135,48 +142,53 @@ public class RoboOhjain implements Runnable {
         float y = paketti.getNykySijaiti().y;
         Line2D.Float[] suunnat = {
             new Line2D.Float(paketti.getNykySijaiti(), new Point2D.Float(
-                    x, y-800*100)),
+            x, y - 800 * 100)),
             new Line2D.Float(paketti.getNykySijaiti(), new Point2D.Float(
-                    x-800*100, y)),
+            x - 800 * 100, y)),
             new Line2D.Float(paketti.getNykySijaiti(), new Point2D.Float(
-                    x, y+800*100)),
+            x, y + 800 * 100)),
             new Line2D.Float(paketti.getNykySijaiti(), new Point2D.Float(
-                    x+800*100, y))
+            x + 800 * 100, y))
         };
 
-        for (Line2D.Float i : suunnat)
-            for (Line2D.Float j : kartta)
+        for (Line2D.Float i : suunnat) {
+            for (Line2D.Float j : kartta) {
                 if (j.intersectsLine(i)) {
                     j.x2 = (i.x1 + i.x2) / 2;
                     j.y2 = (i.y1 + i.y2) / 2;
                 }
-
-        Line2D.Float pisin = suunnat[0];
-        dx = pisin.x2-pisin.x1;
-        dy = pisin.y2-pisin.y1;
-        float pisinPituus = dx*dx+dy*dy;
-        for (int i = 1; i < suunnat.length; ++i) {
-            dx = suunnat[i].x2-suunnat[i].x1;
-            dy = suunnat[i].y2-suunnat[i].y1;
-            if (dx*dx+dy*dy > pisinPituus)
-                pisin = suunnat[i];
-                pisinPituus = dx*dx+dy*dy;
+            }
         }
 
-        dx = pisin.x2-pisin.x1;
-        dy = pisin.y2-pisin.y1;
+        Line2D.Float pisin = suunnat[0];
+        dx = pisin.x2 - pisin.x1;
+        dy = pisin.y2 - pisin.y1;
+        float pisinPituus = dx * dx + dy * dy;
+        for (int i = 1; i < suunnat.length; ++i) {
+            dx = suunnat[i].x2 - suunnat[i].x1;
+            dy = suunnat[i].y2 - suunnat[i].y1;
+            if (dx * dx + dy * dy > pisinPituus) {
+                pisin = suunnat[i];
+            }
+            pisinPituus = dx * dx + dy * dy;
+        }
+
+        dx = pisin.x2 - pisin.x1;
+        dy = pisin.y2 - pisin.y1;
         dx = Math.min(dx, 10); // Kymmenen senttiä (?) eteenpäin.
         dy = Math.min(dy, 10); // Kymmenen senttiä (?) eteenpäin.
-        paketti.setUusiSijaiti(new Point2D.Float(x+dx, y+dy));
+        paketti.setUusiSijaiti(new Point2D.Float(x + dx, y + dy));
 
         return true;
     }
 
     @Override
     public void run() {
-        while (true)
-            if (!teeMittaukset())
-                System.out.println(Calendar.getInstance().getTime().toString() +
-                                   "Mittaukset epäonnistuivat.");
+        while (true) {
+            if (!teeMittaukset()) {
+                System.out.println(Calendar.getInstance().getTime().toString()
+                        + "Mittaukset epäonnistuivat.");
+            }
+        }
     }
 }
