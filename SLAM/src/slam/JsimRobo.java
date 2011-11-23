@@ -10,18 +10,31 @@ import java.awt.geom.Line2D;
  */
 public class JsimRobo {
 
-    private final int infraKantama;   /// Robotin infrapunasensorin kantama MILLIMETREISSÄ
     private int id;                         /// Robotin yksilöllinen tunnus.
     private float suunta;                   /// Robotin suunta, range: 0-359, jossa 0 ON POHJOINEN
     private Point2D.Float paikka;           /// Robotin paikka Point-oliona MILLIMETREISSÄ
-    private static int id_count;        /// Robotin yksilötunnuksen juokseva numero.
-    private JsimKartta JSKkartta;
-    private JsimData mittaus;                       /// luodaan mittaa()-metodilla, käytetään seuraavan mittauspaikan valitsemiseksi
-    private JsimRoboNakyma nakyma;                  /// luodaan mittaa()-metodilla, debugausta
-    private String nimi;                           /// nimen pitaa vastata Robotin bluetooth-tunnusta
-    /*
-     * Konstruktorit
-     */
+    private JsimData mittaus;               /// luodaan mittaa()-metodilla, käytetään seuraavan mittauspaikan valitsemiseksi
+    private JsimRoboNakyma nakyma;          /// luodaan mittaa()-metodilla, debugausta
+
+    private final Line2D.Float[] kartta = {new Line2D.Float(44,  0, 44, 75),
+                                           new Line2D.Float(44, 75, 87, 75),
+                                           new Line2D.Float(87, 75, 87, 55),
+                                           new Line2D.Float(87, 55, 64, 55),
+                                           new Line2D.Float(64, 55, 64,  0),
+                                           new Line2D.Float(64,  0, 44,  0),
+
+                                           new Line2D.Float(44, 112, 44, 137),
+                                           new Line2D.Float(44, 137, 67, 137),
+                                           new Line2D.Float(67, 137, 67, 161),
+                                           new Line2D.Float(67, 161, 99, 161),
+                                           new Line2D.Float(99, 161, 99, 152),
+                                           new Line2D.Float(99, 152, 76, 152),
+                                           new Line2D.Float(76, 152, 76, 127),
+                                           new Line2D.Float(76, 127, 52, 127),
+                                           new Line2D.Float(52, 127, 52, 112),
+                                           new Line2D.Float(52, 112, 44, 112)};
+    private final int infraKantama;   /// Robotin infrapunasensorin kantama MILLIMETREISSÄ
+    private static int id_count;      /// Robotin yksilötunnuksen juokseva numero.
 
     public JsimRobo() {
         this(0, 800);
@@ -31,7 +44,24 @@ public class JsimRobo {
         id = id_count++;
         this.infraKantama = infraKantama;
         this.suunta = suunta;
-        JSKkartta = new JsimKartta();
+        
+        boolean sisalla = false;
+        do {
+//            if (p.x < boundingRect.x || p.y < boundingRect.y) return false;
+//            if (p.x > boundingRect.x + boundingRect.width
+//                || p.y > boundingRect.y + boundingRect.height) return false;
+//
+//            // Create a line from the point to the left
+//            Line l = new Line(p.x, p.y, p.x - boundingRect.width, p.y);
+//
+//            // Count intersections
+//            int count = 0;
+//            for (int i = 0; i < lines.length; i++) {
+//              if (lines[i].intersectsAt(l) != null) count++;
+//            }
+//            // We are inside if the number of intersections is odd
+//            return count % 2 == 1;
+        } while (sisalla);
     }
 
     public int getID() {
@@ -324,8 +354,6 @@ public class JsimRobo {
         float taulu[] = new float[mittausMaara];    //Käytetään "mittaus"-jsimdatan luomisessa
         float pieninleikkaus;
         nakyma = new JsimRoboNakyma(paikka, suunta, mittausMaara, infraKantama);
-
-        Line2D.Float kartta[] = JSKkartta.getKartta();
 
         //System.out.println("luuppaus alkaa");//debug
 
