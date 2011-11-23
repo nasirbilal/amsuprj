@@ -136,7 +136,7 @@ public class UI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 repaint();
                 komentaja.paivitaNakymat();
-                komentaja.TESTIroboNakymaTESTI();
+                komentaja.roboNakymaKoe();
                 java.util.Random r = new Random();
                 asetaDebugTeksti("Este havaittu pisteessä: " + r.nextInt(80) + ", " + r.nextInt(80));
             }

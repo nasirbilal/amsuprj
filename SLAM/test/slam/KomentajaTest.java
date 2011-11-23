@@ -49,7 +49,7 @@ public class KomentajaTest {
     public void testTESTIroboNakymaTESTI() {
         System.out.println("TESTIroboNakymaTESTI");
         Komentaja instance = new Komentaja();
-        instance.TESTIroboNakymaTESTI();
+        instance.roboNakymaKoe();
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }

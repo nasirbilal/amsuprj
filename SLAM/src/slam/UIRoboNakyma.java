@@ -14,7 +14,6 @@ import javax.swing.*;
 public class UIRoboNakyma extends JPanel {
 
     private Point2D.Double[] pisteet;
-    Point2D.Double sailio;
 
     public UIRoboNakyma() {
         this.pisteet = null;
@@ -38,7 +37,6 @@ public class UIRoboNakyma extends JPanel {
         Graphics2D g2 = (Graphics2D) g;
         g2.setStroke(new BasicStroke(1));
         super.paintComponent(g);
-        //Reunukset
         g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
 
         //Piirretään viiva pisteiden välillä ja lopuksi vielä viivat
@@ -50,21 +48,27 @@ public class UIRoboNakyma extends JPanel {
                 if (ensimmainen == null) {
                     ensimmainen = piste;
                 }
-                viimeinen = piste;
 
                 if (edellinen != null) {
-                    g2.drawLine((int)edellinen.x, (int)edellinen.y,
-                                (int)piste.x, (int)piste.y);
+                    g2.drawLine((int)edellinen.x+getWidth()/2,
+                                (int)edellinen.y+getHeight(),
+                                (int)piste.x+getWidth()/2,
+                                (int)piste.y+getHeight());
                 }
-                edellinen = piste;
+
+                viimeinen = edellinen = piste;
             }
 
             g2.setStroke(katkoV);
             g2.setColor(Color.red);
 
             //Pitää olla int,int,int,int ; ei int,int,double,double, tämä vain temp korjaus
-            g2.drawLine((getWidth()/2), getHeight(), (int)ensimmainen.x, (int)ensimmainen.y);
-            g2.drawLine((getWidth()/2), getHeight(), (int)viimeinen.x, (int)viimeinen.y);
+            g2.drawLine(getWidth()/2, getHeight(),
+                       (int)ensimmainen.x+getWidth()/2,
+                       (int)ensimmainen.y+getHeight());
+            g2.drawLine(getWidth()/2, getHeight(),
+                       (int)viimeinen.x+getWidth()/2,
+                       (int)viimeinen.y+getHeight());
             g2.setStroke(new BasicStroke(1));
             g2.setColor(Color.black);
         }
@@ -74,41 +78,8 @@ public class UIRoboNakyma extends JPanel {
      * 
      * @param pisteet
      */
-    //TODO: pisteet etäisyyksistä
     public void piirraEtaisyydet(Point2D.Double[] pisteet) {
         this.pisteet = pisteet;
         repaint();
     }
-    
-    public Point2D.Double[] etaisyydetPisteiksi(int etaisyydet[]){
-        Point2D.Double[] pistetaulu = new Point2D.Double[etaisyydet.length];
-
-        double x;
-        double y;
-
-        System.out.println("etaisyydetpisteiks");
-        for (int i = 0; i < etaisyydet.length; i++){
-            
-            if (etaisyydet[i] < 790){
-             //   if (i == 0){
-                    sailio = new Point2D.Double(-etaisyydet[i]/4, 0);
-                } else if (i < 36){
-                    x = (etaisyydet[i]*Math.sin(((i*5)-90)*(Math.PI/180)))/10;
-                    y = (etaisyydet[i]*Math.cos(((i*5)-90)*(Math.PI/180)));
-
-                    sailio = new Point2D.Double(x,y);
-                } else { //if (i == 36)
-                    sailio = new Point2D.Double(etaisyydet[i]/4, 0);
-                }
-                pistetaulu[i]=sailio;
-                System.out.println(sailio);
-            //} else {
-                //lol
-             //   System.out.println("!!!!!NULL!!!!!");
-           // }
-        }
-        
-        return pistetaulu;
-    }
-    
 }
