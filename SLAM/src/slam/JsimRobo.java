@@ -17,24 +17,24 @@ public class JsimRobo {
     private boolean edettytäyteen = false;  ///(navigointiin) Jos (false)-> edetään täyteen näkymään, =true; jos (true) -> käännytään 180, =false.
 
     /// Kartta maailmasta, jossa robotti kulkee. 
-    private final Rectangle      reunat =  new Rectangle(0, 0, 135, 200);                        
-    private final Line2D.Float[] kartta = {new Line2D.Float(44,  0, 44, 75),
-                                           new Line2D.Float(44, 75, 87, 75),
-                                           new Line2D.Float(87, 75, 87, 55),
-                                           new Line2D.Float(87, 55, 64, 55),
-                                           new Line2D.Float(64, 55, 64,  0),
-                                           new Line2D.Float(64,  0, 44,  0),
+    private final Rectangle      reunat =  new Rectangle(0, 0, 1350, 2000);                        
+    private final Line2D.Float[] kartta = {new Line2D.Float(440,   0, 440, 750),
+                                           new Line2D.Float(440, 750, 870, 750),
+                                           new Line2D.Float(870, 750, 870, 550),
+                                           new Line2D.Float(870, 550, 640, 550),
+                                           new Line2D.Float(640, 550, 640,   0),
+                                           new Line2D.Float(640,   0, 440,   0),
 
-                                           new Line2D.Float(44, 112, 44, 137),
-                                           new Line2D.Float(44, 137, 67, 137),
-                                           new Line2D.Float(67, 137, 67, 161),
-                                           new Line2D.Float(67, 161, 99, 161),
-                                           new Line2D.Float(99, 161, 99, 152),
-                                           new Line2D.Float(99, 152, 76, 152),
-                                           new Line2D.Float(76, 152, 76, 127),
-                                           new Line2D.Float(76, 127, 52, 127),
-                                           new Line2D.Float(52, 127, 52, 112),
-                                           new Line2D.Float(52, 112, 44, 112)};
+                                           new Line2D.Float(440, 1120, 440, 1370),
+                                           new Line2D.Float(440, 1370, 670, 1370),
+                                           new Line2D.Float(670, 1370, 670, 1610),
+                                           new Line2D.Float(670, 1610, 990, 1610),
+                                           new Line2D.Float(990, 1610, 990, 1520),
+                                           new Line2D.Float(990, 1520, 760, 1520),
+                                           new Line2D.Float(760, 1520, 760, 1270),
+                                           new Line2D.Float(760, 1270, 520, 1270),
+                                           new Line2D.Float(520, 1270, 520, 1120),
+                                           new Line2D.Float(520, 1120, 440, 1120)};
     private final int infraKantama;   /// Robotin infrapunasensorin kantama MILLIMETREISSÄ
     private static int id_count;      /// Robotin yksilötunnuksen juokseva numero.
 
