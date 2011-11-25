@@ -20,7 +20,12 @@ import static org.junit.Assert.*;
  */
 public class JSimRoboNakymaTest {
 
+    final Point2D.Float p = new Point2D.Float(-101, -97);
+    final float a = 31; // Katse 31 asteen kulmassa.
+    final private JsimRoboNakyma instance;
+    
     public JSimRoboNakymaTest() {
+        instance = new JsimRoboNakyma(p, a, 5, 800);
     }
 
     @BeforeClass
@@ -45,12 +50,18 @@ public class JSimRoboNakymaTest {
     @Test
     public void testGetNäkötaulu() {
         System.out.println("getN\u00e4k\u00f6taulu");
-        JsimRoboNakyma instance = new JsimRoboNakyma(
-                new Point2D.Float(-101, -97),
-                0, 10, 80);
-        Line2D.Float[] expResult = null;
+        Line2D.Float[] expResult = {new Line2D.Float(p.x, p.y, -513,  589),
+                                    new Line2D.Float(p.x, p.y,   93,  679),
+                                    new Line2D.Float(p.x, p.y,  585,  315),
+                                    new Line2D.Float(p.x, p.y,  675, -291),
+                                    new Line2D.Float(p.x, p.y,  311, -783)};
         Line2D.Float[] result = instance.getNakotaulu();
-        assertEquals(expResult, result);
+        for (int i = 0; i < result.length; ++i) {
+            assertEquals(expResult[i].x1, result[i].x1, 0.5f);
+            assertEquals(expResult[i].y1, result[i].y1, 0.5f);
+            assertEquals(expResult[i].x2, result[i].x2, 0.5f);
+            assertEquals(expResult[i].y2, result[i].y2, 0.5f);
+        }
     }
 
     /**
@@ -61,7 +72,6 @@ public class JSimRoboNakymaTest {
         System.out.println("leikkaako");
         Float näköviiva = null;
         Float karttaviiva = null;
-        JsimRoboNakyma instance = null;
         Point2D.Float expResult = null;
         Point2D.Float result = instance.laskeLeikkauspiste(näköviiva, karttaviiva);
         assertEquals(expResult, result);
