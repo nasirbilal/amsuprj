@@ -592,28 +592,14 @@ public class JsimRoboTest {
     }
 
     /**
-     * Test of valitseUusiPiste method, of class JsimRobo.
-     */
-    @Test
-    public void testValitseUusiPiste() {
-        System.out.println("valitseUusiPiste");
-        JsimRobo instance = new JsimRobo();
-        JsimData expResult = null;
-        JsimData result = instance.valitseUusiPiste(37);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("ValitseUusiPiste ei ole valmis");
-    }
-
-    /**
      * Test of mittaa method, of class JsimRobo.
      */
     @Test
     public void testMittaa() {
         System.out.println("mittaa");
         JsimRobo instance = new JsimRobo();
-        JsimData expResult = null;
-        JsimData result = instance.mittaa(37);
+        float[] expResult = null;
+        float[] result = instance.mittaa(37);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");

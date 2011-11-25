@@ -16,17 +16,22 @@ public class JsimBTYhteys implements BTYhteys {
 
     @Override
     public BTPaketti lahetaJaVastaanota(BTPaketti paketti, int odotusAikaMs) {
+        // Lähetä data robotille ja odota sen vastausta.
         robo.setPaikka(paketti.getNykySijaiti());
         robo.etenePisteeseen(paketti.getUusiSijaiti());
         robo.käännyKohti(paketti.getMittausSuunta());
-        JsimData data = robo.mittaa(paketti.getEtaisyydet().length);
+        
+        // Robotti suorittaa mittauksia...
+        float[] mittaukset = robo.mittaa(paketti.getEtaisyydet().length);
         int[] etäisyydet = new int[paketti.getEtaisyydet().length];
-        for (int i = 0; i < data.getData().length; ++i) {
-            etäisyydet[i] = (int) (data.getData()[i]); // data valmiiksi milleissä.
-        }
-        paketti.setNykySijaiti(data.getPaikka());
+        for (int i = 0; i < mittaukset.length; ++i)
+            etäisyydet[i] = (int)mittaukset[i]; // data valmiiksi milleissä.
+        
+        // Tässä "robotti kirjoittaa pakettiin omat sijaintiarvionsa."
+        paketti.setNykySijaiti(paketti.getUusiSijaiti());
         paketti.setEtaisyydet(etäisyydet);
-        return paketti;
+        
+        return paketti; // Palauta "BT:n yli tullut" robotin vastauspaketti.
     }
 
     @Override

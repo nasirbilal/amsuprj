@@ -13,7 +13,6 @@ public class JsimRobo {
     private int id;                         /// Robotin yksilöllinen tunnus.
     private float suunta;                   /// Robotin suunta, range: 0-359, jossa 0 ON POHJOINEN
     private Point2D.Float paikka;           /// Robotin paikka Point-oliona MILLIMETREISSÄ
-    private JsimData mittaus;               /// luodaan mittaa()-metodilla, käytetään seuraavan mittauspaikan valitsemiseksi
     private JsimRoboNakyma nakyma;          /// luodaan mittaa()-metodilla, debugausta
     private boolean edettytäyteen = false;  ///(navigointiin) Jos (false)-> edetään täyteen näkymään, =true; jos (true) -> käännytään 180, =false.
 
@@ -75,24 +74,8 @@ public class JsimRobo {
         return "JsimRobo[" + getID() + "]";
     }
 
-    void setPaikka(Point2D.Float paikka) {
+    public void setPaikka(Point2D.Float paikka) {
         this.paikka = paikka;
-    }
-
-    /**
-     * Laskee uudet x- ja y-koordinaatit kun kuljtaan nykyisestä sijainnista
-     * nykyiseen suuntaan annetun matkan verran.
-     * 
-     * @param matka Robotin kulkema etäisyys MILLIMETREISSÄ.
-     * @return Robotin uusi sijainti.
-     */
-    private Point2D.Float etene(double matka) {
-        double a = Math.toRadians(suunta);
-        double x = paikka.x + matka * Math.sin(a);
-        double y = paikka.y + matka * Math.cos(a);
-
-        paikka = new Point2D.Float((float)x, (float)y);
-        return paikka;
     }
 
     /** 
@@ -106,17 +89,6 @@ public class JsimRobo {
     public Point2D.Float etenePisteeseen(Point2D.Float kohde) {
         käännyKohti(kohde);
         return etene(kohde.distance(paikka));
-    }
-
-    /** 
-     * @param aste Robotin kääntymä määrä väliltä -90 (vasen) ja 90 (oikea).
-     * @return Robotin uusi suunta.
-     */
-    private float käänny(float aste) {
-        suunta = (suunta + aste) % 360; /* Pakota suunta välille 0-359. */
-        if (suunta < 0)
-            suunta = suunta + 360;
-        return suunta;
     }
 
     /** 
@@ -172,8 +144,8 @@ public class JsimRobo {
         }
     }
 
-    public JsimData valitseUusiPiste(int mittausMaara) {
-        mittaus = mittaa(mittausMaara);         //mittaus on osa näitä navigointihommia
+    public void valitseUusiPiste(int mittausMaara) {
+        JsimData mittaus = new JsimData(suunta, mittaa(mittausMaara), paikka);
         float mtaulu[] = mittaus.getData();     //tiedot edessäolevasta kamasta
 
         int tyhjyyslaskuri = 0;
@@ -207,117 +179,202 @@ public class JsimRobo {
 
         if (tyhjyyslaskuri == mtaulu.length) { // ei mitään havaittu missään
             etene(650);
-            //    System.out.println("ei mitään");
-            return mittaus;
         } else if (tyhjyysmuisti == 0) { //kaikki havaitaittu kaikkialla
-            //    System.out.print("kaikki kaikkialla, ");
             if (edettytäyteen) {     //BOOLEAN EDETTYTÄYTEEN on siirretty tämän metodin ulkopuolelle
-                //        System.out.println("ETtrue");
                 edettytäyteen = false;
                 käänny(180);
-                return mittaus;
             } else {
-                //        System.out.println("ETfalse");
                 etene(mtaulu[19] / 2);    // edetään suoraan eteenpäin puolet eteenpäin mitatusta pituudesta
                 edettytäyteen = true;
-                return mittaus;
             }
         } else {
-            //    System.out.println("normi");
-
-            //    System.out.println("käänny("+(((tyhjyysalkumuisti*5)-90)+((tyhjyysmuisti/2)*5))+")"); //debug
-
             käänny(((tyhjyysalkumuisti * 5) - 90) + ((tyhjyysmuisti / 2) * 5)); //witness the true power of mathematics!!!
-
             if ((tyhjyysalkumuisti - 1) >= 0) {
                 etene((mtaulu[tyhjyysalkumuisti - 1] + mtaulu[tyhjyysalkumuisti + tyhjyysmuisti]) / 2);
             } else {
                 etene((0 + mtaulu[tyhjyysalkumuisti + tyhjyysmuisti]) / 2);
             }
-            return mittaus;
         }
     }
 
-    /*
-     * tämä on melkein obsolete muttei poisteta vielä, jos vaikka tarvii tulevaisuudessa
-     */
-    private void navSuurinVäli(float tap, int as, float tlp, int ls) {
-
-
-        float x1 = (float) (paikka.x + tap * Math.sin(((suunta + (as * 5 - 90)) * (Math.PI / 180))));
-        float y1 = (float) (paikka.y + tap * Math.cos(((suunta + (as * 5 - 90)) * (Math.PI / 180))));
-
-        float x2 = (float) (paikka.x + tlp * Math.sin(((suunta + (ls * 5 - 90)) * (Math.PI / 180))));
-        float y2 = (float) (paikka.y + tlp * Math.cos(((suunta + (ls * 5 - 90)) * (Math.PI / 180))));
-
-
-        System.out.println("(" + x1 + "," + y1 + ") - (" + x2 + "," + y2 + ")");    //debug
-
-        float keskipisteX = (x1 + x2) / 2;
-        float keskipisteY = (y1 + y2) / 2;
-
-        System.out.println("keskipiste:(" + keskipisteX + "," + keskipisteY + ")"); //debug
-
-        Point2D.Float etenemiskohde = new Point2D.Float(keskipisteX, keskipisteY);
-
-        System.out.println("etenepisteeseen(" + etenemiskohde.x + "," + etenemiskohde.y + ")");
-        System.out.println("1jantusen sijainti nyt:(" + etenemiskohde.x + "," + etenemiskohde.y + ")");
-        System.out.println("1jantusen suunta nyt:" + suunta);
-
-        etenePisteeseen(etenemiskohde);
-
-        System.out.println("2jantusen sijainti nyt:(" + etenemiskohde.x + "," + etenemiskohde.y + ")");
-        System.out.println("2jantusen suunta nyt:" + suunta);
-
-        käännyKohti(new Point2D.Float(x1, y1));
-
-        System.out.println("3jantusen sijainti nyt:(" + etenemiskohde.x + "," + etenemiskohde.y + ")");
-        System.out.println("3jantusen suunta nyt:" + suunta);
-    }
-
-    /*
-     * Mittaus
-     */
-    public JsimData mittaa(int mittausMaara) {
+    public float[] mittaa(int mittausMaara) {
         /*
-         * Tässä olis ideana, että verrataan robotin yhtä "näköviivaa" kaikkiin kartan viivoihin vuoron perään ja jos leikkaus
-         * löytyy niin tallennetaan se pieninleikkaus-muuttujaan, jota vertaillaan tuleviin leikkauspituuksiin. Sitten tallennetaan
-         * pieninleikkaus tauluun ja siirrytään tarkastelemaan seuraavaa näköviivaa. Lopuksi pieninleikkaus-muuttujista muodostettu
-         * taulu annetaan JsimData oliolle, johon myös tallennetaan robotin tämänhetkinen suunta.
+         * Tässä olis ideana, että verrataan robotin yhtä "näköviivaa" kaikkiin
+         * kartan viivoihin vuoron perään ja jos leikkaus löytyy niin 
+         * tallennetaan se pieninleikkaus-muuttujaan, jota vertaillaan tuleviin
+         * leikkauspituuksiin. Sitten tallennetaan pieninleikkaus tauluun ja 
+         * siirrytään tarkastelemaan seuraavaa näköviivaa. Lopuksi 
+         * pieninleikkaus-muuttujista muodostettu taulu annetaan JsimData 
+         * oliolle, johon myös tallennetaan robotin tämänhetkinen suunta.
          */
 
-        /*
-         * jos tää roska antaa 9999 pituudeksi niin se tarkoittaa että mitää ei ole havaittu
-         * 
-         */
-
-        //JsimData mittaus; !!siirretty ylös!!
-        //JsimRoboNäkymä siirretty ylös
-        float taulu[] = new float[mittausMaara];    //Käytetään "mittaus"-jsimdatan luomisessa
-        float pieninleikkaus;
+        float taulu[] = new float[mittausMaara];
+        double pieninetaisyys;
         nakyma = new JsimRoboNakyma(paikka, suunta, mittausMaara, infraKantama);
 
-        //System.out.println("luuppaus alkaa");//debug
-
-        for (int i = 0; i < nakyma.getNakotaulu().length; i++) { //iteroidaan JsimRoboNäkymän Näkötaulun näköviivoja
-            pieninleikkaus = 9999; //jos mikään ei leikkaa annetaan arvo 9999
-            for (int k = 0; k < kartta.length; k++) { //iteroidaan kartan viivoja
-                Point2D.Float leikkauspiste = nakyma.laskeLeikkauspiste(nakyma.getNakotaulu()[i], kartta[k]); //pistetään leikkauspiste muistiin
-                if (leikkauspiste != null) {
-                    if (pieninleikkaus > Math.sqrt(Math.pow(paikka.x - leikkauspiste.x, 2) + (Math.pow(paikka.y - leikkauspiste.y, 2)))) {
-                        //jos leikkauspiste on pienempi kuin muistissa oleva lyhyin matka leikkauspisteeseen
-                        pieninleikkaus = (float) Math.sqrt(Math.pow(paikka.x - leikkauspiste.x, 2) + (Math.pow(paikka.y - leikkauspiste.y, 2)));
-                        //overwritataan wanha kaukaisempi leikkauspiste uudella lyhyemmällä
-                        //                System.out.println("pit:"+pieninleikkaus);
-                    }
-
-                }
+        for (int i = 0; i < nakyma.getNakotaulu().length; i++) {
+            pieninetaisyys = Float.MAX_VALUE;
+            for (int k = 0; k < kartta.length; k++) {
+                Point2D.Float leikkauspiste = nakyma.laskeLeikkauspiste(
+                    nakyma.getNakotaulu()[i], kartta[k]);
+                
+                if (leikkauspiste == null)
+                    continue;
+                
+                double etaisyys = paikka.distance(leikkauspiste);
+                if (etaisyys < pieninetaisyys)
+                    pieninetaisyys = etaisyys;
             }
-            taulu[i] = pieninleikkaus; // pistetään lyhyin etäisyys muistiin
+            taulu[i] = (float)pieninetaisyys;
         }
 
-        mittaus = new JsimData(suunta, taulu, paikka); //annetaan etäisyystaulukko JsimDatalle, josta se toivottavasti pistetään johonkin muistiin
-
-        return mittaus;
+        return taulu;
     }
+
+    /**
+     * Laskee uudet x- ja y-koordinaatit kun kuljtaan nykyisestä sijainnista
+     * nykyiseen suuntaan annetun matkan verran.
+     * 
+     * @param matka Robotin kulkema etäisyys MILLIMETREISSÄ.
+     * @return Robotin uusi sijainti.
+     */
+    private Point2D.Float etene(double matka) {
+        double a = Math.toRadians(suunta);
+        double x = paikka.x + matka * Math.sin(a);
+        double y = paikka.y + matka * Math.cos(a);
+
+        paikka = new Point2D.Float((float)x, (float)y);
+        return paikka;
+    }
+
+    /** 
+     * @param aste Robotin kääntymä määrä väliltä -90 (vasen) ja 90 (oikea).
+     * @return Robotin uusi suunta.
+     */
+    private float käänny(float aste) {
+        suunta = (suunta + aste) % 360; /* Pakota suunta välille 0-359. */
+        if (suunta < 0)
+            suunta = suunta + 360;
+        return suunta;
+    }
+
+private class JsimData {
+
+    /*
+     * Robotin mittauksista luotu data
+     */
+    private float robosuunta;
+    private float data[];
+    private Point2D.Float paikka;
+
+    /**
+     * @param parametri robotin suunta
+     * @param parametri mittaus-taulukko
+     */
+    public JsimData(float suunta, float[] data, Point2D.Float paikka) {
+        robosuunta = suunta;
+        this.data = data;
+        this.paikka = paikka;
+    }
+
+    /**
+     * @return robotin suunnan tältä mittaukselta
+     */
+    public float getRobosuunta() {
+        return robosuunta;
+    }
+
+    public Point2D.Float getPaikka() {
+        return paikka;
+    }
+
+    /**
+     * @return robotin luoman data-taulukon
+     */
+    public float[] getData() {
+        return data;
+    }
+
+    /**
+     * @return robotin luoman data-taulukon integgerinä
+     */
+    public int[] getIntData() {
+        System.out.println("***getintdata***");
+        int[] dtaulu = new int[data.length];
+        for (int i = 0; i < data.length; i++) {
+            dtaulu[i] = (int) data[i];
+        }
+        return dtaulu;
+    }
+
+    /**
+     * Palauttaa datan pisteinä. Jos pistettä ei ole,
+     * palauttaa pisteen (666666,666666)
+     * 
+     * @return data Point2D.Float olioina
+     */
+    public Point2D.Float[] getPisteet() {
+
+        Point2D.Float[] datapisteet = new Point2D.Float[data.length];
+
+        for (int i = 0; i < data.length; i++) {
+            float kulma = (i * 180) / (data.length - 1);
+            if (data[i] != 9999) {
+                if ((robosuunta + kulma - 90) == -270) {   //W //länsi
+                    float x = paikka.x - data[i];
+                    float y = paikka.y;
+                    datapisteet[i] = new Point2D.Float(x, y);
+                } else if ((robosuunta + kulma - 90) == 0) {   //N //pohjoinen
+                    float x = paikka.x;
+                    float y = paikka.y + data[i];
+                    datapisteet[i] = new Point2D.Float(x, y);
+                } else if ((robosuunta + kulma - 90) < 90) {   //NE //koilinen
+                    float x = (float) (paikka.x + data[i] * Math.sin((robosuunta + kulma - 90) * (Math.PI / 180)));
+                    float y = (float) (paikka.y + data[i] * Math.cos((robosuunta + kulma - 90) * (Math.PI / 180)));
+                    datapisteet[i] = new Point2D.Float(x, y);
+                } else if ((robosuunta + kulma - 90) == 90) {  //E //itä
+                    float x = paikka.x + data[i];
+                    float y = paikka.y;
+                    datapisteet[i] = new Point2D.Float(x, y);
+                } else if ((robosuunta + kulma - 90) < 180) { //SE //kaakko
+                    float x = (float) (paikka.x + data[i] * Math.sin((180 - (robosuunta + kulma - 90)) * (Math.PI / 180)));
+                    float y = (float) (paikka.y - data[i] * Math.cos((180 - (robosuunta + kulma - 90)) * (Math.PI / 180)));
+                    datapisteet[i] = new Point2D.Float(x, y);
+                } else if ((robosuunta + kulma - 90) == 180) { //S //etelä
+                    float x = paikka.x;
+                    float y = paikka.y - data[i];
+                    datapisteet[i] = new Point2D.Float(x, y);
+                } else if ((robosuunta + kulma - 90) < 270) {  //SW //lounas omnomnom
+                    float x = (float) (paikka.x - data[i] * Math.sin(((-180 + robosuunta + kulma - 90)) * (Math.PI / 180)));
+                    float y = (float) (paikka.y - data[i] * Math.cos(((-180 + robosuunta + kulma - 90)) * (Math.PI / 180)));
+                    datapisteet[i] = new Point2D.Float(x, y);
+                } else if ((robosuunta + kulma - 90) == 270) { //W //länsi
+                    float x = paikka.x - data[i];
+                    float y = paikka.y;
+                    datapisteet[i] = new Point2D.Float(x, y);
+                } else if ((robosuunta + kulma - 90) < 360) {  //NW //luode
+                    float x = (float) (paikka.x - data[i] * Math.sin(((360 - robosuunta + kulma - 90)) * (Math.PI / 180)));
+                    float y = (float) (paikka.y + data[i] * Math.cos(((360 - robosuunta + kulma - 90)) * (Math.PI / 180)));
+                    datapisteet[i] = new Point2D.Float(x, y);
+                } else if ((robosuunta + kulma - 90) == 360) { //N //pohjoinen
+                    float x = paikka.x;
+                    float y = paikka.y + data[i];
+                    datapisteet[i] = new Point2D.Float(x, y);
+                } else if ((robosuunta + kulma - 90) < 450) {  //NW //koilinen
+                    float x = (float) (paikka.x + data[i] * Math.sin(((-360 + robosuunta + kulma - 90)) * (Math.PI / 180)));
+                    float y = (float) (paikka.y + data[i] * Math.cos(((-360 + robosuunta + kulma - 90)) * (Math.PI / 180)));
+                    datapisteet[i] = new Point2D.Float(x, y);
+                } else if ((robosuunta + kulma - 90) == 450) { //E //itä
+                    float x = paikka.x + data[i];
+                    float y = paikka.y;
+                    datapisteet[i] = new Point2D.Float(x, y);
+                }
+            } else {
+                datapisteet[i] = new Point2D.Float(666666, 666666);//ei pistettä
+            }
+
+        }
+        return datapisteet;
+    }
+}
 }
