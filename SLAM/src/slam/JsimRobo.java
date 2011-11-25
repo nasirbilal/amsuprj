@@ -88,60 +88,20 @@ public class JsimRobo {
      */
     public Point2D.Float etenePisteeseen(Point2D.Float kohde) {
         käännyKohti(kohde);
-        return etene(kohde.distance(paikka));
+        setPaikka(kohde);
+        return paikka;
     }
 
     /** 
      * @param kohde Piste, jota kohti käännytään.
-     * @return Robotin uusi suunta asteina "vaaka-akselista" myötäpäivään (?).
+     * @return Robotin uusi suunta asteina "vaaka-akselista" vastapäivään.
      */
     public float käännyKohti(Point2D.Float kohde) {
-
-        /*
-         * koska tan(alpha) = a/b, niin
-         * alpha = tan⁻¹((x2-x1)/(y2-y1))
-         * -tässähän meillä on tietenkin 360-astetta
-         *  hoidettavana, mistä johtuen pakko vääntää iffeillä eri ilmansuunnat
-         */
-
-        if (kohde.x == paikka.x) {   //tähdätään y-akselin suuntaan
-            if (kohde.y > paikka.y) {
-                return käänny(-suunta);
-            } else {
-                return käänny(180 - suunta);
-            }
-        } else if (kohde.y == paikka.y) { //tähdätään x-akselin suuntaan
-            if (kohde.x > paikka.x) {
-                return käänny(90 - suunta);
-            } else {
-                return käänny(270 - suunta);
-            }
-        } else {
-
-            float aste;
-
-            if (kohde.x > paikka.x) {
-                if (kohde.y > paikka.y) {
-                    aste = (float) ((Math.atan((kohde.x - paikka.x) / (kohde.y - paikka.y))));
-                    aste = (float) (aste * (180 / Math.PI)); //käännetään radiaanit asteiksi
-                    return käänny(-suunta + aste);
-                } else { // if (kohde.y < paikka.y){
-                    aste = (float) ((Math.atan((kohde.x - paikka.x) / (kohde.y - paikka.y))));
-                    aste = (float) (aste * (180 / Math.PI)); //käännetään radiaanit asteiksi
-                    return käänny(-suunta + 180 + aste);
-                }
-            } else { // if (kohde.x < paikka.x){
-                if (kohde.y > paikka.y) {
-                    aste = (float) ((Math.atan((kohde.x - paikka.x) / (kohde.y - paikka.y))));
-                    aste = (float) (aste * (180 / Math.PI)); //käännetään radiaanit asteiksi
-                    return käänny(-suunta + aste);
-                } else { // if (kohde.y < paikka.y){
-                    aste = (float) ((Math.atan((kohde.x - paikka.x) / (kohde.y - paikka.y))));
-                    aste = (float) (aste * (180 / Math.PI)); //käännetään radiaanit asteiksi
-                    return käänny(-suunta + 180 + aste);
-                }
-            }
-        }
+        float dx = kohde.x - paikka.x;
+        float dy = kohde.y - paikka.y;
+        suunta = (float)Math.toDegrees(Math.atan2(dy, dx));
+        suunta += (suunta < 0 ? 360 : 0);
+        return suunta;
     }
 
     public void valitseUusiPiste(int mittausMaara) {
@@ -240,8 +200,8 @@ public class JsimRobo {
      */
     private Point2D.Float etene(double matka) {
         double a = Math.toRadians(suunta);
-        double x = paikka.x + matka * Math.sin(a);
-        double y = paikka.y + matka * Math.cos(a);
+        double x = paikka.x + matka * Math.cos(a);
+        double y = paikka.y + matka * Math.sin(a);
 
         paikka = new Point2D.Float((float)x, (float)y);
         return paikka;

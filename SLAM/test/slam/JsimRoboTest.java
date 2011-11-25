@@ -5,7 +5,6 @@
 package slam;
 
 import java.awt.geom.Point2D;
-import java.awt.geom.Point2D.Float;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -15,7 +14,7 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author Olli
+ * @author Lauri
  */
 public class JsimRoboTest {
 
@@ -492,103 +491,37 @@ public class JsimRoboTest {
      * Test of etenePisteeseen method, of class JsimRobo.
      */
     @Test
-    public void testEtenePisteeseen1() {
+    public void testEtenePisteeseen() {
         System.out.println("etenePisteeseen");
-        Point2D.Float kohde = new Point2D.Float(500.0f, 0.0f);
-        JsimRobo instance = new JsimRobo(0, 800);
-        Point2D.Float expResult = new Point2D.Float(500.0f, 0.0f);
-        Float result = instance.etenePisteeseen(kohde);
-        assertEquals(expResult, result);
-    }
-
-    @Test
-    public void testEtenePisteeseen2() {
-        System.out.println("etenePisteeseen");
-        Point2D.Float kohde = new Point2D.Float(10f, -10);
-        JsimRobo instance = new JsimRobo(0, 800);
-        Point2D.Float expResult = new Point2D.Float(10f, -10);
-        Float result = instance.etenePisteeseen(kohde);
-        assertEquals(expResult, result);
-    }
-
-    @Test
-    public void testEtenePisteeseen3() {
-        System.out.println("etenePisteeseen");
-        Point2D.Float kohde = new Point2D.Float(10f, 10);
-        JsimRobo instance = new JsimRobo(0, 800);
-        Point2D.Float expResult = new Point2D.Float(10f, 10);
-        Float result = instance.etenePisteeseen(kohde);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-    }
-
-    @Test
-    public void testEtenePisteeseen4() {
-        System.out.println("etenePisteeseen");
-        Point2D.Float kohde = new Point2D.Float(-10, -10);
-        JsimRobo instance = new JsimRobo(0, 800);
-        Point2D.Float expResult = new Point2D.Float(-10, -10);
-        Float result = instance.etenePisteeseen(kohde);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-    }
-
-    @Test
-    public void testEtenePisteeseen5() {
-        System.out.println("etenePisteeseen");
-        Point2D.Float kohde = new Point2D.Float(-10, 10);
-        JsimRobo instance = new JsimRobo(0, 800);
-        Point2D.Float expResult = new Point2D.Float(-10, 10);
-        Float result = instance.etenePisteeseen(kohde);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-    }
-
-    @Test
-    public void testEtenePisteeseen6() {
-        System.out.println("etenePisteeseen");
-        Point2D.Float kohde = new Point2D.Float(-63.764F, 47.007F);
-        JsimRobo instance = new JsimRobo(0, 800);
-        Point2D.Float expResult = new Point2D.Float(-63.764F, 47.007F);
-        Float result = instance.etenePisteeseen(kohde);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
+        for (int i = 0; i < 100; ++i) {
+            Point2D.Float kohde = new Point2D.Float(
+                (float)Math.random()*1600-800, (float)Math.random()*1600-800);
+            JsimRobo instance = new JsimRobo((int)(Math.random()*360), 800);
+            instance.setPaikka(new Point2D.Float(0,0));
+            Point2D.Float expResult = new Point2D.Float(kohde.x, kohde.y);
+            Point2D.Float result = instance.etenePisteeseen(kohde);
+            assertEquals("kierros " + i + ": ", expResult.x, result.x, 0.001);
+            assertEquals("kierros " + i + ": ", expResult.y, result.y, 0.001);
+        }
     }
 
     /**
      * Test of kaannyKohti method, of class JsimRobo.
      */
     @Test
-    public void testkaannyKohti1() {
+    public void testkaannyKohti() {
         System.out.println("k\u00e4\u00e4nnyKohti");
-        Point2D.Float kohde = new Point2D.Float(500.0f, 0.0f);
-        float bonusaste = 0.0F;
-        JsimRobo instance = new JsimRobo(0, 800);
-        float expResult = 90.0F;
-        float result = instance.käännyKohti(kohde);
-        assertEquals(expResult, result, 0.0);
-    }
+        for (int i = 0; i < 360; ++i) {
+            Point2D.Float kohde = new Point2D.Float(
+                (float)Math.cos(Math.toRadians(i)),
+                (float)Math.sin(Math.toRadians(i)));
+            JsimRobo instance = new JsimRobo((int)(Math.random()*360), 800);
+            instance.setPaikka(new Point2D.Float(0,0));
 
-    @Test
-    public void testkaannyKohti2() {
-        System.out.println("k\u00e4\u00e4nnyKohti");
-        Point2D.Float kohde = new Point2D.Float(500.0f, 500.0f);
-        float bonusaste = 0.0F;
-        JsimRobo instance = new JsimRobo(0, 800);
-        float expResult = 45.0F;
-        float result = instance.käännyKohti(kohde);
-        assertEquals(expResult, result, 0.0);
-    }
-
-    @Test
-    public void testkaannyKohti3() {
-        System.out.println("k\u00e4\u00e4nnyKohti");
-        Point2D.Float kohde = new Point2D.Float(-10, 10);
-        float bonusaste = 0.0F;
-        JsimRobo instance = new JsimRobo(0, 800);
-        float expResult = 315.0F;
-        float result = instance.käännyKohti(kohde);
-        assertEquals(expResult, result, 0.0);
+            float expResult = i;
+            float result = instance.käännyKohti(kohde);
+            assertEquals(expResult, result, 0.001);
+        }
     }
 
     /**
