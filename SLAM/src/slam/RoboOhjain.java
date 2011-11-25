@@ -186,10 +186,12 @@ public class RoboOhjain extends Thread {
 
     @Override
     public void run() {
+        long i = 0;
         while (true) {
+            System.out.println(Calendar.getInstance().getTime().toString() +
+                               " kierros " + i++ + ".");
             if (!teeMittaukset()) {
-                System.out.println(Calendar.getInstance().getTime().toString()
-                        + "Mittaukset epäonnistuivat.");
+                System.out.println("Mittaukset epäonnistuivat.");
             }
         }
     }
