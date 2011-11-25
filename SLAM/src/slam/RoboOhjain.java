@@ -119,10 +119,12 @@ public class RoboOhjain extends Thread {
         paketti = vastaus; // Talleta uusimmat tulokset.
         float dx = paketti.getMittausSuunta().x - paketti.getNykySijaiti().x;
         float dy = paketti.getMittausSuunta().y - paketti.getNykySijaiti().y;
+        float alpha = (float) Math.atan2(dy, dx);
+        alpha += (alpha < 0 ? 2*Math.PI : 0);
         int maara = paketti.getEtaisyydet().length;
         int[] etaisyydet = paketti.getEtaisyydet();
         JsimRoboNakyma nakyma = new JsimRoboNakyma(paketti.getNykySijaiti(),
-                (float) Math.atan2(dx, dy), maara, 1);
+                alpha, maara, 1);
         Line2D.Float[] sateet = nakyma.getNakotaulu();
 
         // Lisää robotin havaitsemat esteet karttaan.

@@ -188,8 +188,8 @@ public class Kokoaja {
 
                         for (int m = 0; !OK && m < pysty0.size(); ++m) {
                             for (int n = 0; !OK && n < pysty1.size(); ++n) {
-                                Line2D.Float lp0 = pysty0.get(i);
-                                Line2D.Float lp1 = pysty1.get(j);
+                                Line2D.Float lp0 = pysty0.get(m);
+                                Line2D.Float lp1 = pysty1.get(n);
                                 final float DX = lp1.y1 - lp0.y1;
 
                                 float dy0 = lv0.x2 - lv0.x1;
@@ -258,8 +258,10 @@ public class Kokoaja {
                 Line2D.Float l0 = kartta[i];
                 Line2D.Float l1 = kartta[j];
 
-                double a0 = Math.atan2(l0.x2 - l0.x1, l0.y2 - l0.y1);
-                double a1 = Math.atan2(l1.x2 - l1.x1, l1.y2 - l1.y1);
+                double a0 = Math.atan2(l0.y2 - l0.y1, l0.x2 - l0.x1);
+                double a1 = Math.atan2(l1.y2 - l1.y1, l1.x2 - l1.x1);
+                a0 += (a0 < 0 ? 2*Math.PI : 0);
+                a1 += (a1 < 0 ? 2*Math.PI : 0);
                 if (Math.abs(a1 - a0) > beta) // Ovatko janat samansuuntaisia?
                 {
                     continue;
@@ -317,7 +319,8 @@ public class Kokoaja {
         // Laske missä kulmassa (suhteessa vaakasuoraan X-akseliin) olevia
         // seiniä on kaikkein ja toiseksi eniten.
         for (Line2D.Float l : kartta) {
-            int alpha = (int) Math.toDegrees(Math.atan2(l.x2 - l.x1, l.y2 - l.y1));
+            int alpha = (int) Math.toDegrees(Math.atan2(l.y2 - l.y1, l.x2 - l.x1));
+            alpha += (alpha < 0 ? 360 : 0);
             int i = alpha % 360;
 
             if (kulmat[i]++ > kulmat[eniten]) {
