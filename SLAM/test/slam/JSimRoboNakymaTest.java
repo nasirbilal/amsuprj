@@ -45,8 +45,9 @@ public class JSimRoboNakymaTest {
     @Test
     public void testGetNäkötaulu() {
         System.out.println("getN\u00e4k\u00f6taulu");
-        JsimRoboNakyma instance = new JsimRoboNakyma(new Point2D.Float(66, 99),
-                45f, 10, 80);
+        JsimRoboNakyma instance = new JsimRoboNakyma(
+                new Point2D.Float(-101, -97),
+                0, 10, 80);
         Line2D.Float[] expResult = null;
         Line2D.Float[] result = instance.getNakotaulu();
         assertEquals(expResult, result);
@@ -62,7 +63,7 @@ public class JSimRoboNakymaTest {
         Float karttaviiva = null;
         JsimRoboNakyma instance = null;
         Point2D.Float expResult = null;
-        Point2D.Float result = instance.leikkaako(näköviiva, karttaviiva);
+        Point2D.Float result = instance.laskeLeikkauspiste(näköviiva, karttaviiva);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");

@@ -50,11 +50,7 @@ public class JsimRoboNakyma {
         }
     }
 
-    public Line2D.Float getNakoviiva(int i) { // Tästä vois hankkiutua eroon.
-        return katsetaulu[i];
-    }
-
-    public Line2D.Float[] getNakotaulu() { // Koska tää on kaikki mitä tarvitaan.
+    public Line2D.Float[] getNakotaulu() {
         return katsetaulu;
     }
 
@@ -66,7 +62,7 @@ public class JsimRoboNakyma {
      * @return Point2D.Float, joka kertoo viivojen leikkauspisteen tai
      *         null, jos viivat eivät leikkaa.
      */
-    public Point2D.Float leikkaako(Line2D.Float nakoviiva, Line2D.Float karttaviiva) {
+    public Point2D.Float laskeLeikkauspiste(Line2D.Float nakoviiva, Line2D.Float karttaviiva) {
         float x, y, a1, a2, b1, b2;
 
         if (nakoviiva.y2 == nakoviiva.y1 && karttaviiva.y2 == karttaviiva.y1) {

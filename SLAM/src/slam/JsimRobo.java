@@ -302,12 +302,8 @@ public class JsimRobo {
         for (int i = 0; i < nakyma.getNakotaulu().length; i++) { //iteroidaan JsimRoboNäkymän Näkötaulun näköviivoja
             pieninleikkaus = 9999; //jos mikään ei leikkaa annetaan arvo 9999
             for (int k = 0; k < kartta.length; k++) { //iteroidaan kartan viivoja
-                if (nakyma.getNakoviiva(i).intersectsLine(kartta[k])) { //JOS näköviiva leikkaan karttaviivan:
-                    //            System.out.print("kartta["+k+"] leikkaa näköviiva["+i+"]");
-                    Point2D.Float leikkauspiste = nakyma.leikkaako(nakyma.getNakoviiva(i), kartta[k]); //pistetään leikkauspiste muistiin
-
-                    //            System.out.print(" paikassa("+leikkauspiste.x+","+leikkauspiste.y+"), ");
-
+                Point2D.Float leikkauspiste = nakyma.laskeLeikkauspiste(nakyma.getNakotaulu()[i], kartta[k]); //pistetään leikkauspiste muistiin
+                if (leikkauspiste != null) {
                     if (pieninleikkaus > Math.sqrt(Math.pow(paikka.x - leikkauspiste.x, 2) + (Math.pow(paikka.y - leikkauspiste.y, 2)))) {
                         //jos leikkauspiste on pienempi kuin muistissa oleva lyhyin matka leikkauspisteeseen
                         pieninleikkaus = (float) Math.sqrt(Math.pow(paikka.x - leikkauspiste.x, 2) + (Math.pow(paikka.y - leikkauspiste.y, 2)));
