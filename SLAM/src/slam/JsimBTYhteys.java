@@ -1,5 +1,8 @@
 package slam;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Mudi
@@ -30,6 +33,10 @@ public class JsimBTYhteys implements BTYhteys {
         // Tässä "robotti kirjoittaa pakettiin omat sijaintiarvionsa."
         paketti.setNykySijaiti(paketti.getUusiSijaiti());
         paketti.setEtaisyydet(etäisyydet);
+        
+        // Bluetooth-yhteys on hidas. Luo vähän viivettä datasiirtoon.
+        try { Thread.currentThread().sleep(50 + (long)(Math.random()* 200));
+        } catch (InterruptedException ex) { }
         
         return paketti; // Palauta "BT:n yli tullut" robotin vastauspaketti.
     }
