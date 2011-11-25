@@ -5,7 +5,6 @@
 package slam;
 
 import java.awt.geom.Line2D;
-import java.awt.geom.Line2D.Float;
 import java.awt.geom.Point2D;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -16,7 +15,7 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author Olli
+ * @author Lauri
  */
 public class JSimRoboNakymaTest {
     
