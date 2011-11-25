@@ -15,6 +15,7 @@ public class JsimRobo {
     private Point2D.Float paikka;           /// Robotin paikka Point-oliona MILLIMETREISSÄ
     private JsimData mittaus;               /// luodaan mittaa()-metodilla, käytetään seuraavan mittauspaikan valitsemiseksi
     private JsimRoboNakyma nakyma;          /// luodaan mittaa()-metodilla, debugausta
+    private boolean edettytäyteen = false;  ///(navigointiin) Jos (false)-> edetään täyteen näkymään, =true; jos (true) -> käännytään 180, =false.
 
     /// Kartta maailmasta, jossa robotti kulkee. 
     private final Rectangle      reunat =  new Rectangle(0, 0, 135, 200);                        
@@ -64,7 +65,6 @@ public class JsimRobo {
         }
         
         this.paikka = p;
-        System.err.println(p.toString());
     }
 
     public int getID() {
@@ -75,84 +75,53 @@ public class JsimRobo {
         return "JsimRobo[" + getID() + "]";
     }
 
-    public float getSuunta() {
-        return suunta;
-    }
-
-    public void setSuunta(float suunta) {
-        this.suunta = suunta;
-    }
-
-    public Point2D.Float getPaikka() {
-        return paikka;
-    }
-
-    public void setPaikka(float x, float y) {
-        paikka = new Point2D.Float(x, y);
-    }
-
     void setPaikka(Point2D.Float paikka) {
-        setPaikka(paikka.x, paikka.y);
+        this.paikka = paikka;
     }
 
-    /*
-     * Liikuntametodit:
-     */
     /**
-     * Lasketaan uudet x- ja y-koordinaatit vanhojen koordinaattien
-     * ja suunnan perusteella. esim.
-     * (uusi X) = (vanha X) + (kuljettava matka)*sin(nykyinen suunta)
+     * Laskee uudet x- ja y-koordinaatit kun kuljtaan nykyisestä sijainnista
+     * nykyiseen suuntaan annetun matkan verran.
      * 
-     * @param matka on MILLIMETREISSÄ.
-     * @return uuden paikan Point2D.Float-oliona.
+     * @param matka Robotin kulkema etäisyys MILLIMETREISSÄ.
+     * @return Robotin uusi sijainti.
      */
-    public Point2D.Float etene(float matka) {
-        float x = (float) (paikka.x + matka * Math.sin((suunta * (Math.PI / 180)))); //Mathin funktiot ottaa radiaaneja
-        float y = (float) (paikka.y + matka * Math.cos((suunta * (Math.PI / 180))));
+    private Point2D.Float etene(double matka) {
+        double a = Math.toRadians(suunta);
+        double x = paikka.x + matka * Math.sin(a);
+        double y = paikka.y + matka * Math.cos(a);
 
-        paikka = new Point2D.Float(x, y);
+        paikka = new Point2D.Float((float)x, (float)y);
         return paikka;
     }
 
     /** 
-     * Käytetään käännyKohti-metodia oikean suunnan asettamiseksi, jonka
-     * jälkeen liikutaan "tangentin" pituus pythagoraan lauseeseen perustuen:
-     * 
-     * sqrt((x2-x1)²+(y2-y1)²)
+     * Siirtää robotin uuteen sijaintiin. Robotin katselusuunta on sen viivan
+     * suuntainen, joka kulkee lähtöpisteen ja kohdepisteen kautta.
      *
-     * @param on kohteena oleva paikka.
-     * @return uuden paikan Point2D.Float-oliona.
-     * @note Robotti kääntyy pistettä kohti ja "ajaa" siihen. Ei mitään pathfindingiä.
+     * @param kohde Kohteena oleva paikka.
+     * @return Robotin uusi sijainti.
+     * @note Robotti kääntyy pistettä kohti ja "ajaa" siihen: ei pathfindingiä.
      */
     public Point2D.Float etenePisteeseen(Point2D.Float kohde) {
         käännyKohti(kohde);
-        return etene((float) Math.sqrt(Math.pow(kohde.x - paikka.x, 2) + (Math.pow(kohde.y - paikka.y, 2))));
+        return etene(kohde.distance(paikka));
     }
 
     /** 
-     * @param aste on väliltä -90 (vasemmalle) viiva 90 (oikealle).
-     * @return uuden suunnan.
+     * @param aste Robotin kääntymä määrä väliltä -90 (vasen) ja 90 (oikea).
+     * @return Robotin uusi suunta.
      */
-    public float käänny(float aste) {
-
-        /*
-         * tässä pakotetaan ensin suunnan ja kääntymisen
-         * summa sallitulle alueelle (0-359)
-         */
-
-        suunta = suunta + aste;
-        if (suunta > 359) {
-            suunta = suunta - 360;
-        } else if (suunta < 0) {
+    private float käänny(float aste) {
+        suunta = (suunta + aste) % 360; /* Pakota suunta välille 0-359. */
+        if (suunta < 0)
             suunta = suunta + 360;
-        }
         return suunta;
     }
 
     /** 
-     * @param Point2D.Float-olio, jota kohti käännytään.
-     * @param on mahdollinen lisäkääntyminen, anna 0 jos ei tarvetta
-     * @return uuden suunnan.
+     * @param kohde Piste, jota kohti käännytään.
+     * @return Robotin uusi suunta asteina "vaaka-akselista" myötäpäivään (?).
      */
     public float käännyKohti(Point2D.Float kohde) {
 
@@ -202,28 +171,15 @@ public class JsimRobo {
             }
         }
     }
-    boolean edettytäyteen = false; //(navigointiin) Jos (false)-> edetään täyteen näkymään, =true; jos (true) -> käännytään 180, =false.
-    /*Tätä booleania käytetään valitseUusiPiste-metodissa.
-     * Tää saattaa jotain pienimuotosia ongelmia kehittää
-     * kun tää on tässä, mutta ne todennäkösesti korjautuu
-     * ittestään.
-     */
 
     public JsimData valitseUusiPiste(int mittausMaara) {
-
-
-
-
         mittaus = mittaa(mittausMaara);         //mittaus on osa näitä navigointihommia
         float mtaulu[] = mittaus.getData();     //tiedot edessäolevasta kamasta
-
 
         int tyhjyyslaskuri = 0;
         int tyhjyysalku = 0;
         int tyhjyysmuisti = 0;
         int tyhjyysalkumuisti = 0;
-
-
 
         for (int i = 0; i < mtaulu.length; i++) {
             if (mtaulu[i] == 9999) {                 //jos ei nähdä mitään
@@ -273,28 +229,11 @@ public class JsimRobo {
 
             käänny(((tyhjyysalkumuisti * 5) - 90) + ((tyhjyysmuisti / 2) * 5)); //witness the true power of mathematics!!!
 
-            //    System.out.println("tam:"+tyhjyysalkumuisti);       //lisää debugia
-            //    if ((tyhjyysalkumuisti-1) >= 0){
-            //        System.out.println("mtaulu[tam-1]=" + mtaulu[tyhjyysalkumuisti-1]);
-            //    } else {
-            //        System.out.println("tam-1=" + (tyhjyysalkumuisti-1));
-            //    }
-            //    System.out.println("tm:"+tyhjyysmuisti);
-            //    System.out.println("tam+tm:"+(tyhjyysalkumuisti+tyhjyysmuisti));
-            //    System.out.println("mtaulu[tam+tm]"+mtaulu[tyhjyysalkumuisti+tyhjyysmuisti]);
-            //    if ((tyhjyysalkumuisti-1) >= 0){
-            //        System.out.println("etene("+ ((mtaulu[tyhjyysalkumuisti-1]+mtaulu[tyhjyysalkumuisti+tyhjyysmuisti])/2) + ");"); //debug out
-            //    } else {
-            //        System.out.println("etene("+ ((mtaulu[tyhjyysalkumuisti+tyhjyysmuisti])/2 ) + ")");
-            //    }
-
             if ((tyhjyysalkumuisti - 1) >= 0) {
                 etene((mtaulu[tyhjyysalkumuisti - 1] + mtaulu[tyhjyysalkumuisti + tyhjyysmuisti]) / 2);
             } else {
                 etene((0 + mtaulu[tyhjyysalkumuisti + tyhjyysmuisti]) / 2);
             }
-            //yksinkertaistettu. tekosyy: tää kuluttaa vähemmän rosessoria
-            //ja näin myös vältytään toivottavasti seiniin törmäilyltä paremmin
             return mittaus;
         }
     }
