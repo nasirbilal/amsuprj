@@ -29,6 +29,8 @@ public class RoboOhjain extends Thread {
     private Point2D.Double[] roboNakyma; /// Mittaustulokset koordinaatistossa.
     private Line2D.Float[] mittausJanat; /// Robotin mittaussuuntien janat.
     private ArrayList<Line2D.Float> kartta; /// Robotin tutkima alue.
+    private boolean kayttajaltaKoordinaatit;
+    private Point2D.Float annettuPiste;   //Käyttäjän antama piste. Jos käyttäjä antaa pisteen, sinne kuljetaan aina
 
     /** @brief Alustaa robotin ohjaimen.
      * 
@@ -42,8 +44,8 @@ public class RoboOhjain extends Thread {
         this.maxEtaisyys = maxEtaisyys;
         this.bt = bt;
         this.paketti = new BTPaketti(ID);
-        this.paketti.setNykySijaiti(new Point2D.Float(0, 0));
-        this.paketti.setUusiSijaiti(new Point2D.Float(0, 0));
+        this.paketti.setNykySijainti(new Point2D.Float(0, 0));
+        this.paketti.setUusiSijainti(new Point2D.Float(0, 0));
         this.paketti.setMittausSuunta(new Point2D.Float(0, 0));
         this.roboNakyma = new Point2D.Double[BTPaketti.MAARA];
         this.kartta = new ArrayList<Line2D.Float>();
@@ -117,13 +119,13 @@ public class RoboOhjain extends Thread {
         }
 
         paketti = vastaus; // Talleta uusimmat tulokset.
-        float dx = paketti.getMittausSuunta().x - paketti.getNykySijaiti().x;
-        float dy = paketti.getMittausSuunta().y - paketti.getNykySijaiti().y;
+        float dx = paketti.getMittausSuunta().x - paketti.getNykySijainti().x;
+        float dy = paketti.getMittausSuunta().y - paketti.getNykySijainti().y;
         float alpha = (float) Math.atan2(dy, dx);
         alpha += (alpha < 0 ? 2*Math.PI : 0);
         int maara = paketti.getEtaisyydet().length;
         int[] etaisyydet = paketti.getEtaisyydet();
-        JsimRoboNakyma nakyma = new JsimRoboNakyma(paketti.getNykySijaiti(),
+        JsimRoboNakyma nakyma = new JsimRoboNakyma(paketti.getNykySijainti(),
                 alpha, maara, 1);
         Line2D.Float[] sateet = nakyma.getNakotaulu();
 
@@ -141,49 +143,62 @@ public class RoboOhjain extends Thread {
         // Laske robotille uusi mittauspiste ja -suunta.
         // Luo neljä sädettä robotista pääilmansuuntiin ja suunnista kohti sitä
         // loppupistettä, joka on etäämmällä robotista.
-        float x = paketti.getNykySijaiti().x;
-        float y = paketti.getNykySijaiti().y;
-        Line2D.Float[] suunnat = {
-            new Line2D.Float(paketti.getNykySijaiti(), new Point2D.Float(
-            x, y - 800 * 100)),
-            new Line2D.Float(paketti.getNykySijaiti(), new Point2D.Float(
-            x - 800 * 100, y)),
-            new Line2D.Float(paketti.getNykySijaiti(), new Point2D.Float(
-            x, y + 800 * 100)),
-            new Line2D.Float(paketti.getNykySijaiti(), new Point2D.Float(
-            x + 800 * 100, y))
-        };
+        if (!kayttajaltaKoordinaatit) {
+            float x = paketti.getNykySijainti().x;
+            float y = paketti.getNykySijainti().y;
+            Line2D.Float[] suunnat = {
+                new Line2D.Float(paketti.getNykySijainti(), new Point2D.Float(
+                x, y - 800 * 100)),
+                new Line2D.Float(paketti.getNykySijainti(), new Point2D.Float(
+                x - 800 * 100, y)),
+                new Line2D.Float(paketti.getNykySijainti(), new Point2D.Float(
+                x, y + 800 * 100)),
+                new Line2D.Float(paketti.getNykySijainti(), new Point2D.Float(
+                x + 800 * 100, y))
+            };
 
-        for (Line2D.Float i : suunnat) {
-            for (Line2D.Float j : kartta) {
-                if (j.intersectsLine(i)) {
-                    j.x2 = (i.x1 + i.x2) / 2;
-                    j.y2 = (i.y1 + i.y2) / 2;
+            for (Line2D.Float i : suunnat) {
+                for (Line2D.Float j : kartta) {
+                    if (j.intersectsLine(i)) {
+                        j.x2 = (i.x1 + i.x2) / 2;
+                        j.y2 = (i.y1 + i.y2) / 2;
+                    }
                 }
             }
-        }
 
-        Line2D.Float pisin = suunnat[0];
-        dx = pisin.x2 - pisin.x1;
-        dy = pisin.y2 - pisin.y1;
-        float pisinPituus = dx * dx + dy * dy;
-        for (int i = 1; i < suunnat.length; ++i) {
-            dx = suunnat[i].x2 - suunnat[i].x1;
-            dy = suunnat[i].y2 - suunnat[i].y1;
-            if (dx * dx + dy * dy > pisinPituus) {
-                pisin = suunnat[i];
+            Line2D.Float pisin = suunnat[0];
+            dx = pisin.x2 - pisin.x1;
+            dy = pisin.y2 - pisin.y1;
+            float pisinPituus = dx * dx + dy * dy;
+            for (int i = 1; i < suunnat.length; ++i) {
+                dx = suunnat[i].x2 - suunnat[i].x1;
+                dy = suunnat[i].y2 - suunnat[i].y1;
+                if (dx * dx + dy * dy > pisinPituus) {
+                    pisin = suunnat[i];
+                }
+                pisinPituus = dx * dx + dy * dy;
             }
-            pisinPituus = dx * dx + dy * dy;
+
+            dx = pisin.x2 - pisin.x1;
+            dy = pisin.y2 - pisin.y1;
+            dx = Math.min(dx, 10); // Kymmenen senttiä (?) eteenpäin.
+            dy = Math.min(dy, 10); // Kymmenen senttiä (?) eteenpäin.
+            paketti.setUusiSijainti(new Point2D.Float(x + dx, y + dy));
+            
+            //Toggle
+            kayttajaltaKoordinaatit = false;
+        }else{
+            paketti.setUusiSijainti(null);
         }
-
-        dx = pisin.x2 - pisin.x1;
-        dy = pisin.y2 - pisin.y1;
-        dx = Math.min(dx, 10); // Kymmenen senttiä (?) eteenpäin.
-        dy = Math.min(dy, 10); // Kymmenen senttiä (?) eteenpäin.
-        paketti.setUusiSijaiti(new Point2D.Float(x + dx, y + dy));
-
         onMuuttunut = true;
         return true;
+    }
+    
+    //Käyttäjä klikkaa kartalla pistettä ja käskemme robottia liikkumaan siihen pisteeseen
+    //emmekä laske erikseen uutta pistettä.
+    public void liikuTahan(Point2D.Float p){
+        annettuPiste = p;
+        kayttajaltaKoordinaatit = true;
     }
 
     @Override

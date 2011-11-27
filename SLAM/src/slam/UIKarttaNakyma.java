@@ -4,7 +4,6 @@
 package slam;
 
 import java.awt.*;
-import java.awt.event.MouseListener;
 import java.awt.geom.Line2D;
 import java.util.Random;
 import javax.swing.*;
@@ -33,6 +32,7 @@ public class UIKarttaNakyma extends JPanel {
         // ikkunaan. Tässä pitäisi data skaalata jotenkin muutein kuin koko
         // ikkunan kokoiseksi, esim. maksimietäisyyden mukaan, mutta tämä
         // hoitakoon homman toistaiseksi.
+        
         float xmin = Float.MAX_VALUE;
         float xmax = Float.MIN_VALUE;
         float ymin = Float.MAX_VALUE;

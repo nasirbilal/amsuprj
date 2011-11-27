@@ -39,8 +39,8 @@ public class BTPaketti implements Serializable {
 
     public static final int MAARA = 37;
     private int id;
-    private Point2D.Float nykySijaiti;
-    private Point2D.Float uusiSijaiti;
+    private Point2D.Float nykySijainti;
+    private Point2D.Float uusiSijainti;
     private Point2D.Float mittausSuunta;
     private int[] etaisyydet;
 
@@ -57,20 +57,20 @@ public class BTPaketti implements Serializable {
         this.id = id;
     }
 
-    public Point2D.Float getNykySijaiti() {
-        return nykySijaiti;
+    public Point2D.Float getNykySijainti() {
+        return nykySijainti;
     }
 
-    public void setNykySijaiti(Point2D.Float nykySijaiti) {
-        this.nykySijaiti = nykySijaiti;
+    public void setNykySijainti(Point2D.Float nykySijainti) {
+        this.nykySijainti = nykySijainti;
     }
 
-    public Point2D.Float getUusiSijaiti() {
-        return uusiSijaiti;
+    public Point2D.Float getUusiSijainti() {
+        return uusiSijainti;
     }
 
-    public void setUusiSijaiti(Point2D.Float uusiSijaiti) {
-        this.uusiSijaiti = uusiSijaiti;
+    public void setUusiSijainti(Point2D.Float uusiSijainti) {
+        this.uusiSijainti = uusiSijainti;
     }
 
     public Point2D.Float getMittausSuunta() {

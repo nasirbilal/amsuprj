@@ -72,13 +72,13 @@ public class NXTBTYhteys extends Thread implements BTYhteys {
                     try {
                         dataUlos.writeInt(paketti.getId());
                         dataUlos.flush();
-                        dataUlos.writeFloat(paketti.getNykySijaiti().x);
+                        dataUlos.writeFloat(paketti.getNykySijainti().x);
                         dataUlos.flush();
-                        dataUlos.writeFloat(paketti.getNykySijaiti().y);
+                        dataUlos.writeFloat(paketti.getNykySijainti().y);
                         dataUlos.flush();
-                        dataUlos.writeFloat(paketti.getUusiSijaiti().x);
+                        dataUlos.writeFloat(paketti.getUusiSijainti().x);
                         dataUlos.flush();
-                        dataUlos.writeFloat(paketti.getUusiSijaiti().y);
+                        dataUlos.writeFloat(paketti.getUusiSijainti().y);
                         dataUlos.flush();
                         dataUlos.writeFloat(paketti.getMittausSuunta().x);
                         dataUlos.flush();
@@ -97,8 +97,8 @@ public class NXTBTYhteys extends Thread implements BTYhteys {
                             }
                         }
 
-                        paketti.setNykySijaiti(new Point2D.Float(dataSisaan.readFloat(), dataSisaan.readFloat()));
-                        paketti.setUusiSijaiti(new Point2D.Float(dataSisaan.readFloat(), dataSisaan.readFloat()));
+                        paketti.setNykySijainti(new Point2D.Float(dataSisaan.readFloat(), dataSisaan.readFloat()));
+                        paketti.setUusiSijainti(new Point2D.Float(dataSisaan.readFloat(), dataSisaan.readFloat()));
                         paketti.setMittausSuunta(new Point2D.Float(dataSisaan.readFloat(), dataSisaan.readFloat()));
 
                     } catch (Exception e) {

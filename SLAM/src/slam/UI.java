@@ -124,6 +124,9 @@ public class UI extends JFrame {
 
             @Override
             public void mouseClicked(MouseEvent e) {
+                int x = e.getX();
+                int t = e.getY();
+                
             }
 
             @Override
@@ -170,6 +173,7 @@ public class UI extends JFrame {
                 asetaDebugTeksti("Este havaittu pisteessä: " + r.nextInt(80) + ", " + r.nextInt(80));
             }
         });
+        
         //ESCillä close
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
                 KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "Cancel");

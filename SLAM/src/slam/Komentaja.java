@@ -79,7 +79,8 @@ public class Komentaja extends Thread {
         } catch (Exception e) {
         }
         Komentaja komentaja = new Komentaja();
-        UI ui = new UI(komentaja);
+       UI  ui = new UI(komentaja);
+       komentaja.rekisteroiUI(ui);
         komentaja.start();
     }
 
@@ -111,5 +112,9 @@ public class Komentaja extends Thread {
             if (muuttunut)
                 karttaNakyma.piirraKartta(Kokoaja.yhdista());
         }
+    }
+
+    private void rekisteroiUI(UI ui) {
+        this.ui = ui;
     }
 }

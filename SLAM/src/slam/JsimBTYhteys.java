@@ -17,8 +17,8 @@ public class JsimBTYhteys implements BTYhteys {
     @Override
     public BTPaketti lahetaJaVastaanota(BTPaketti paketti, int odotusAikaMs) {
         // Lähetä data robotille ja odota sen vastausta.
-        robo.setPaikka(paketti.getNykySijaiti());
-        robo.etenePisteeseen(paketti.getUusiSijaiti());
+        robo.setPaikka(paketti.getNykySijainti());
+        robo.etenePisteeseen(paketti.getUusiSijainti());
         robo.käännyKohti(paketti.getMittausSuunta());
         
         // Robotti suorittaa mittauksia...
@@ -28,7 +28,7 @@ public class JsimBTYhteys implements BTYhteys {
             etäisyydet[i] = (int)mittaukset[i]; // data valmiiksi milleissä.
         
         // Tässä "robotti kirjoittaa pakettiin omat sijaintiarvionsa."
-        paketti.setNykySijaiti(paketti.getUusiSijaiti());
+        paketti.setNykySijainti(paketti.getUusiSijainti());
         paketti.setEtaisyydet(etäisyydet);
         
         // Bluetooth-yhteys on hidas. Luo vähän viivettä datasiirtoon.
