@@ -34,7 +34,12 @@ public class JsimRobo {
                                            new Line2D.Float(760, 1520, 760, 1270),
                                            new Line2D.Float(760, 1270, 520, 1270),
                                            new Line2D.Float(520, 1270, 520, 1120),
-                                           new Line2D.Float(520, 1120, 440, 1120)};
+                                           new Line2D.Float(520, 1120, 440, 1120),
+    
+                                           new Line2D.Float(0,    0,    0,    2000),
+                                           new Line2D.Float(0,    2000, 1350, 2000),
+                                           new Line2D.Float(1350, 2000, 1350, 0),
+                                           new Line2D.Float(1350, 0,    0,    0)};
     private final int infraKantama;   /// Robotin infrapunasensorin kantama MILLIMETREISSÄ
     private static int id_count;      /// Robotin yksilötunnuksen juokseva numero.
 
@@ -104,7 +109,72 @@ public class JsimRobo {
         return suunta;
     }
 
-    public void valitseUusiPiste(int mittausMaara) {
+    /**
+     * Lasketaan mittauskulmista nähtyjen lähimpien esteiden etäisyydet.
+     * 
+     * Tässä olis ideana, että verrataan robotin yhtä "näköviivaa" kaikkiin
+     * kartan viivoihin vuoron perään ja jos leikkaus löytyy niin 
+     * tallennetaan se pieninleikkaus-muuttujaan, jota vertaillaan tuleviin
+     * leikkauspituuksiin. Sitten tallennetaan pieninleikkaus tauluun ja 
+     * siirrytään tarkastelemaan seuraavaa näköviivaa. Lopuksi 
+     * pieninleikkaus-muuttujista muodostettu taulu palautetaan kusujalle.
+     * 
+     * @param mittausMaara Mitattavien kulmien lukumäärä
+     * @return IR-sensorin palauttamat etäisyydet lähimpiin esteisiin.
+     */
+    public float[] mittaa(int mittausMaara) {
+        float taulu[] = new float[mittausMaara];
+        double pieninetaisyys;
+        nakyma = new JsimRoboNakyma(paikka, suunta, mittausMaara, infraKantama);
+
+        for (int i = 0; i < nakyma.getNakotaulu().length; i++) {
+            pieninetaisyys = infraKantama;
+            for (int k = 0; k < kartta.length; k++) {
+                Point2D.Float leikkauspiste = nakyma.laskeLeikkauspiste(
+                    nakyma.getNakotaulu()[i], kartta[k]);
+                
+                if (leikkauspiste == null)
+                    continue;
+
+                double etaisyys = paikka.distance(leikkauspiste);
+                if (etaisyys < pieninetaisyys)
+                    pieninetaisyys = etaisyys;
+            }
+            taulu[i] = (float)pieninetaisyys;
+        }
+
+        return taulu;
+    }
+
+    /**
+     * Laskee uudet x- ja y-koordinaatit kun kuljtaan nykyisestä sijainnista
+     * nykyiseen suuntaan annetun matkan verran.
+     * 
+     * @param matka Robotin kulkema etäisyys MILLIMETREISSÄ.
+     * @return Robotin uusi sijainti.
+     */
+    private Point2D.Float etene(double matka) {
+        double a = Math.toRadians(suunta);
+        double x = paikka.x + matka * Math.cos(a);
+        double y = paikka.y + matka * Math.sin(a);
+
+        paikka = new Point2D.Float((float)x, (float)y);
+        return paikka;
+    }
+
+    /** 
+     * @param aste Robotin kääntymä määrä väliltä -90 (vasen) ja 90 (oikea).
+     * @return Robotin uusi suunta.
+     */
+    private float käänny(float aste) {
+        suunta = (suunta + aste) % 360; /* Pakota suunta välille 0-359. */
+        if (suunta < 0)
+            suunta = suunta + 360;
+        return suunta;
+    }
+
+    // TÄÄ ON IHAN OUT-OF-DATE, PLIIS JUHO PORTTAATKO TÄN RoboOhjaimeen.
+    private void valitseUusiPiste(int mittausMaara) {
         JsimData mittaus = new JsimData(suunta, mittaa(mittausMaara), paikka);
         float mtaulu[] = mittaus.getData();     //tiedot edessäolevasta kamasta
 
@@ -155,67 +225,6 @@ public class JsimRobo {
                 etene((0 + mtaulu[tyhjyysalkumuisti + tyhjyysmuisti]) / 2);
             }
         }
-    }
-
-    public float[] mittaa(int mittausMaara) {
-        /*
-         * Tässä olis ideana, että verrataan robotin yhtä "näköviivaa" kaikkiin
-         * kartan viivoihin vuoron perään ja jos leikkaus löytyy niin 
-         * tallennetaan se pieninleikkaus-muuttujaan, jota vertaillaan tuleviin
-         * leikkauspituuksiin. Sitten tallennetaan pieninleikkaus tauluun ja 
-         * siirrytään tarkastelemaan seuraavaa näköviivaa. Lopuksi 
-         * pieninleikkaus-muuttujista muodostettu taulu annetaan JsimData 
-         * oliolle, johon myös tallennetaan robotin tämänhetkinen suunta.
-         */
-
-        float taulu[] = new float[mittausMaara];
-        double pieninetaisyys;
-        nakyma = new JsimRoboNakyma(paikka, suunta, mittausMaara, infraKantama);
-
-        for (int i = 0; i < nakyma.getNakotaulu().length; i++) {
-            pieninetaisyys = Float.MAX_VALUE;
-            for (int k = 0; k < kartta.length; k++) {
-                Point2D.Float leikkauspiste = nakyma.laskeLeikkauspiste(
-                    nakyma.getNakotaulu()[i], kartta[k]);
-                
-                if (leikkauspiste == null)
-                    continue;
-                
-                double etaisyys = paikka.distance(leikkauspiste);
-                if (etaisyys < pieninetaisyys)
-                    pieninetaisyys = etaisyys;
-            }
-            taulu[i] = (float)pieninetaisyys;
-        }
-
-        return taulu;
-    }
-
-    /**
-     * Laskee uudet x- ja y-koordinaatit kun kuljtaan nykyisestä sijainnista
-     * nykyiseen suuntaan annetun matkan verran.
-     * 
-     * @param matka Robotin kulkema etäisyys MILLIMETREISSÄ.
-     * @return Robotin uusi sijainti.
-     */
-    private Point2D.Float etene(double matka) {
-        double a = Math.toRadians(suunta);
-        double x = paikka.x + matka * Math.cos(a);
-        double y = paikka.y + matka * Math.sin(a);
-
-        paikka = new Point2D.Float((float)x, (float)y);
-        return paikka;
-    }
-
-    /** 
-     * @param aste Robotin kääntymä määrä väliltä -90 (vasen) ja 90 (oikea).
-     * @return Robotin uusi suunta.
-     */
-    private float käänny(float aste) {
-        suunta = (suunta + aste) % 360; /* Pakota suunta välille 0-359. */
-        if (suunta < 0)
-            suunta = suunta + 360;
-        return suunta;
     }
 
 private class JsimData {
