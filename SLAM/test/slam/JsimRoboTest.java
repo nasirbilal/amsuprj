@@ -534,14 +534,14 @@ public class JsimRoboTest {
     public void testMittaa() {
         System.out.println("mittaa");
 
-//        {
-//            JsimRobo instance = new JsimRobo(135, 800); // Katse luoteeseen.
-//            instance.setPaikka(new Point2D.Float(950, 650));
-//            float[] expResult = {113.1f, 80.0f, 113.1f, 800.0f, 800.0f};
-//            float[] result = instance.mittaa(5);
-//            for (int i = 0; i < expResult.length; ++i)
-//                assertEquals(expResult[i], result[i], 0.05);
-//        }
+        {
+            JsimRobo instance = new JsimRobo(135, 800); // Katse luoteeseen.
+            instance.setPaikka(new Point2D.Float(950, 650));
+            float[] expResult = {113.1f, 80.0f, 113.1f, 800.0f, 565.7f};
+            float[] result = instance.mittaa(5);
+            for (int i = 0; i < expResult.length; ++i)
+                assertEquals(expResult[i], result[i], 0.05);
+        }
         
         {
             JsimRobo instance = new JsimRobo(-45, 800); // Katse kaakkoon.
