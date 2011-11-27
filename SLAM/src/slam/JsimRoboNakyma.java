@@ -31,12 +31,14 @@ public class JsimRoboNakyma {
             return;
         }
 
-        float katsekulma = 180 / (mittausmaara - 1); // Kuinka suuri kulma jää katseviivojen väliin.
-        katsesuunta = katsesuunta + 90;              // Katse vasemmalle: muista yksikköympyrä!!!
+        // Kuinka suuri kulma jää katseviivojen väliin.
+        float katsekulma = 180.0f / (mittausmaara - 1.0f);
+        katsesuunta = katsesuunta + 90; // Aloita vasemmalta: muista yksikköympyrä!!!
 
         for (int i = 0; i < sateet.length; i++) {
-            double x = (paikka.x + infraEtaisyys * Math.cos(Math.toRadians(katsesuunta)));
-            double y = (paikka.y + infraEtaisyys * Math.sin(Math.toRadians(katsesuunta)));
+            double kulma = Math.toRadians(katsesuunta);
+            double x = (paikka.x + infraEtaisyys * Math.cos(kulma));
+            double y = (paikka.y + infraEtaisyys * Math.sin(kulma));
 
             // Näköviiva menee robotin nykyisestä paikasta laskettuun pisteeseen.
             sateet[i] = new Line2D.Float(paikka, new Point2D.Float((float)x, (float)y));

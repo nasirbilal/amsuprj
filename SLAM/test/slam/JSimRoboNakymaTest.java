@@ -78,13 +78,13 @@ public class JSimRoboNakymaTest {
                                               taulu[7].y1-dy+100,
                                               taulu[7].x2+dx+100,
                                               taulu[7].y2+dy+100);
-        Point2D.Float[] expResult = { new Point2D.Float(  0.0f, 305.0f),
-                                      new Point2D.Float( 67.4f, 166.8f),
-                                      new Point2D.Float( 98.8f, 102.4f),
-                                      new Point2D.Float(122.2f,  54.4f),
-                                      new Point2D.Float(146.3f,   5.1f),
-                                      new Point2D.Float(180.9f,- 65.8f),
-                                      new Point2D.Float(265.3f,-238.8f),
+        Point2D.Float[] expResult = { new Point2D.Float(  0.0f, 341.4f),
+                                      new Point2D.Float( 70.7f, 170.7f),
+                                      new Point2D.Float(100.0f, 100.0f),
+                                      new Point2D.Float(120.7f,  50.0f),
+                                      new Point2D.Float(141.4f,   0.0f),
+                                      new Point2D.Float(170.7f,- 70.7f),
+                                      new Point2D.Float(241.4f,-241.4f),
                                       null,
                                       null};
         for (int i = 0; i < taulu.length; ++i) {
