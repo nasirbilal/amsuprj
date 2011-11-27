@@ -25,7 +25,7 @@ public class JsimBTYhteys implements BTYhteys {
         float[] mittaukset = robo.mittaa(paketti.getEtaisyydet().length);
         int[] etäisyydet = new int[paketti.getEtaisyydet().length];
         for (int i = 0; i < mittaukset.length; ++i)
-            etäisyydet[i] = (int)mittaukset[i]; // data valmiiksi milleissä.
+            etäisyydet[i] = (int)(mittaukset[i] + 0.5f); // data valmiiksi milleissä.
         
         // Tässä "robotti kirjoittaa pakettiin omat sijaintiarvionsa."
         paketti.setNykySijainti(paketti.getUusiSijainti());
