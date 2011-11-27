@@ -4,6 +4,9 @@
 package slam;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.geom.Line2D;
 import java.util.Random;
 import javax.swing.*;
@@ -12,10 +15,12 @@ import javax.swing.*;
  *
  * @author Olli Koskinen
  */
-public class UIKarttaNakyma extends JPanel {
+public class UIKarttaNakyma extends JPanel implements MouseMotionListener{
 
     private Line2D.Float[] janat;
     private Random r = new Random();
+
+
 
     @Override
     public void paintComponent(Graphics g) {
@@ -61,11 +66,24 @@ public class UIKarttaNakyma extends JPanel {
         g.setColor(Color.black);
     }
 
+    public UIKarttaNakyma() {
+        addMouseMotionListener(this);
+    }
+
     
     
 
     void piirraKartta(Line2D.Float[] janat) {
         this.janat = janat;
         repaint();
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+       setToolTipText(e.getX()+","+e.getY());
     }
 }

@@ -13,6 +13,11 @@ public class Komentaja extends Thread {
     private UIRoboNakyma roboNakyma2;
     private UIKarttaNakyma karttaNakyma;
     private UI ui;
+    
+    private JsimBTYhteys b1;
+    private JsimBTYhteys b2;
+    private RoboOhjain r1;
+    private RoboOhjain r2;
 
     public Komentaja() {
     }
@@ -86,10 +91,10 @@ public class Komentaja extends Thread {
 
     @Override
     public void run() {
-        JsimBTYhteys b1 = new JsimBTYhteys();
-        JsimBTYhteys b2 = new JsimBTYhteys();
-        RoboOhjain r1 = new RoboOhjain(b1, b1.getRoboID(), 10*1000, 80*10);
-        RoboOhjain r2 = new RoboOhjain(b2, b2.getRoboID(), 10*1000, 80*10);
+        b1 = new JsimBTYhteys();
+        b2 = new JsimBTYhteys();
+        r1 = new RoboOhjain(b1, b1.getRoboID(), 10*1000, 80*10);
+        r2 = new RoboOhjain(b2, b2.getRoboID(), 10*1000, 80*10);
         r1.start();
         r2.start();
 
@@ -113,6 +118,23 @@ public class Komentaja extends Thread {
                 karttaNakyma.piirraKartta(Kokoaja.yhdista());
         }
     }
+    
+    //Käyttöliittymältä tuleva liikkumiskäsky, ohittaa robotin uuden pisteen laskun
+    public void asetaRobo1Paikka(Point2D.Float p){
+        r1.liikuTahan(p);
+    }
+    
+    public void asetaRobo2Paikka(Point2D.Float p){
+        r2.liikuTahan(p);
+    }
+    
+    public Point2D.Float annaRobo1Koordinaatit(){
+        return r1.annaKoordinaatit();
+    }
+    public Point2D.Float annaRobo2Koordinaatit(){
+        return r2.annaKoordinaatit();
+    }
+    
 
     private void rekisteroiUI(UI ui) {
         this.ui = ui;

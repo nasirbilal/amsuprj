@@ -333,7 +333,7 @@ public class RoboOhjain extends Thread {
             //Toggle
             kayttajaltaKoordinaatit = false;
         }else{
-            paketti.setUusiSijainti(null);
+            paketti.setUusiSijainti(annettuPiste);
         }
         onMuuttunut = true;
         return true;
@@ -344,6 +344,11 @@ public class RoboOhjain extends Thread {
     public void liikuTahan(Point2D.Float p){
         annettuPiste = p;
         kayttajaltaKoordinaatit = true;
+    }
+    
+    
+    public Point2D.Float annaKoordinaatit(){
+        return paketti.getNykySijainti();
     }
 
     @Override

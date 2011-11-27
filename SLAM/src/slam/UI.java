@@ -4,16 +4,13 @@
 package slam;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
+import java.awt.geom.Point2D;
 import java.util.Random;
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.event.MouseInputAdapter;
+import javax.swing.event.MouseInputListener;
 
 /**
  *
@@ -24,20 +21,19 @@ public class UI extends JFrame {
     /**
      * Luokkamuuttujat
      */
-    private JPanel paaPaneeli;
-    private JPanel nappulaPaneeli;
-    private JPanel roboPaneeli;
     private Komentaja komentaja;
     private UIRoboNakyma robo1;
     private UIRoboNakyma robo2;
     private UIKarttaNakyma karttaNakyma;
+    private JPanel paaPaneeli;
+    private JPanel nappulaPaneeli;
+    private JPanel roboPaneeli;
     private JTextArea debugTekstit;
     private Border reunus;
     private JScrollPane scrollPane;
-    private JButton debugValitsinN,
-            paivitaNakymaN;
-    private boolean debug;
+    private JButton debugValitsinN, paivitaNakymaN;
     private GridBagConstraints gbc;
+    private boolean debug;
 
     /**
      * Konstruktori
@@ -48,9 +44,11 @@ public class UI extends JFrame {
         debug = true;
         karttaNakyma = null;
         rekisteroiKomentaja(commander);
+
+        ToolTipManager.sharedInstance().setInitialDelay(5);
         alustaKomponentit();
 
-        //Keskitetään ikkuna keskelle ruutua
+        //Keskitetään ikkuna
         setLocationRelativeTo(null);
     }
 
@@ -119,22 +117,58 @@ public class UI extends JFrame {
         paaPaneeli.add(karttaNakyma, BorderLayout.CENTER);
         paaPaneeli.add(scrollPane, BorderLayout.SOUTH);
 
+        //Nappuloiden toiminnot
+
+        /* debugValitsinN.addActionListener(new ActionListener() {
         
+        @Override
+        public void actionPerformed(ActionEvent e) {
+        if (debug) {
+        debug = false;
+        debugValitsinN.setText("Debug ON");
+        } else {
+        debug = true;
+        debugValitsinN.setText("Debug OFF");
+        }
+        }
+        });*/
+
         karttaNakyma.addMouseListener(new MouseListener() {
 
             @Override
             public void mouseClicked(MouseEvent e) {
-                int x = e.getX();
-                int t = e.getY();
-                
             }
 
             @Override
             public void mousePressed(MouseEvent e) {
+                  int x = e.getX();
+                int y = e.getY();
+                Point2D.Float robo1 = komentaja.annaRobo1Koordinaatit();
+                Point2D.Float robo2 = komentaja.annaRobo2Koordinaatit();
+
+                //Lasketaan kumpi robo on lähempänä klikattua pistettä 
+                //ja lähetämme sen pisteeseen
+                int delta1X = (int) (robo1.getX() - x);
+                int delta1Y = (int) (robo1.getY() - y);
+                int delta2X = (int) (robo2.getX() - x);
+                int delta2Y = (int) (robo2.getY() - y);
+
+                int robo1Matka = ((delta1X * delta1X) + (delta1Y * delta1Y));
+                int robo2Matka = ((delta2X * delta2X) + (delta2Y * delta2Y));
+
+                //Ei tarvitse laskea erikseen neliöjuurta;
+                //Isomman luvun omaava on kauempana
+                if (robo1Matka < robo2Matka) {
+                    komentaja.asetaRobo1Paikka(new Point2D.Float(x, y));
+                    System.out.println("Käskettiin 1 Robotin ajamaan pisteeseen: " + x + "," + y);
+                } else {
+                    komentaja.asetaRobo2Paikka(new Point2D.Float(x, y));
+                    System.out.println("Käskettiin 2 Robotin ajamaan pisteeseen: " + x + "," + y);
+                }
             }
 
             @Override
-            public void mouseReleased(MouseEvent e) { 
+            public void mouseReleased(MouseEvent e) {
             }
 
             @Override
@@ -146,22 +180,6 @@ public class UI extends JFrame {
             }
         });
         
-        //Nappuloiden toiminnot
-
-       /* debugValitsinN.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (debug) {
-                    debug = false;
-                    debugValitsinN.setText("Debug ON");
-                } else {
-                    debug = true;
-                    debugValitsinN.setText("Debug OFF");
-                }
-            }
-        });*/
-
         paivitaNakymaN.addActionListener(new ActionListener() {
 
             @Override
@@ -170,21 +188,22 @@ public class UI extends JFrame {
                 komentaja.paivitaNakymat();
                 komentaja.roboNakymaKoe();
                 java.util.Random r = new Random();
-                asetaDebugTeksti("Este havaittu pisteessä: " + r.nextInt(80) + ", " + r.nextInt(80));
+                //  asetaDebugTeksti("Este havaittu pisteessä: " + r.nextInt(80) + ", " + r.nextInt(80));
             }
         });
-        
+
         //ESCillä close
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
                 KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "Cancel");
         getRootPane().getActionMap().put("Cancel", new AbstractAction() {
 
+            @Override
             public void actionPerformed(ActionEvent e) {
                 System.exit(0);
             }
         });
 
-        
+
         setContentPane(paaPaneeli);
         setVisible(true);
     }
