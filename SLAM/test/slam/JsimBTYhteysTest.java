@@ -44,8 +44,8 @@ public class JsimBTYhteysTest {
     public void testLahetaJaVastaanota() {
         System.out.println("lahetaJaVastaanota");
         BTPaketti paketti = new BTPaketti(0);
-        paketti.setNykySijaiti(new Point2D.Float(100, 100));
-        paketti.setUusiSijaiti(new Point2D.Float(500, 1500));
+        paketti.setNykySijainti(new Point2D.Float(100, 100));
+        paketti.setUusiSijainti(new Point2D.Float(500, 1500));
         paketti.setMittausSuunta(new Point2D.Float(500+100, 1500-100)); // Katse kaakkoon.
 
         JsimBTYhteys instance = new JsimBTYhteys();
@@ -55,12 +55,12 @@ public class JsimBTYhteysTest {
                             159, 150, 143, 138, 135, 132, 130, 130, 130, 132,
                             135, 138, 800, 800, 800, 778, 707};
         BTPaketti expResult = new BTPaketti(1);
-        expResult.setNykySijaiti(paketti.getUusiSijaiti());
+        expResult.setNykySijainti(paketti.getUusiSijainti());
         expResult.setEtaisyydet(etaisyydet);
 
         BTPaketti result = instance.lahetaJaVastaanota(paketti, 0);
-        assertEquals(expResult.getNykySijaiti().x, result.getNykySijaiti().x, 0.0);
-        assertEquals(expResult.getNykySijaiti().y, result.getNykySijaiti().y, 0.0);
+        assertEquals(expResult.getNykySijainti().x, result.getNykySijainti().x, 0.0);
+        assertEquals(expResult.getNykySijainti().y, result.getNykySijainti().y, 0.0);
         for (int i = 0; i < result.getEtaisyydet().length; ++i)
             assertEquals(expResult.getEtaisyydet()[i], result.getEtaisyydet()[i]);
     }

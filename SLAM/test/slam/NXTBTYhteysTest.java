@@ -22,8 +22,8 @@ public class NXTBTYhteysTest {
         System.out.println("lahetaJaVastaanota");
         BTPaketti paketti = new BTPaketti(-1);
         paketti.setMittausSuunta(new Point2D.Float(9.0f, 10.0f));
-        paketti.setNykySijaiti(new Point2D.Float(11.0f, 12.0f));
-        paketti.setUusiSijaiti(new Point2D.Float(13.0f, 14.0f));
+        paketti.setNykySijainti(new Point2D.Float(11.0f, 12.0f));
+        paketti.setUusiSijainti(new Point2D.Float(13.0f, 14.0f));
 
         int etaisyydet[] = new int[BTPaketti.MAARA];
         for (int i = 0; i < BTPaketti.MAARA; i++) {
