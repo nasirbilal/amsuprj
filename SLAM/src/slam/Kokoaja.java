@@ -167,6 +167,9 @@ public class Kokoaja {
                     }
                 }
 
+                float dxSumma = 0;
+                float dySumma = 0;
+                
                 // Aseta vuorotellen jokainen jälkimmäisen kartan vaakasuorista
                 // seinistä päällekkäin alkukartan jokaisen vaakasuoran seinän
                 // kanssa. Jokaisen yhdistämisen kohdalla tee jokaiselle
@@ -176,7 +179,8 @@ public class Kokoaja {
                         Line2D.Float lv0 = vaaka0.get(i);
                         Line2D.Float lv1 = vaaka1.get(j);
                         final float DY = lv1.y1 - lv0.y1;
-
+                        dySumma += DY;
+                        
                         float dx0 = lv0.x2 - lv0.x1;
                         float dx1 = lv1.x2 - lv1.x1;
 
@@ -191,7 +195,8 @@ public class Kokoaja {
                                 Line2D.Float lp0 = pysty0.get(m);
                                 Line2D.Float lp1 = pysty1.get(n);
                                 final float DX = lp1.y1 - lp0.y1;
-
+                                dxSumma += DX;
+                                
                                 float dy0 = lv0.x2 - lv0.x1;
                                 float dy1 = lv1.x2 - lv1.x1;
 
@@ -222,7 +227,17 @@ public class Kokoaja {
                                 }
                             }
                         }
-                    }
+                    }                    
+                }
+                
+                // Palauta kartan alkuperäiset koordinaatit. Tämä siksi, koska
+                // Robottien kartat ovat osoittimen päässä ja mitä täällä
+                // muutetaa nmuuttuu myös robo-ohjaimessa olevassa kartassa.
+                for (Line2D.Float l : kartat.get(k)) {
+                    l.x1 += dxSumma;
+                    l.x2 += dxSumma;
+                    l.y1 += dySumma;
+                    l.y2 += dySumma;
                 }
             }
 
