@@ -58,6 +58,10 @@ public class RoboOhjain extends Thread {
         this.mittausJanat = nakyma.getNakotaulu();
     }
 
+    public Point2D.Float annaKoordinaatit(){
+        return paketti.getNykySijainti();
+    }
+
     /**
      * Aseta Bluetooth-paketti ohjaimelle testausta varten.
      * @param paketti Valmiiksi alustettu paketti.
@@ -108,111 +112,7 @@ public class RoboOhjain extends Thread {
     public Line2D.Float[] haeKartta() {
         return kartta.toArray(new Line2D.Float[kartta.size()]);
     }
-
-    /** @return True jos uutta dataa on saapunut viime kyselyn jälkeen. */
-    public boolean onMuuttunut() {
-        return onMuuttunut;
-    }
-
-    /** @brief Robotti siirretään uuteen sijaintiin ja suoritetaan mittaukset.
-     *
-     * Robotille lasketaan uusi mittauspiste ja mittaussuunta. Tiedot
-     * lähetetään BT:n kautta robotille. Metodi odottaa, että robotti saa
-     * mittaukset tehtyä ja vastaanottaa mittaustulokset BT:n kautta.
-     *
-     * @return True, jos kaikki meni hyvin ja false, jos mittaustuloksia ei
-     *  saatu odotusajan umpeuduttua.
-     */
-    private boolean teeMittaukset() {
-        BTPaketti vastaus = bt.lahetaJaVastaanota(paketti, odotusMs);
-        if (vastaus == null)
-            return false;
-        else
-            paketti = vastaus;  //Talleta uusimmat tulokset
-        
-        float dx = paketti.getMittausSuunta().x - paketti.getNykySijainti().x;
-        float dy = paketti.getMittausSuunta().y - paketti.getNykySijainti().y;
-        float kulma = (float) Math.atan2(dy, dx);
-        kulma += (kulma < 0 ? 2*Math.PI : 0);
-
-        // Lisää robotin havaitsemat esteet karttaan.
-        lisaaHavainnotKarttaan(paketti.getNykySijainti(), kulma,
-                               paketti.getEtaisyydet());
-
-        // Laske robotin sijainti kartan datan perusteella.
-        // TODO.
-
-
-        // Laske robotille uusi mittauspiste.
-        paketti.setUusiSijainti(haeUusiMittauspiste(paketti.getNykySijainti(),
-                kulma, paketti.getEtaisyydet()));
-        
-        // Robotin uusi mittaussuunta on sama kuin suunta, johon robotti
-        // kulkee nykypisteestä uuteen mittauspisteeseensä.
-        dx = paketti.getUusiSijainti().x - paketti.getNykySijainti().x;
-        dy = paketti.getUusiSijainti().y - paketti.getNykySijainti().y;
-        paketti.setMittausSuunta(paketti.getUusiSijainti());
-        paketti.getMittausSuunta().x += dx;
-        paketti.getMittausSuunta().x += dy;
-
-        return onMuuttunut = true;        
-    }   
-        
-/*        
-        // Laske robotille uusi mittauspiste ja -suunta.
-        // Luo neljä sädettä robotista pääilmansuuntiin ja suunnista kohti sitä
-        // loppupistettä, joka on etäämmällä robotista.
-        if (!kayttajaltaKoordinaatit) {
-            float x = paketti.getNykySijainti().x;
-            float y = paketti.getNykySijainti().y;
-            Line2D.Float[] suunnat = {
-                new Line2D.Float(paketti.getNykySijainti(), new Point2D.Float(
-                x, y - 800 * 100)),
-                new Line2D.Float(paketti.getNykySijainti(), new Point2D.Float(
-                x - 800 * 100, y)),
-                new Line2D.Float(paketti.getNykySijainti(), new Point2D.Float(
-                x, y + 800 * 100)),
-                new Line2D.Float(paketti.getNykySijainti(), new Point2D.Float(
-                x + 800 * 100, y))
-            };
-
-            for (Line2D.Float i : suunnat) {
-                for (Line2D.Float j : kartta) {
-                    if (j.intersectsLine(i)) {
-                        j.x2 = (i.x1 + i.x2) / 2;
-                        j.y2 = (i.y1 + i.y2) / 2;
-                    }
-                }
-            }
-
-            Line2D.Float pisin = suunnat[0];
-            dx = pisin.x2 - pisin.x1;
-            dy = pisin.y2 - pisin.y1;
-            float pisinPituus = dx * dx + dy * dy;
-            for (int i = 1; i < suunnat.length; ++i) {
-                dx = suunnat[i].x2 - suunnat[i].x1;
-                dy = suunnat[i].y2 - suunnat[i].y1;
-                if (dx * dx + dy * dy > pisinPituus) {
-                    pisin = suunnat[i];
-                }
-                pisinPituus = dx * dx + dy * dy;
-            }
-
-            dx = pisin.x2 - pisin.x1;
-            dy = pisin.y2 - pisin.y1;
-            dx = Math.min(dx, 10); // Kymmenen senttiä (?) eteenpäin.
-            dy = Math.min(dy, 10); // Kymmenen senttiä (?) eteenpäin.
-            paketti.setUusiSijainti(new Point2D.Float(x + dx, y + dy));
-            
-            //Toggle
-            kayttajaltaKoordinaatit = false;
-        }else{
-            paketti.setUusiSijainti(annettuPiste);
-        }
-        onMuuttunut = true;
-        return true;
-    }
-*/
+    
     //Käyttäjä klikkaa kartalla pistettä ja käskemme robottia liikkumaan siihen pisteeseen
     //emmekä laske erikseen uutta pistettä.
     public void liikuTahan(Point2D.Float p){
@@ -220,10 +120,11 @@ public class RoboOhjain extends Thread {
         kayttajaltaKoordinaatit = true;
     }
 
-    public Point2D.Float annaKoordinaatit(){
-        return paketti.getNykySijainti();
-    }
 
+    /** @return True jos uutta dataa on saapunut viime kyselyn jälkeen. */
+    public boolean onMuuttunut() {
+        return onMuuttunut;
+    }
     @Override
     public void run() {
         long i = 0;
@@ -236,6 +137,15 @@ public class RoboOhjain extends Thread {
         }
     }
 
+    protected Point2D.Float kokeileHakeaUusiMittauspiste(Point2D.Float nykySijainti,
+                                              float kulma, int[] etaisyydet) {
+        return haeUusiMittauspiste(nykySijainti, kulma, etaisyydet);
+    }
+
+    protected void kokeileLisataHavainnotKarttaan(Float nykySijainti, float kulma, int[] etaisyydet) {
+        lisaaHavainnotKarttaan(nykySijainti, kulma, etaisyydet);
+    }
+        
     private Point2D.Float haeUusiMittauspiste(Point2D.Float nykySijainti,
                                               float kulma, int[] etaisyydet) {
         return nykySijainti;
@@ -356,5 +266,48 @@ public class RoboOhjain extends Thread {
             }
         }
     }
-    
+
+    /** @brief Robotti siirretään uuteen sijaintiin ja suoritetaan mittaukset.
+     *
+     * Robotille lasketaan uusi mittauspiste ja mittaussuunta. Tiedot
+     * lähetetään BT:n kautta robotille. Metodi odottaa, että robotti saa
+     * mittaukset tehtyä ja vastaanottaa mittaustulokset BT:n kautta.
+     *
+     * @return True, jos kaikki meni hyvin ja false, jos mittaustuloksia ei
+     *  saatu odotusajan umpeuduttua.
+     */
+    private boolean teeMittaukset() {
+        BTPaketti vastaus = bt.lahetaJaVastaanota(paketti, odotusMs);
+        if (vastaus == null)
+            return false;
+        else
+            paketti = vastaus;  //Talleta uusimmat tulokset
+        
+        float dx = paketti.getMittausSuunta().x - paketti.getNykySijainti().x;
+        float dy = paketti.getMittausSuunta().y - paketti.getNykySijainti().y;
+        float kulma = (float) Math.atan2(dy, dx);
+        kulma += (kulma < 0 ? 2*Math.PI : 0);
+
+        // Lisää robotin havaitsemat esteet karttaan.
+        lisaaHavainnotKarttaan(paketti.getNykySijainti(), kulma,
+                               paketti.getEtaisyydet());
+
+        // Laske robotin sijainti kartan datan perusteella.
+        // TODO.
+
+
+        // Laske robotille uusi mittauspiste.
+        paketti.setUusiSijainti(haeUusiMittauspiste(paketti.getNykySijainti(),
+                kulma, paketti.getEtaisyydet()));
+        
+        // Robotin uusi mittaussuunta on sama kuin suunta, johon robotti
+        // kulkee nykypisteestä uuteen mittauspisteeseensä.
+        dx = paketti.getUusiSijainti().x - paketti.getNykySijainti().x;
+        dy = paketti.getUusiSijainti().y - paketti.getNykySijainti().y;
+        paketti.setMittausSuunta(paketti.getUusiSijainti());
+        paketti.getMittausSuunta().x += dx;
+        paketti.getMittausSuunta().x += dy;
+
+        return onMuuttunut = true;        
+    }   
 }
