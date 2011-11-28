@@ -252,6 +252,217 @@ public class Kokoaja {
         return kartta.toArray(new Line2D.Float[kartta.size()]);
     }
 
+    protected static Point2D.Double kokeileEtsiaMahdotontaRisteysta(
+            ArrayList<Line2D.Float> vaaka,
+            ArrayList<Line2D.Float> pysty) {
+        return etsiMahdotonRisteys(vaaka, pysty);
+    }
+
+    protected static boolean kokeileKarttojenYhteensopivuutta(
+            ArrayList<Line2D.Float> vaaka0, ArrayList<Line2D.Float> vaaka1,
+            ArrayList<Line2D.Float> pysty0, ArrayList<Line2D.Float> pysty1) {
+        return kartatSopivatYhteen(vaaka0, vaaka1, pysty0, pysty1);
+    }
+    
+    protected static Line2D.Float[] kokeileSiistiaKarttaa(Line2D.Float[] kartta) {
+        return (siistiKartta(kartta));
+    }
+
+    private static Point2D.Double etsiMahdotonRisteys(
+            ArrayList<Line2D.Float> vaaka,
+            ArrayList<Line2D.Float> pysty) {
+        final double suurinVali = 2 * Math.max(seinanPaksuus, robotinHalk);
+        final double e = 0.00001; // Epsilon: pyöristystä varten.
+
+        for (Line2D.Float lv : vaaka) {
+            for (Line2D.Float lp : pysty) {
+                if (lv.y1 < lp.y1 - suurinVali || lv.y1 > lp.y2 + suurinVali
+                        || lp.x1 < lv.x1 - suurinVali || lp.x1 > lv.x2 + suurinVali) {
+                    continue; // Seinillä ei ole lainkaan yhteistä aluetta.
+                }
+                // Luo molemmille seinäpaloille omat umpinaista ja avointa
+                // aluetta kuvaavat nelikulmiot. Jos yhden umpinainen alue
+                // menee päällekkäin toisen avoimen alueen kanssa, niin olemme
+                // löytäneet mahdottoman risteyksen.
+                Rectangle2D vUmpi, vAvoin, pUmpi, pAvoin, leikkaus;
+
+                // Janan suunta vaikuttaa seinän rakenteeseen. Seinä on
+                // määritelty niin, että seisottaessa sen alkupisteessä ja
+                // katsottaessa seinää pitkin jää umpinainen alue seinää
+                // kuvaavan janan oikealle puolelle ja avoin alue vasemmalle.
+                // Käytössä on karteesinen koordinaatisto, jossa Y-akseni
+                // kasvaa ylöspäin mentäessä.
+                //
+                // Epsilon erottaa suorakulmiot seinäpätkästä niin, ettei
+                // törmäiystarkistuksessa tarvitse erikseen käsitellä tapausta,
+                // jossa alueiden jokin reuna menee täsmälleen päällekkäin.
+                if (lv.x1 < lv.x2) {
+                    vUmpi = new Rectangle.Double(lv.x1, lv.y1 - seinanPaksuus,
+                            lv.x2 - lv.x1, seinanPaksuus - e);
+                    vAvoin = new Rectangle.Double(lv.x1, lv.y1 + e,
+                            lv.x2 - lv.x1, robotinHalk - e);
+                } else {
+                    vUmpi = new Rectangle.Double(lv.x2, lv.y1 + e,
+                            lv.x1 - lv.x2, seinanPaksuus - e);
+                    vAvoin = new Rectangle.Double(lv.x2, lv.y1 - robotinHalk,
+                            lv.x1 - lv.x2, robotinHalk - e);
+                }
+
+                if (lp.y1 < lp.y2) {
+                    pUmpi = new Rectangle.Double(lp.x1 + e, lp.y1,
+                            seinanPaksuus - e, lp.y2 - lp.y1);
+                    pAvoin = new Rectangle.Double(lp.x1 - robotinHalk, lp.y1,
+                            robotinHalk - e, lp.y2 - lp.y1);
+                } else {
+                    pUmpi = new Rectangle.Double(lp.x1 + e, lp.y2,
+                            robotinHalk - e, lp.y1 - lp.y2);
+                    pAvoin = new Rectangle.Double(lp.x1 - seinanPaksuus, lp.y2,
+                            seinanPaksuus - e, lp.y1 - lp.y2);
+                }
+
+                // Kokeile suorakulmioita päällekkäin. Jos jonkin avoimen
+                // kulmion kulma on jonkin umpinaisen kulmion sisällä, niin
+                // palauta virhe.
+                leikkaus = vUmpi.createIntersection(pAvoin);
+                if (leikkaus != null && leikkaus.getWidth() > e
+                        && leikkaus.getHeight() > e) {
+                    return new Point2D.Double(leikkaus.getCenterX(),
+                            leikkaus.getCenterY());
+                }
+
+                leikkaus = pUmpi.createIntersection(vAvoin);
+                if (leikkaus != null && leikkaus.getWidth() > e
+                        && leikkaus.getHeight() > e) {
+                    return new Point2D.Double(leikkaus.getCenterX(),
+                            leikkaus.getCenterY());
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /** @brief Tarkistaa, ettei kartoissa ole fyysisesti mahdottomia kohtia.
+     * 
+     * @param vaaka0 Alkukartan vaakasuorat seinät.
+     * @param vaaka1 Lisättävän kartan vaakasuorat seinät.
+     * @param pysty0 Alkukartan pystysuorat seinät.
+     * @param pysty1 Lisättävän kartan pystysuorat seinät.
+     * @return Epätosi jos kartoista löytyy mahdoton yhdyskohta, muutoin tosi.
+     */
+    private static boolean kartatSopivatYhteen(ArrayList<Line2D.Float> vaaka0,
+            ArrayList<Line2D.Float> vaaka1,
+            ArrayList<Line2D.Float> pysty0,
+            ArrayList<Line2D.Float> pysty1) {
+
+        // Kokeile, etteivät pysty- ja vaakasuorat seinät muodosta mahdottomia
+        // risteyksiä eli sellaisia, jossa yksi jana väittää jossakin seinien
+        // yhteisessä pisteessä olevan umpinasta seinää ja toinen taas väittää
+        // siinä olevan avonaista lattiaa. Tässä pitää tietää seinän paksuus
+        // ja robotin halkaisija.
+        if (etsiMahdotonRisteys(vaaka0, pysty1) != null
+                || etsiMahdotonRisteys(vaaka1, pysty0) != null) {
+            return false;
+        }
+
+        final double suurinVali = 2 * Math.max(seinanPaksuus, robotinHalk);
+        final double e = 0.00001; // Epsilon: pyöristystä varten.
+        Rectangle2D umpi0, avoin0, umpi1, avoin1, leikkaus;
+
+        // Kokeile, etteivät vaakasuorat seinät muodosta mahdottomia
+        // yhdistelmiä samoin kuin kokeiltiin mahdottomien risteysten kohdalla.
+        for (Line2D.Float l0 : vaaka0) {
+            for (Line2D.Float l1 : vaaka1) {
+                if (Math.abs(l0.y1 - l1.y1) > suurinVali) {
+                    continue;
+                }
+
+                if (l0.x1 < l0.x2) {
+                    umpi0 = new Rectangle.Double(l0.x1, l0.y1 - seinanPaksuus,
+                            l0.x2 - l0.x1, seinanPaksuus - e);
+                    avoin0 = new Rectangle.Double(l0.x1, l0.y1 + e,
+                            l0.x2 - l0.x1, robotinHalk - e);
+                } else {
+                    umpi0 = new Rectangle.Double(l0.x2, l0.y1 + e,
+                            l0.x1 - l0.x2, seinanPaksuus - e);
+                    avoin0 = new Rectangle.Double(l0.x2, l0.y1 - robotinHalk,
+                            l0.x1 - l0.x2, robotinHalk - e);
+                }
+
+                if (l1.x1 < l1.x2) {
+                    umpi1 = new Rectangle.Double(l1.x1, l1.y1 - seinanPaksuus,
+                            l1.x2 - l1.x1, seinanPaksuus - e);
+                    avoin1 = new Rectangle.Double(l1.x1, l1.y1 + e,
+                            l1.x2 - l1.x1, robotinHalk - e);
+                } else {
+                    umpi1 = new Rectangle.Double(l1.x2, l1.y1 + e,
+                            l1.x1 - l1.x2, seinanPaksuus - e);
+                    avoin1 = new Rectangle.Double(l1.x2, l1.y1 - robotinHalk,
+                            l1.x1 - l1.x2, robotinHalk - e);
+                }
+
+                leikkaus = umpi0.createIntersection(avoin1);
+                if (leikkaus != null && leikkaus.getWidth() > e
+                        && leikkaus.getHeight() > e) {
+                    return false;
+                }
+
+                leikkaus = umpi1.createIntersection(avoin0);
+                if (leikkaus != null && leikkaus.getWidth() > e
+                        && leikkaus.getHeight() > e) {
+                    return false;
+                }
+            }
+        }
+
+        // Kokeile, etteivät pystysuorat seinät muodosta mahdottomuuksia.
+        for (Line2D.Float l0 : pysty0) {
+            for (Line2D.Float l1 : pysty1) {
+                if (Math.abs(l0.x1 - l1.x1) > suurinVali) {
+                    continue;
+                }
+
+                if (l0.y1 < l0.y2) {
+                    umpi0 = new Rectangle.Double(l0.x1 + e, l0.y1,
+                            seinanPaksuus - e, l0.y2 - l0.y1);
+                    avoin0 = new Rectangle.Double(l0.x1 - robotinHalk, l0.y1,
+                            robotinHalk - e, l0.y2 - l0.y1);
+                } else {
+                    umpi0 = new Rectangle.Double(l0.x1 + e, l0.y2,
+                            robotinHalk - e, l0.y1 - l0.y2);
+                    avoin0 = new Rectangle.Double(l0.x1 - seinanPaksuus, l0.y2,
+                            seinanPaksuus - e, l0.y1 - l0.y2);
+                }
+
+                if (l1.y1 < l1.y2) {
+                    umpi1 = new Rectangle.Double(l1.x1 + e, l1.y1,
+                            seinanPaksuus - e, l1.y2 - l1.y1);
+                    avoin1 = new Rectangle.Double(l1.x1 - robotinHalk, l1.y1,
+                            robotinHalk - e, l1.y2 - l1.y1);
+                } else {
+                    umpi1 = new Rectangle.Double(l1.x1 + e, l1.y2,
+                            robotinHalk - e, l1.y1 - l1.y2);
+                    avoin1 = new Rectangle.Double(l1.x1 - seinanPaksuus, l1.y2,
+                            seinanPaksuus - e, l1.y1 - l1.y2);
+                }
+
+                leikkaus = umpi0.createIntersection(avoin1);
+                if (leikkaus != null && leikkaus.getWidth() > e
+                        && leikkaus.getHeight() > e) {
+                    return false;
+                }
+
+                leikkaus = umpi1.createIntersection(avoin0);
+                if (leikkaus != null && leikkaus.getWidth() > e
+                        && leikkaus.getHeight() > e) {
+                    return false;
+                }
+            }
+        }
+
+        return true; // "This is a match made in heaven."
+    }
+
     /** @brief Yksinkertaistaa annetun kartan.
      *
      * Metodi yhdistää perättäiset seinänpätkät, poistaa päällekkäiset pätkät
@@ -390,200 +601,5 @@ public class Kokoaja {
         }
 
         return siistiKartta;
-    }
-
-    /** @brief Tarkistaa, ettei kartoissa ole fyysisesti mahdottomia kohtia.
-     * 
-     * @param vaaka0 Alkukartan vaakasuorat seinät.
-     * @param vaaka1 Lisättävän kartan vaakasuorat seinät.
-     * @param pysty0 Alkukartan pystysuorat seinät.
-     * @param pysty1 Lisättävän kartan pystysuorat seinät.
-     * @return Epätosi jos kartoista löytyy mahdoton yhdyskohta, muutoin tosi.
-     */
-    private static boolean kartatSopivatYhteen(ArrayList<Line2D.Float> vaaka0,
-            ArrayList<Line2D.Float> vaaka1,
-            ArrayList<Line2D.Float> pysty0,
-            ArrayList<Line2D.Float> pysty1) {
-
-        // Kokeile, etteivät pysty- ja vaakasuorat seinät muodosta mahdottomia
-        // risteyksiä eli sellaisia, jossa yksi jana väittää jossakin seinien
-        // yhteisessä pisteessä olevan umpinasta seinää ja toinen taas väittää
-        // siinä olevan avonaista lattiaa. Tässä pitää tietää seinän paksuus
-        // ja robotin halkaisija.
-        if (etsiMahdotonRisteys(vaaka0, pysty1) != null
-                || etsiMahdotonRisteys(vaaka1, pysty0) != null) {
-            return false;
-        }
-
-        final double suurinVali = 2 * Math.max(seinanPaksuus, robotinHalk);
-        final double e = 0.00001; // Epsilon: pyöristystä varten.
-        Rectangle2D umpi0, avoin0, umpi1, avoin1, leikkaus;
-
-        // Kokeile, etteivät vaakasuorat seinät muodosta mahdottomia
-        // yhdistelmiä samoin kuin kokeiltiin mahdottomien risteysten kohdalla.
-        for (Line2D.Float l0 : vaaka0) {
-            for (Line2D.Float l1 : vaaka1) {
-                if (Math.abs(l0.y1 - l1.y1) > suurinVali) {
-                    continue;
-                }
-
-                if (l0.x1 < l0.x2) {
-                    umpi0 = new Rectangle.Double(l0.x1, l0.y1 - seinanPaksuus,
-                            l0.x2 - l0.x1, seinanPaksuus - e);
-                    avoin0 = new Rectangle.Double(l0.x1, l0.y1 + e,
-                            l0.x2 - l0.x1, robotinHalk - e);
-                } else {
-                    umpi0 = new Rectangle.Double(l0.x2, l0.y1 + e,
-                            l0.x1 - l0.x2, seinanPaksuus - e);
-                    avoin0 = new Rectangle.Double(l0.x2, l0.y1 - robotinHalk,
-                            l0.x1 - l0.x2, robotinHalk - e);
-                }
-
-                if (l1.x1 < l1.x2) {
-                    umpi1 = new Rectangle.Double(l1.x1, l1.y1 - seinanPaksuus,
-                            l1.x2 - l1.x1, seinanPaksuus - e);
-                    avoin1 = new Rectangle.Double(l1.x1, l1.y1 + e,
-                            l1.x2 - l1.x1, robotinHalk - e);
-                } else {
-                    umpi1 = new Rectangle.Double(l1.x2, l1.y1 + e,
-                            l1.x1 - l1.x2, seinanPaksuus - e);
-                    avoin1 = new Rectangle.Double(l1.x2, l1.y1 - robotinHalk,
-                            l1.x1 - l1.x2, robotinHalk - e);
-                }
-
-                leikkaus = umpi0.createIntersection(avoin1);
-                if (leikkaus != null && leikkaus.getWidth() > e
-                        && leikkaus.getHeight() > e) {
-                    return false;
-                }
-
-                leikkaus = umpi1.createIntersection(avoin0);
-                if (leikkaus != null && leikkaus.getWidth() > e
-                        && leikkaus.getHeight() > e) {
-                    return false;
-                }
-            }
-        }
-
-        // Kokeile, etteivät pystysuorat seinät muodosta mahdottomuuksia.
-        for (Line2D.Float l0 : pysty0) {
-            for (Line2D.Float l1 : pysty1) {
-                if (Math.abs(l0.x1 - l1.x1) > suurinVali) {
-                    continue;
-                }
-
-                if (l0.y1 < l0.y2) {
-                    umpi0 = new Rectangle.Double(l0.x1 + e, l0.y1,
-                            seinanPaksuus - e, l0.y2 - l0.y1);
-                    avoin0 = new Rectangle.Double(l0.x1 - robotinHalk, l0.y1,
-                            robotinHalk - e, l0.y2 - l0.y1);
-                } else {
-                    umpi0 = new Rectangle.Double(l0.x1 + e, l0.y2,
-                            robotinHalk - e, l0.y1 - l0.y2);
-                    avoin0 = new Rectangle.Double(l0.x1 - seinanPaksuus, l0.y2,
-                            seinanPaksuus - e, l0.y1 - l0.y2);
-                }
-
-                if (l1.y1 < l1.y2) {
-                    umpi1 = new Rectangle.Double(l1.x1 + e, l1.y1,
-                            seinanPaksuus - e, l1.y2 - l1.y1);
-                    avoin1 = new Rectangle.Double(l1.x1 - robotinHalk, l1.y1,
-                            robotinHalk - e, l1.y2 - l1.y1);
-                } else {
-                    umpi1 = new Rectangle.Double(l1.x1 + e, l1.y2,
-                            robotinHalk - e, l1.y1 - l1.y2);
-                    avoin1 = new Rectangle.Double(l1.x1 - seinanPaksuus, l1.y2,
-                            seinanPaksuus - e, l1.y1 - l1.y2);
-                }
-
-                leikkaus = umpi0.createIntersection(avoin1);
-                if (leikkaus != null && leikkaus.getWidth() > e
-                        && leikkaus.getHeight() > e) {
-                    return false;
-                }
-
-                leikkaus = umpi1.createIntersection(avoin0);
-                if (leikkaus != null && leikkaus.getWidth() > e
-                        && leikkaus.getHeight() > e) {
-                    return false;
-                }
-            }
-        }
-
-        return true; // "This is a match made in heaven."
-    }
-
-    private static Point2D.Double etsiMahdotonRisteys(
-            ArrayList<Line2D.Float> vaaka,
-            ArrayList<Line2D.Float> pysty) {
-        final double suurinVali = 2 * Math.max(seinanPaksuus, robotinHalk);
-        final double e = 0.00001; // Epsilon: pyöristystä varten.
-
-        for (Line2D.Float lv : vaaka) {
-            for (Line2D.Float lp : pysty) {
-                if (lv.y1 < lp.y1 - suurinVali || lv.y1 > lp.y2 + suurinVali
-                        || lp.x1 < lv.x1 - suurinVali || lp.x1 > lv.x2 + suurinVali) {
-                    continue; // Seinillä ei ole lainkaan yhteistä aluetta.
-                }
-                // Luo molemmille seinäpaloille omat umpinaista ja avointa
-                // aluetta kuvaavat nelikulmiot. Jos yhden umpinainen alue
-                // menee päällekkäin toisen avoimen alueen kanssa, niin olemme
-                // löytäneet mahdottoman risteyksen.
-                Rectangle2D vUmpi, vAvoin, pUmpi, pAvoin, leikkaus;
-
-                // Janan suunta vaikuttaa seinän rakenteeseen. Seinä on
-                // määritelty niin, että seisottaessa sen alkupisteessä ja
-                // katsottaessa seinää pitkin jää umpinainen alue seinää
-                // kuvaavan janan oikealle puolelle ja avoin alue vasemmalle.
-                // Käytössä on karteesinen koordinaatisto, jossa Y-akseni
-                // kasvaa ylöspäin mentäessä.
-                //
-                // Epsilon erottaa suorakulmiot seinäpätkästä niin, ettei
-                // törmäiystarkistuksessa tarvitse erikseen käsitellä tapausta,
-                // jossa alueiden jokin reuna menee täsmälleen päällekkäin.
-                if (lv.x1 < lv.x2) {
-                    vUmpi = new Rectangle.Double(lv.x1, lv.y1 - seinanPaksuus,
-                            lv.x2 - lv.x1, seinanPaksuus - e);
-                    vAvoin = new Rectangle.Double(lv.x1, lv.y1 + e,
-                            lv.x2 - lv.x1, robotinHalk - e);
-                } else {
-                    vUmpi = new Rectangle.Double(lv.x2, lv.y1 + e,
-                            lv.x1 - lv.x2, seinanPaksuus - e);
-                    vAvoin = new Rectangle.Double(lv.x2, lv.y1 - robotinHalk,
-                            lv.x1 - lv.x2, robotinHalk - e);
-                }
-
-                if (lp.y1 < lp.y2) {
-                    pUmpi = new Rectangle.Double(lp.x1 + e, lp.y1,
-                            seinanPaksuus - e, lp.y2 - lp.y1);
-                    pAvoin = new Rectangle.Double(lp.x1 - robotinHalk, lp.y1,
-                            robotinHalk - e, lp.y2 - lp.y1);
-                } else {
-                    pUmpi = new Rectangle.Double(lp.x1 + e, lp.y2,
-                            robotinHalk - e, lp.y1 - lp.y2);
-                    pAvoin = new Rectangle.Double(lp.x1 - seinanPaksuus, lp.y2,
-                            seinanPaksuus - e, lp.y1 - lp.y2);
-                }
-
-                // Kokeile suorakulmioita päällekkäin. Jos jonkin avoimen
-                // kulmion kulma on jonkin umpinaisen kulmion sisällä, niin
-                // palauta virhe.
-                leikkaus = vUmpi.createIntersection(pAvoin);
-                if (leikkaus != null && leikkaus.getWidth() > e
-                        && leikkaus.getHeight() > e) {
-                    return new Point2D.Double(leikkaus.getCenterX(),
-                            leikkaus.getCenterY());
-                }
-
-                leikkaus = pUmpi.createIntersection(vAvoin);
-                if (leikkaus != null && leikkaus.getWidth() > e
-                        && leikkaus.getHeight() > e) {
-                    return new Point2D.Double(leikkaus.getCenterX(),
-                            leikkaus.getCenterY());
-                }
-            }
-        }
-
-        return null;
     }
 }

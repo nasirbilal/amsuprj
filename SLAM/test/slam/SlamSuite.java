@@ -17,7 +17,8 @@ import org.junit.runners.Suite;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({JSimRoboNakymaTest.class, JsimRoboTest.class,
-                     JsimBTYhteys.class, RoboOhjainTest.class})
+                     JsimBTYhteys.class, RoboOhjainTest.class,
+                     KokoajaTest.class})
 public class SlamSuite {
 
     @BeforeClass
