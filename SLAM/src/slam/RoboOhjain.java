@@ -93,7 +93,7 @@ public class RoboOhjain extends Thread {
             return null;
         
         for (int i = 0; i < mittausJanat.length; ++i) {
-            if (etaisyydet[i] > maxEtaisyys) {
+            if (etaisyydet[i] >= maxEtaisyys) {
                 roboNakyma[i] = null;
             } else {
                 roboNakyma[i] = new Point2D.Double();
