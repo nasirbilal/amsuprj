@@ -225,6 +225,8 @@ public class RoboOhjain extends Thread {
                 edettytäyteen = false;
                 //käänny(180);
                 
+                paketti.setUusiSijainti(paketti.getNykySijainti()); // ei liikettä
+                
                 float kx = (float)(paketti.getNykySijainti().x - 800 * Math.sin(Math.toRadians(kulma)));
                 float ky = (float)(paketti.getNykySijainti().y - 800 * Math.cos(Math.toRadians(kulma)));
                 Point2D.Float katsepiste = new Point2D.Float(kx,ky);
