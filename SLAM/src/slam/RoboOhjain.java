@@ -46,10 +46,7 @@ public class RoboOhjain extends Thread {
         this.onMuuttunut = false;
         this.maxEtaisyys = maxEtaisyys;
         this.bt = bt;
-        this.paketti = new BTPaketti(ID);
-        this.paketti.setNykySijainti(new Point2D.Float(0, 0));
-        this.paketti.setUusiSijainti(new Point2D.Float(0, 0));
-        this.paketti.setMittausSuunta(new Point2D.Float(0, 0));
+        this.paketti = bt.annaOletusPaketti();
         this.roboNakyma = new Point2D.Double[BTPaketti.MAARA];
         this.kartta = new ArrayList<Line2D.Float>();
 

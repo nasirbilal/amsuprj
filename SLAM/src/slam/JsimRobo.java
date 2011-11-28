@@ -36,7 +36,6 @@ public class JsimRobo {
                                            new Line2D.Float(520, 1270, 520, 1120),
                                            new Line2D.Float(520, 1120, 440, 1120),
     
-                                           
                                            new Line2D.Float(0,    0,    0,    2000),
                                            new Line2D.Float(0,    2000, 1350, 2000),
                                            new Line2D.Float(1350, 2000, 1350, 0),
@@ -80,6 +79,10 @@ public class JsimRobo {
 
     public String getNimi() {
         return "JsimRobo[" + getID() + "]";
+    }
+
+    public Point2D.Float getPaikka() {
+        return paikka;
     }
 
     public void setPaikka(Point2D.Float paikka) {

@@ -128,4 +128,13 @@ public class NXTBTYhteys extends Thread implements BTYhteys {
     public void uudelleenKaynnista() {
         //   alustaYhteys();
     }
+    
+    @Override
+    public BTPaketti annaOletusPaketti() {
+        BTPaketti p = new BTPaketti(robo.getID());
+        p.setNykySijainti(new Point2D.Float(0, 0));
+        p.setUusiSijainti(new Point2D.Float(0, 0));
+        p.setMittausSuunta(new Point2D.Float(1, 0));
+        return p;
+    }
 }

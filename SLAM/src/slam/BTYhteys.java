@@ -20,4 +20,6 @@ public interface BTYhteys {
 
     /// @brief Tuhoaa vanhan yhteyden ja luo sen uudestaan alusta.
     public void uudelleenKaynnista();
+    
+    public BTPaketti annaOletusPaketti();
 }
