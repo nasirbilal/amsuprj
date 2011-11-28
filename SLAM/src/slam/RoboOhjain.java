@@ -68,6 +68,11 @@ public class RoboOhjain extends Thread {
      */
     public void asetaTestausPaketti(BTPaketti paketti) {
         this.paketti = paketti;
+        JsimRoboNakyma nakyma = new JsimRoboNakyma(new Point2D.Float(0, 0),
+                0, paketti.getEtaisyydet().length, 1);
+        this.mittausJanat = nakyma.getNakotaulu();
+        this.roboNakyma = new Point2D.Double[paketti.getEtaisyydet().length];
+        this.onMuuttunut = true;
     }
 
     /** @brief Palauttaa robotin mittaustulokset sijoitettuna koordinaatistoon.
@@ -87,6 +92,9 @@ public class RoboOhjain extends Thread {
         }
 
         final int[] etaisyydet = paketti.getEtaisyydet();
+        if (mittausJanat.length != etaisyydet.length)
+            return null;
+        
         for (int i = 0; i < mittausJanat.length; ++i) {
             if (etaisyydet[i] > maxEtaisyys) {
                 roboNakyma[i] = null;
@@ -120,11 +128,11 @@ public class RoboOhjain extends Thread {
         kayttajaltaKoordinaatit = true;
     }
 
-
     /** @return True jos uutta dataa on saapunut viime kyselyn jälkeen. */
     public boolean onMuuttunut() {
         return onMuuttunut;
     }
+    
     @Override
     public void run() {
         long i = 0;
