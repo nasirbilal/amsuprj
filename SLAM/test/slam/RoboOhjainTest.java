@@ -45,12 +45,13 @@ public class RoboOhjainTest {
     @Test
     public void testHaeEtaisyydet() {
         System.out.println("haeEtaisyydet");
-        RoboOhjain instance = null;
-        Double[] expResult = null;
+        JsimBTYhteys b1 = new JsimBTYhteys();
+        RoboOhjain instance = new RoboOhjain(b1,0,10000,800);
+        Point2D.Double[] expResult = new Point2D.Double[37];    //tää palauttaa ilmeisesti tyhjän taulukon
         Double[] result = instance.haeEtaisyydet();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
 
     /**

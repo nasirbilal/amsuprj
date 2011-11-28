@@ -36,10 +36,13 @@ public class JsimRobo {
                                            new Line2D.Float(520, 1270, 520, 1120),
                                            new Line2D.Float(520, 1120, 440, 1120),
     
+                                           
                                            new Line2D.Float(0,    0,    0,    2000),
                                            new Line2D.Float(0,    2000, 1350, 2000),
                                            new Line2D.Float(1350, 2000, 1350, 0),
                                            new Line2D.Float(1350, 0,    0,    0)};
+                                             
+                                            
     private final int infraKantama;   /// Robotin infrapunasensorin kantama MILLIMETREISSÄ
     private static int id_count;      /// Robotin yksilötunnuksen juokseva numero.
 
@@ -123,6 +126,7 @@ public class JsimRobo {
      * @return IR-sensorin palauttamat etäisyydet lähimpiin esteisiin.
      */
     public float[] mittaa(int mittausMaara) {
+        
         float taulu[] = new float[mittausMaara];
         double pieninetaisyys;
         nakyma = new JsimRoboNakyma(paikka, suunta, mittausMaara, infraKantama);
@@ -133,12 +137,15 @@ public class JsimRobo {
                 Point2D.Float leikkauspiste = nakyma.laskeLeikkauspiste(
                     nakyma.getNakotaulu()[i], kartta[k]);
                 
-                if (leikkauspiste == null)
+                if (leikkauspiste == null){
                     continue;
+                    
+                }
 
                 double etaisyys = paikka.distance(leikkauspiste);
-                if (etaisyys < pieninetaisyys)
+                if (etaisyys < pieninetaisyys){
                     pieninetaisyys = etaisyys;
+                }
             }
             taulu[i] = (float)pieninetaisyys;
         }

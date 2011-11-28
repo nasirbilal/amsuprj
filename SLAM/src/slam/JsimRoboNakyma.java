@@ -60,8 +60,9 @@ public class JsimRoboNakyma {
     public Point2D.Float laskeLeikkauspiste(Line2D.Float s, Line2D.Float t) {
         float x, y, a1, a2, b1, b2;
 
-        if (!s.intersectsLine(t))
+        if (!s.intersectsLine(t)){
             return null;
+        }
         
         // Find the point of intersection of the lines extended to infinity
         if (s.x1 == s.x2 && t.y1 == t.y2) { // perpendicular
