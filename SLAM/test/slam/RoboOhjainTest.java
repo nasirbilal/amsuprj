@@ -67,15 +67,21 @@ public class RoboOhjainTest {
     @Test
     public void testKokeileHakeaUusiMittauspiste() {
         System.out.println("kokeileHakeaUusiMittauspiste");
-        Point2D.Float nykySijainti = null;
+        Point2D.Float nykySijainti = new Point2D.Float(0,0);
         float kulma = 0.0F;
-        int[] etaisyydet = null;
-        RoboOhjain instance = null;
-        Point2D.Float expResult = null;
-//        Point2D.Float result = instance.kokeileHakeaUusiMittauspiste(nykySijainti, kulma, etaisyydet);
-//        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
+        int[] etaisyydet = new int[37];
+        for (int i = 0; i < etaisyydet.length; i++){
+            etaisyydet[i] = 800;
+        }
+        etaisyydet[0] = 500;
+        etaisyydet[36] = 500;
+        etaisyydet[18] = 500;
+        etaisyydet[17] = 500;
+        
+        RoboOhjain instance = new RoboOhjain(null,0,0,800);
+        Point2D.Float expResult = new Point2D.Float(368.6386684F,337.7951038F); //laskimella väännetty
+        Point2D.Float result = instance.kokeileHakeaUusiMittauspiste(nykySijainti, kulma, etaisyydet);
+        assertEquals(expResult, result);
     }
 
     /**
