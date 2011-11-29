@@ -18,7 +18,7 @@ import java.util.Calendar;
  * robotin henkilökohtaisesti kartoittamaksi kartaksi ja sen perusteella robotin
  * laskennallisen sijainnin määrittämisestä. Kaikki kommunikointi robotin kanssa
  * tapahtuu tämän luokan kautta. Jokaista robottia vastaa yksi RoboOhjain-
- * loukan ilmentymä.
+ * luokan ilmentymä.
  */
 public class RoboOhjain extends Thread {
 
