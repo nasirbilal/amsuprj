@@ -56,15 +56,15 @@ public class BTPaketti implements Serializable {
     /** 
      * Palauttaa robotin katselukulman.
      * 
-     * Metodi laskee vektorin (uusiSijainti, katselupiste) ja x-akselin
+     * Metodi laskee vektorin (nykySijainti, katselupiste) ja x-akselin
      * suuntaisen suoran välisen kulman. Kulma on asteina ja aina välillä
      * [0, 2*PI[.
      * 
      * @return Robotin katselukulma radiaaneina.
      */
     public double getMittausKulma() {
-        double dx = getMittausSuunta().x - getUusiSijainti().x;
-        double dy = getMittausSuunta().y - getUusiSijainti().y;
+        double dx = getMittausSuunta().x - getNykySijainti().x;
+        double dy = getMittausSuunta().y - getNykySijainti().y;
         
         double kulma = Math.atan2(dy, dx);
         kulma += (kulma < 0 ? 2*Math.PI : 0);
