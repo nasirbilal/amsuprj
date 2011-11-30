@@ -44,48 +44,68 @@ public class BTPaketti implements Serializable {
     private Point2D.Float mittausSuunta;
     private int[] etaisyydet;
 
-    public int getId() {
-        return id;
-    }
-
     public BTPaketti(int id) {
         this.id = id;
         this.etaisyydet = new int[MAARA];
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public int getId() {
+        return id;
     }
 
-    public Point2D.Float getNykySijainti() {
-        return nykySijainti;
+    /** 
+     * Palauttaa robotin katselukulman.
+     * 
+     * Metodi laskee vektorin (nykysijainti, katselupiste) ja x-akselin
+     * suuntaisen suoran välisen kulman. Kulma on asteina ja aina välillä
+     * [0, 2*PI[.
+     * 
+     * @return Robotin katselukulma radiaaneina.
+     */
+    public double getMittausKulma() {
+        double dx = getMittausSuunta().x - getNykySijainti().x;
+        double dy = getMittausSuunta().y - getNykySijainti().y;
+        
+        double kulma = Math.atan2(dy, dx);
+        kulma += (kulma < 0 ? 2*Math.PI : 0);
+        
+        return kulma;
     }
-
-    public void setNykySijainti(Point2D.Float nykySijainti) {
-        this.nykySijainti = nykySijainti;
-    }
-
-    public Point2D.Float getUusiSijainti() {
-        return uusiSijainti;
-    }
-
-    public void setUusiSijainti(Point2D.Float uusiSijainti) {
-        this.uusiSijainti = uusiSijainti;
-    }
-
+    
+    
     public Point2D.Float getMittausSuunta() {
         return mittausSuunta;
-    }
-
-    public void setMittausSuunta(Point2D.Float mittausSuunta) {
-        this.mittausSuunta = mittausSuunta;
     }
 
     public int[] getEtaisyydet() {
         return etaisyydet;
     }
 
+    public Point2D.Float getNykySijainti() {
+        return nykySijainti;
+    }
+
+    public Point2D.Float getUusiSijainti() {
+        return uusiSijainti;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public void setEtaisyydet(int[] etaisyydet) {
         this.etaisyydet = etaisyydet;
+    }
+
+    public void setMittausSuunta(Point2D.Float mittausSuunta) {
+        this.mittausSuunta = mittausSuunta;
+    }
+
+    public void setNykySijainti(Point2D.Float nykySijainti) {
+        this.nykySijainti = nykySijainti;
+    }
+
+    public void setUusiSijainti(Point2D.Float uusiSijainti) {
+        this.uusiSijainti = uusiSijainti;
     }
 }
