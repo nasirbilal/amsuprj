@@ -51,14 +51,24 @@ public class RoboOhjainTest {
         int[] etaisyydet = {707, 184, 170, 184, 184, 141, 130, 141, 707};
         paketti.setEtaisyydet(etaisyydet);
 
-        RoboOhjain instance = new RoboOhjain(null, 0, 0, 800);
+        JsimBTYhteys bt = new JsimBTYhteys();
+        RoboOhjain instance = new RoboOhjain(bt, 0, 0, 800);
         instance.asetaTestausPaketti(paketti);
         
-        Point2D.Double[] expResult = null;
+        Point2D.Double[] expResult = {new Point2D.Double(-707.0,   0.0),
+                                      new Point2D.Double(-170.0,  70.4),
+                                      new Point2D.Double(-120.2, 120.2),
+                                      new Point2D.Double(- 70.4, 170.0),
+                                      new Point2D.Double(   0.0, 184.0),
+                                      new Point2D.Double(  54.0, 130.3),
+                                      new Point2D.Double(  91.9,  91.9),
+                                      new Point2D.Double( 130.3,  54.0),
+                                      new Point2D.Double( 707.0, 0.0)};
         Point2D.Double[] result = instance.haeEtaisyydet();
-        for(Point2D.Double p : result)
-            System.out.println(p == null ? "null" : p.toString());
-//        fail("The test case is a prototype.");
+        for(int i = 0; i < expResult.length; ++i) {
+            assertEquals(expResult[i].x, result[i].x, 0.05);
+            assertEquals(expResult[i].y, result[i].y, 0.05);            
+        }
     }
 
     /**
