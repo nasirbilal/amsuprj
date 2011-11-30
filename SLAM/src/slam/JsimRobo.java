@@ -171,7 +171,7 @@ public class JsimRobo {
     }
 
     /** 
-     * @param aste Robotin kääntymä määrä väliltä -90 (vasen) ja 90 (oikea).
+     * @param aste Robotin kääntymä määrä väliltä -90 (oikealle) ja 90 (vasemmalle).
      * @return Robotin uusi suunta.
      */
     private float käänny(float aste) {
