@@ -58,10 +58,10 @@ public class UIKarttaNakyma extends JPanel implements MouseMotionListener{
 
         for (Line2D.Float l : janat)
             if (l != null)
-                g2.drawLine((int)l.x1 + getWidth() / 2,
-                        (int)l.y1 + getHeight(),
-                        (int)l.x2 + getWidth() / 2,
-                        (int)l.y2 + getHeight());
+                g2.drawLine((int)((l.x1 - xmin) * xratio),
+                        -(int)((l.y1 - ymin) * yratio) + getHeight(),
+                         (int)((l.x2 - xmin) * xratio),
+                        -(int)((l.y2 - ymin) * yratio) + getHeight());
 
         g.setColor(Color.black);
     }
@@ -69,9 +69,6 @@ public class UIKarttaNakyma extends JPanel implements MouseMotionListener{
     public UIKarttaNakyma() {
         addMouseMotionListener(this);
     }
-
-    
-    
 
     void piirraKartta(Line2D.Float[] janat) {
         this.janat = janat;
