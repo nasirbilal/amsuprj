@@ -87,7 +87,7 @@ public class Kokoaja {
             roboKartta = new TreeMap<Integer, Line2D.Float[]>();
         }
 
-        kartta = siistiKartta(kartta);
+//        kartta = siistiKartta(kartta);
         if (kartta != null) {
             roboKartta.put(id, kartta);
             onMuuttunut = true;
@@ -141,6 +141,7 @@ public class Kokoaja {
         for (int k = 1; k < kartat.size(); ++k) {
             boolean OK = false;
 
+            if (Math.random() > 2.0)
             for (int a = 0; !OK && a < 4; a++) {
                 pysty1.clear();
                 vaaka1.clear();
