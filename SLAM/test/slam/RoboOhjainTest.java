@@ -72,13 +72,14 @@ public class RoboOhjainTest {
     }
 
     /**
-     * Test of kokeileHakeaUusiMittauspiste method, of class RoboOhjain.
+     * Test of kokeileHakeaUusiMittauspiste method(normiliike1), of class RoboOhjain.
      */
     @Test
-    public void testKokeileHakeaUusiMittauspiste() {
-        System.out.println("kokeileHakeaUusiMittauspiste");
+    public void testKokeileHakeaUusiMittauspiste1() {
+        System.out.println("kokeileHakeaUusiMittauspiste1");
         Point2D.Float nykySijainti = new Point2D.Float(0,0);
         float kulma = 0.0F;
+        BTYhteys bt = new JsimBTYhteys();
         int[] etaisyydet = new int[37];
         for (int i = 0; i < etaisyydet.length; i++){
             etaisyydet[i] = 800;
@@ -88,8 +89,142 @@ public class RoboOhjainTest {
         etaisyydet[18] = 500;
         etaisyydet[17] = 500;
         
-        RoboOhjain instance = new RoboOhjain(null,0,0,800);
+        RoboOhjain instance = new RoboOhjain(bt,0,0,800);
         Point2D.Float expResult = new Point2D.Float(368.6386684F,337.7951038F); //laskimella väännetty
+        Point2D.Float result = instance.kokeileHakeaUusiMittauspiste(nykySijainti, kulma, etaisyydet);
+        assertEquals(expResult, result);
+    }
+    
+    /**
+     * Test of kokeileHakeaUusiMittauspiste method (normiliike2), of class RoboOhjain.
+     */
+    @Test
+    public void testKokeileHakeaUusiMittauspiste2() {
+        System.out.println("kokeileHakeaUusiMittauspiste2");
+        Point2D.Float nykySijainti = new Point2D.Float(0,0);
+        float kulma = 0.0F;
+        BTYhteys bt = new JsimBTYhteys();
+        int[] etaisyydet = new int[37];
+        for (int i = 0; i < etaisyydet.length; i++){
+            etaisyydet[i] = 800;
+        }
+        etaisyydet[0] = 500;
+        etaisyydet[36] = 500;
+        etaisyydet[18] = 500;
+        etaisyydet[19] = 500;
+        
+        RoboOhjain instance = new RoboOhjain(bt,0,0,800);
+        Point2D.Float expResult = new Point2D.Float(-337.7951038F,368.6386684F); //laskimella väännetty
+        Point2D.Float result = instance.kokeileHakeaUusiMittauspiste(nykySijainti, kulma, etaisyydet);
+        assertEquals(expResult, result);
+    }
+    
+    /**
+     * Test of kokeileHakeaUusiMittauspiste method (kaikki nähty kaikkialla), of class RoboOhjain.
+     */
+    @Test
+    public void testKokeileHakeaUusiMittauspiste3() {
+        System.out.println("kokeileHakeaUusiMittauspiste3");
+        Point2D.Float nykySijainti = new Point2D.Float(0,0);
+        float kulma = 0.0F;
+        BTYhteys bt = new JsimBTYhteys();
+        int[] etaisyydet = new int[37];
+        for (int i = 0; i < etaisyydet.length; i++){
+            etaisyydet[i] = 500;
+        }
+        
+        RoboOhjain instance = new RoboOhjain(bt,0,0,800);
+        Point2D.Float expResult = new Point2D.Float(0.0F,250.0F); //laskimella väännetty
+        Point2D.Float result = instance.kokeileHakeaUusiMittauspiste(nykySijainti, kulma, etaisyydet);
+        assertEquals(expResult, result);
+    }
+    
+    /**
+     * Test of kokeileHakeaUusiMittauspiste method (kaikki nähty kaikkialla*2), of class RoboOhjain.
+     */
+    @Test
+    public void testKokeileHakeaUusiMittauspiste4() {
+        System.out.println("kokeileHakeaUusiMittauspiste4");
+        Point2D.Float nykySijainti = new Point2D.Float(0,0);
+        float kulma = 0.0F;
+        BTYhteys bt = new JsimBTYhteys();
+        int[] etaisyydet = new int[37];
+        for (int i = 0; i < etaisyydet.length; i++){
+            etaisyydet[i] = 500;
+        }
+        
+        RoboOhjain instance = new RoboOhjain(bt,0,0,800);
+        Point2D.Float expResult = new Point2D.Float(0.0F,250.0F); //laskimella väännetty
+        Point2D.Float result = instance.kokeileHakeaUusiMittauspiste(nykySijainti, kulma, etaisyydet);
+        assertEquals(expResult, result);
+    }
+    
+    /**
+     * Test of kokeileHakeaUusiMittauspiste method (ei mitään havaittu), of class RoboOhjain.
+     */
+    @Test
+    public void testKokeileHakeaUusiMittauspiste5() {
+        System.out.println("kokeileHakeaUusiMittauspiste5");
+        Point2D.Float nykySijainti = new Point2D.Float(0,0);
+        float kulma = 0.0F;
+        BTYhteys bt = new JsimBTYhteys();
+        int[] etaisyydet = new int[37];
+        for (int i = 0; i < etaisyydet.length; i++){
+            etaisyydet[i] = 800;
+        }
+
+        RoboOhjain instance = new RoboOhjain(bt,0,0,800);
+        Point2D.Float expResult = new Point2D.Float(0.0F,650.0F); //laskimella väännetty
+        Point2D.Float result = instance.kokeileHakeaUusiMittauspiste(nykySijainti, kulma, etaisyydet);
+        assertEquals(expResult, result);
+    }
+    
+    /**
+     * Test of kokeileHakeaUusiMittauspiste method(sekava), of class RoboOhjain.
+     */
+    @Test
+    public void testKokeileHakeaUusiMittauspiste6() {
+        System.out.println("kokeileHakeaUusiMittauspiste6");
+        Point2D.Float nykySijainti = new Point2D.Float(0,0);
+        float kulma = 0.0F;
+        BTYhteys bt = new JsimBTYhteys();
+        int[] etaisyydet = new int[37];
+        for (int i = 0; i < etaisyydet.length; i++){
+            etaisyydet[i] = 800;
+        }
+
+        etaisyydet[17] = 500;
+        etaisyydet[18] = 500;
+        etaisyydet[21] = 500;
+        etaisyydet[25] = 500;
+        etaisyydet[32] = 500;
+        
+        RoboOhjain instance = new RoboOhjain(bt,0,0,800);
+        Point2D.Float expResult = new Point2D.Float(-184.3193342F,168.8975519F); //laskimella väännetty
+        Point2D.Float result = instance.kokeileHakeaUusiMittauspiste(nykySijainti, kulma, etaisyydet);
+        assertEquals(expResult, result);
+    }
+    
+    /**
+     * Test of kokeileHakeaUusiMittauspiste method(normiliike3/suunta 180), of class RoboOhjain.
+     */
+    @Test
+    public void testKokeileHakeaUusiMittauspiste7() {
+        System.out.println("kokeileHakeaUusiMittauspiste7");
+        Point2D.Float nykySijainti = new Point2D.Float(0,0);
+        float kulma = 180.0F;
+        BTYhteys bt = new JsimBTYhteys();
+        int[] etaisyydet = new int[37];
+        for (int i = 0; i < etaisyydet.length; i++){
+            etaisyydet[i] = 800;
+        }
+        etaisyydet[0] = 500;
+        etaisyydet[36] = 500;
+        etaisyydet[18] = 500;
+        etaisyydet[17] = 500;
+        
+        RoboOhjain instance = new RoboOhjain(bt,0,0,800);
+        Point2D.Float expResult = new Point2D.Float(-368.6386684F,-337.7951038F); //laskimella väännetty
         Point2D.Float result = instance.kokeileHakeaUusiMittauspiste(nykySijainti, kulma, etaisyydet);
         assertEquals(expResult, result);
     }
