@@ -26,7 +26,7 @@ public class RoboOhjain extends Thread {
     private boolean onMuuttunut; /// Onko tullut BT:ltä uutta dataa.
     private int maxEtaisyys; /// Etäisyys, jota kauempia esteitä ei havaita.
     private BTYhteys bt; /// BT-yhteys oikeaan tai simuloituun robottiin.
-    private BTPaketti paketti; /// Viimeisin saatu tulos Bluetoothilta.
+    private BTPaketti uusinPaketti; /// Viimeisin saatu tulos Bluetoothilta.
     private Point2D.Double[] roboNakyma; /// Mittaustulokset koordinaatistossa.
     private Line2D.Float[] mittausJanat; /// Robotin mittaussuuntien janat.
     private ArrayList<Line2D.Float> kartta; /// Robotin tutkima alue.
@@ -46,17 +46,17 @@ public class RoboOhjain extends Thread {
         this.onMuuttunut = false;
         this.maxEtaisyys = maxEtaisyys;
         this.bt = bt;
-        this.paketti = bt.annaOletusPaketti();
+        this.uusinPaketti = bt.annaOletusPaketti();
         this.roboNakyma = new Point2D.Double[BTPaketti.MAARA];
         this.kartta = new ArrayList<Line2D.Float>();
 
         JsimRoboNakyma nakyma = new JsimRoboNakyma(new Point2D.Float(0, 0),
-                0, paketti.getEtaisyydet().length, 1);
+                0, uusinPaketti.getEtaisyydet().length, 1);
         this.mittausJanat = nakyma.getNakotaulu();
     }
 
     public Point2D.Float annaKoordinaatit(){
-        return paketti.getNykySijainti();
+        return uusinPaketti.getNykySijainti();
     }
 
     /**
@@ -64,7 +64,7 @@ public class RoboOhjain extends Thread {
      * @param paketti Valmiiksi alustettu paketti.
      */
     public void asetaTestausPaketti(BTPaketti paketti) {
-        this.paketti = paketti;
+        this.uusinPaketti = paketti;
         JsimRoboNakyma nakyma = new JsimRoboNakyma(new Point2D.Float(0, 0),
                 0, paketti.getEtaisyydet().length, 1);
         this.mittausJanat = nakyma.getNakotaulu();
@@ -88,7 +88,7 @@ public class RoboOhjain extends Thread {
             return roboNakyma;
         }
 
-        final int[] etaisyydet = paketti.getEtaisyydet();
+        final int[] etaisyydet = uusinPaketti.getEtaisyydet();
         if (mittausJanat.length != etaisyydet.length)
             return null;
         
@@ -142,18 +142,27 @@ public class RoboOhjain extends Thread {
         }
     }
 
-    protected Point2D.Float kokeileHakeaUusiMittauspiste(Point2D.Float nykySijainti,
-                                              float kulma, int[] etaisyydet) {
-        return haeUusiMittauspiste(nykySijainti, kulma, etaisyydet);
+    protected Point2D.Float kokeileHakeaUusiMittauspiste(Point2D.Float nykySijainti, float kulma, int[] etaisyydet) {
+        BTPaketti p = new BTPaketti(0);
+        p.setNykySijainti(nykySijainti);
+        p.setUusiSijainti(nykySijainti);
+        Point2D.Float pf = new Point2D.Float();
+        pf.x = nykySijainti.x + (float)Math.cos(Math.toRadians(kulma));
+        pf.y = nykySijainti.y + (float)Math.sin(Math.toRadians(kulma));
+        p.setMittausSuunta(pf);
+        p.setEtaisyydet(etaisyydet);
+
+        return haeUusiMittauspiste(p);
     }
 
-    protected void kokeileLisataHavainnotKarttaan(Float nykySijainti, float kulma, int[] etaisyydet) {
-        lisaaHavainnotKarttaan(nykySijainti, kulma, etaisyydet);
+    protected void kokeileLisataHavainnotKarttaan(BTPaketti paketti) {
+        lisaaHavainnotKarttaan(paketti);
     }
         
-    private Point2D.Float haeUusiMittauspiste(Point2D.Float nykySijainti,
-                                              float kulma, int[] etaisyydet) {
-     //   return nykySijainti;
+    private Point2D.Float haeUusiMittauspiste(BTPaketti paketti) {
+        Point2D.Float nykySijainti = paketti.getNykySijainti();
+        float kulma = (float) Math.toDegrees(paketti.getMittausKulma());
+        int[] etaisyydet = paketti.getEtaisyydet();
         int tyhjyyslaskuri = 0;
         int tyhjyysalku = 0;
         int tyhjyysmuisti = 0;
@@ -268,11 +277,24 @@ public class RoboOhjain extends Thread {
         }
     }
 
-    private void lisaaHavainnotKarttaan(Float nykySijainti, float kulma, int[] etaisyydet) {
+    /**
+     * Lisää robotin mittaustulokset viivoina sen muistiin/karttaan.
+     * 
+     * Mittaustuloksia käännetään katsomisasteen verran. Tällöin karttaan
+     * tulee tallennetuksi vain pysty- ja vaakasuoria janoja. Tämä helpottaa
+     * datan jatkokäsittelyä.
+     * 
+     * @param nykySijainti Robotin nykyinen sijainti
+     * @param kulma Robotin katselusuunta radiaaneina yksikköympyräin mukaisesti.
+     * @param etaisyydet Robotin mittamat etäisyydet.
+     */
+    private void lisaaHavainnotKarttaan(BTPaketti paketti) {
         int maara = paketti.getEtaisyydet().length;
-        JsimRoboNakyma nakyma = new JsimRoboNakyma(nykySijainti, kulma, maara, 1);
+        JsimRoboNakyma nakyma = new JsimRoboNakyma(paketti.getNykySijainti(),
+                (float) Math.toDegrees(paketti.getMittausKulma()), maara, 1);
         Line2D.Float[] sateet = nakyma.getNakotaulu();
-
+        int[] etaisyydet = paketti.getEtaisyydet();
+        
         // Lisää robotin havaitsemat esteet karttaan.
         for (int i = 1; i < maara; ++i) {
             if (etaisyydet[i - 1] < maxEtaisyys && etaisyydet[i] < maxEtaisyys) {
@@ -292,36 +314,29 @@ public class RoboOhjain extends Thread {
      *  saatu odotusajan umpeuduttua.
      */
     private boolean teeMittaukset() {
-        BTPaketti vastaus = bt.lahetaJaVastaanota(paketti, odotusMs);
+        BTPaketti vastaus = bt.lahetaJaVastaanota(uusinPaketti, odotusMs);
         if (vastaus == null)
             return false;
         else
-            paketti = vastaus;  //Talleta uusimmat tulokset
+            uusinPaketti = vastaus;  //Talleta uusimmat tulokset
         
-        float dx = paketti.getMittausSuunta().x - paketti.getNykySijainti().x;
-        float dy = paketti.getMittausSuunta().y - paketti.getNykySijainti().y;
-        float kulma = (float) Math.atan2(dy, dx);
-        kulma += (kulma < 0 ? 2*Math.PI : 0);
-
         // Lisää robotin havaitsemat esteet karttaan.
-        lisaaHavainnotKarttaan(paketti.getNykySijainti(), kulma,
-                               paketti.getEtaisyydet());
+        lisaaHavainnotKarttaan(uusinPaketti);
 
         // Laske robotin sijainti kartan datan perusteella.
         // TODO.
 
 
         // Laske robotille uusi mittauspiste.
-        paketti.setUusiSijainti(haeUusiMittauspiste(paketti.getNykySijainti(),
-                kulma, paketti.getEtaisyydet()));
+        uusinPaketti.setUusiSijainti(haeUusiMittauspiste(uusinPaketti));
         
         // Robotin uusi mittaussuunta on sama kuin suunta, johon robotti
         // kulkee nykypisteestä uuteen mittauspisteeseensä.
-        dx = paketti.getUusiSijainti().x - paketti.getNykySijainti().x;
-        dy = paketti.getUusiSijainti().y - paketti.getNykySijainti().y;
-        paketti.setMittausSuunta(paketti.getUusiSijainti());
-        paketti.getMittausSuunta().x += dx;
-        paketti.getMittausSuunta().x += dy;
+        float dx = uusinPaketti.getUusiSijainti().x - uusinPaketti.getNykySijainti().x;
+        float dy = uusinPaketti.getUusiSijainti().y - uusinPaketti.getNykySijainti().y;
+        uusinPaketti.setMittausSuunta(uusinPaketti.getUusiSijainti());
+        uusinPaketti.getMittausSuunta().x += dx;
+        uusinPaketti.getMittausSuunta().x += dy;
 
         return onMuuttunut = true;        
     }   
