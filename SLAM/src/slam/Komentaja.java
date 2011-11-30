@@ -33,8 +33,8 @@ public class Komentaja extends Thread {
         for (int i = 0; i < angles.length; i++) {
             p[i] = new Point2D.Double();
             dist = 60 + r.nextInt(20);
-            p[i].y = -(Math.cos(Math.toRadians(angles[i])) * dist);
-            p[i].x = (Math.sin(Math.toRadians(angles[i])) * dist);
+            p[i].x = (Math.cos(Math.toRadians(90+angles[i])) * dist);
+            p[i].y = (Math.sin(Math.toRadians(90+angles[i])) * dist);
         }
         roboNakyma1.piirraEtaisyydet(p);
 
@@ -42,8 +42,8 @@ public class Komentaja extends Thread {
             p2[i] = new Point2D.Double();
 
             dist = 60 + r.nextInt(20);
-            p2[i].y = -(Math.cos(Math.toRadians(angles[i])) * dist);
-            p2[i].x = (Math.sin(Math.toRadians(angles[i])) * dist);
+            p2[i].x = (Math.cos(Math.toRadians(90+angles[i])) * dist);
+            p2[i].y = (Math.sin(Math.toRadians(90+angles[i])) * dist);
         }
         roboNakyma2.piirraEtaisyydet(p2);
     }

@@ -67,15 +67,16 @@ public class UIRoboNakyma extends JPanel {
             if (piste == null)
                 continue;
 
+            piste.x = 5 + (piste.x - xmin) * xratio * 0.9;
+            piste.y = getHeight() - (piste.y - ymin) * yratio * 0.9 - 5;
+
             if (ensimmainen == null) {
                 ensimmainen = piste;
             }
 
             if (edellinen != null) {
-                g2.drawLine((int) edellinen.x + getWidth() / 2,
-                        (int) edellinen.y + getHeight(),
-                        (int) piste.x + getWidth() / 2,
-                        (int) piste.y + getHeight());
+                g2.drawLine((int) edellinen.x, (int) edellinen.y,
+                        (int) piste.x, (int) piste.y);
             }
 
             viimeinen = edellinen = piste;
@@ -87,12 +88,10 @@ public class UIRoboNakyma extends JPanel {
         //Pitää olla int,int,int,int ; ei int,int,double,double, tämä vain temp korjaus
         if (ensimmainen != null)
             g2.drawLine(getWidth() / 2, getHeight(),
-                    (int) ensimmainen.x + getWidth() / 2,
-                    (int) ensimmainen.y + getHeight());
+                     (int) ensimmainen.x, (int) ensimmainen.y);
         if (viimeinen != null)
             g2.drawLine(getWidth() / 2, getHeight(),
-                    (int) viimeinen.x + getWidth() / 2,
-                    (int) viimeinen.y + getHeight());
+                     (int) viimeinen.x, (int) viimeinen.y);
         g2.setStroke(new BasicStroke(1));
         g2.setColor(Color.black);
     }
