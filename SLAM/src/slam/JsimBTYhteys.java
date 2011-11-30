@@ -40,7 +40,7 @@ public class JsimBTYhteys implements BTYhteys {
         paketti.setEtaisyydet(etäisyydet);
         
         // Bluetooth-yhteys on hidas. Luo vähän viivettä datasiirtoon.
-        try { Thread.currentThread().sleep(50 + (long)(Math.random()* 200));
+        try { Thread.currentThread().sleep(500 + (long)(Math.random()* 2000));
         } catch (InterruptedException ex) { }
         
         return paketti; // Palauta "BT:n yli tullut" robotin vastauspaketti.
