@@ -97,8 +97,9 @@ public class RoboOhjain extends Thread {
                 roboNakyma[i] = null;
             } else {
                 roboNakyma[i] = new Point2D.Double();
-                roboNakyma[i].x = mittausJanat[i].x2 * etaisyydet[i];
-                roboNakyma[i].y = mittausJanat[i].y2 * etaisyydet[i];
+                // Kyllä, tämä näyttää väärältä, mutta näin se nyt vaan menee!
+                roboNakyma[i].y = mittausJanat[i].x2 * etaisyydet[i];
+                roboNakyma[i].x = mittausJanat[i].y2 * etaisyydet[i];
             }
         }
 
@@ -332,13 +333,17 @@ public class RoboOhjain extends Thread {
         // Lisää robotin havaitsemat esteet karttaan.
         sateet[0].x2 += (sateet[0].x2 - sateet[0].x1) * etaisyydet[0];
         sateet[0].y2 += (sateet[0].y2 - sateet[0].y1) * etaisyydet[0];
-        kartta.add(new Line2D.Float(sateet[0].getP2(), sateet[0].getP2()));
+        if (etaisyydet[0] < maxEtaisyys)
+            kartta.add(new Line2D.Float(sateet[0].getP2(), sateet[0].getP2()));
         
         for (int i = 1; i < maara; ++i) {
             sateet[i].x2 += (sateet[i].x2 - sateet[i].x1) * etaisyydet[i];
             sateet[i].y2 += (sateet[i].y2 - sateet[i].y1) * etaisyydet[i];
             
-            if (etaisyydet[i - 1] < maxEtaisyys && etaisyydet[i] < maxEtaisyys &&
+            if (etaisyydet[i] >= maxEtaisyys)
+                continue;
+            
+            if (etaisyydet[i - 1] < maxEtaisyys &&
                (Math.abs(sateet[i-1].x2-sateet[i].x2) < 0.001 ||
                 Math.abs(sateet[i-1].y2-sateet[i].y2) < 0.001)) {
                 kartta.add(new Line2D.Float(sateet[i - 1].getP2(),
