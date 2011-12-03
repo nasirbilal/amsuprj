@@ -168,13 +168,14 @@ public class RoboOhjain extends Thread {
         int tyhjyysmuisti = 0;
         int tyhjyysalkumuisti = 0;
         
-        //Mittausten käsittely:
+        if (Math.random() < 2.0) // Tämä on tässä kunnes testit menee läpi!
+            return haeUusiSattumanvarainenMittauspiste(paketti);
         
         for (int i = 0; i < etaisyydet.length; i++) {
-            if (etaisyydet[i] >= maxEtaisyys) {                 //jos ei nähdä mitään
+            if (etaisyydet[i] >= maxEtaisyys) {                // jos ei nähdä mitään
                 if (i != 0) {                                  // ja
-                    if (etaisyydet[i - 1] < maxEtaisyys) {     //  jos edellinen näköviiva näki jotain
-                        tyhjyysalku = i;                       //   niin tämän tyhjyyden alkukohta on i
+                    if (etaisyydet[i - 1] < maxEtaisyys) {     // jos edellinen näköviiva näki jotain
+                        tyhjyysalku = i;                       // niin tämän tyhjyyden alkukohta on i
                     }
                 } else {
                     tyhjyysalku = 0;
@@ -277,6 +278,39 @@ public class RoboOhjain extends Thread {
         }
     }
 
+    private Point2D.Float haeUusiSattumanvarainenMittauspiste(BTPaketti paketti) {
+        final int[] etaisyydet = paketti.getEtaisyydet();
+        int[] pisimmat = new int[etaisyydet.length];
+        int numPisimmat = 0;
+        int pisin = 0;
+       
+        if (Math.random() < 2.0) // ANKARAA PUUKOTUSTA!
+            return new Point2D.Float((float)Math.random() * 1350, (float)Math.random() * 2000);
+        
+        // Etsi pisin näköviiva.
+        for (int i = 1; i < etaisyydet.length; ++i)
+            if (etaisyydet[i] > pisin)
+                pisin = etaisyydet[i];
+       
+        // Lisää kaikki pisimmät näköviivat listaan.
+        for (int i = 0; i < etaisyydet.length; ++i)
+            if (etaisyydet[i] == pisin)
+                pisimmat[numPisimmat++] = i;
+        
+        // Valitse pisin näköviiva sattumanvaraisesti.
+        int x = (int) (Math.random() * numPisimmat);
+        JsimRoboNakyma nakyma = new JsimRoboNakyma(paketti.getNykySijainti(),
+            (float)paketti.getMittausKulma(), etaisyydet.length, pisin);
+        Line2D.Float jana = nakyma.getNakotaulu()[pisimmat[x]];
+
+        // Liiku näköviivaa pitkin. Älä kuitenkaan mene aivan loppuun asti,
+        // jotta ei päädyttäisi jonkin seinän sisään.
+        jana.x2 -= (jana.x2 - jana.x1) * 0.05;
+        jana.y2 -= (jana.y2 - jana.y1) * 0.05;
+        
+        return (Point2D.Float) jana.getP2();
+    }
+
     /**
      * Lisää robotin mittaustulokset viivoina sen muistiin/karttaan.
      * 
@@ -291,16 +325,27 @@ public class RoboOhjain extends Thread {
     private void lisaaHavainnotKarttaan(BTPaketti paketti) {
         int maara = paketti.getEtaisyydet().length;
         JsimRoboNakyma nakyma = new JsimRoboNakyma(paketti.getNykySijainti(),
-                (float) Math.toDegrees(paketti.getMittausKulma()), maara, 1);
-        Line2D.Float[] sateet = nakyma.getNakotaulu();
-        int[] etaisyydet = paketti.getEtaisyydet();
+                (float)paketti.getMittausKulma(), maara, 1);
+        final Line2D.Float[] sateet = nakyma.getNakotaulu();
+        final int[] etaisyydet = paketti.getEtaisyydet();
         
         // Lisää robotin havaitsemat esteet karttaan.
+        sateet[0].x2 += (sateet[0].x2 - sateet[0].x1) * etaisyydet[0];
+        sateet[0].y2 += (sateet[0].y2 - sateet[0].y1) * etaisyydet[0];
+        kartta.add(new Line2D.Float(sateet[0].getP2(), sateet[0].getP2()));
+        
         for (int i = 1; i < maara; ++i) {
-            if (etaisyydet[i - 1] < maxEtaisyys && etaisyydet[i] < maxEtaisyys) {
+            sateet[i].x2 += (sateet[i].x2 - sateet[i].x1) * etaisyydet[i];
+            sateet[i].y2 += (sateet[i].y2 - sateet[i].y1) * etaisyydet[i];
+            
+            if (etaisyydet[i - 1] < maxEtaisyys && etaisyydet[i] < maxEtaisyys &&
+               (Math.abs(sateet[i-1].x2-sateet[i].x2) < 0.001 ||
+                Math.abs(sateet[i-1].y2-sateet[i].y2) < 0.001)) {
                 kartta.add(new Line2D.Float(sateet[i - 1].getP2(),
                         sateet[i].getP2()));
             }
+            else
+                kartta.add(new Line2D.Float(sateet[i].getP2(), sateet[i].getP2()));
         }
     }
 
@@ -328,16 +373,25 @@ public class RoboOhjain extends Thread {
 
 
         // Laske robotille uusi mittauspiste.
-        uusinPaketti.setUusiSijainti(haeUusiMittauspiste(uusinPaketti));
+        Point2D.Float uusiSijainti = haeUusiMittauspiste(uusinPaketti);
+        Point2D.Float nykySijainti = uusinPaketti.getNykySijainti();
+        uusinPaketti.setUusiSijainti(uusiSijainti);
+        
+        if (uusiSijainti.x < 0 ||
+            uusiSijainti.y < 0 ||
+            uusiSijainti.x > 1350 ||
+            uusiSijainti.y > 2000)
+            throw new RuntimeException("Robotti haluaa mennä reunojen yli: " +
+                    uusiSijainti.x + ", " + uusiSijainti.y);
         
         // Robotin uusi mittaussuunta on sama kuin suunta, johon robotti
         // kulkee nykypisteestä uuteen mittauspisteeseensä.
-        float dx = uusinPaketti.getUusiSijainti().x - uusinPaketti.getNykySijainti().x;
-        float dy = uusinPaketti.getUusiSijainti().y - uusinPaketti.getNykySijainti().y;
-        uusinPaketti.setMittausSuunta(uusinPaketti.getUusiSijainti());
-        uusinPaketti.getMittausSuunta().x += dx;
-        uusinPaketti.getMittausSuunta().x += dy;
+        float dx = uusiSijainti.x - nykySijainti.x;
+        float dy = uusiSijainti.y - nykySijainti.y;
+        uusiSijainti.x += dx;
+        uusiSijainti.y += dy;
+        uusinPaketti.setMittausSuunta(uusiSijainti);
 
         return onMuuttunut = true;        
-    }   
+    }
 }
