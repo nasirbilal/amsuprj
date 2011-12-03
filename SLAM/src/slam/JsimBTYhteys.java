@@ -25,20 +25,25 @@ public class JsimBTYhteys implements BTYhteys {
     @Override
     public BTPaketti lahetaJaVastaanota(BTPaketti paketti, int odotusAikaMs) {
         // Lähetä data robotille ja odota sen vastausta.
-        robo.setPaikka(paketti.getNykySijainti());
-        robo.etenePisteeseen(paketti.getUusiSijainti());
-        robo.käännyKohti(paketti.getMittausSuunta());
-        
+        robo.setPaikka(new Point2D.Float(paketti.getNykySijainti().x,
+                                         paketti.getNykySijainti().y));
+        robo.etenePisteeseen(new Point2D.Float(paketti.getUusiSijainti().x,
+                                               paketti.getUusiSijainti().y));
+        robo.käännyKohti(new Point2D.Float(paketti.getMittausSuunta().x,
+                                           paketti.getMittausSuunta().y));
+
         // Robotti suorittaa mittauksia...
-        float[] mittaukset = robo.mittaa(paketti.getEtaisyydet().length);
+        final float[] mittaukset = robo.mittaa(paketti.getEtaisyydet().length);
         int[] etäisyydet = new int[paketti.getEtaisyydet().length];
         for (int i = 0; i < mittaukset.length; ++i){
             etäisyydet[i] = (int)(mittaukset[i] + 0.5f); // data valmiiksi milleissä.
         }
-        // Tässä "robotti kirjoittaa pakettiin omat sijaintiarvionsa."
-        paketti.setNykySijainti(paketti.getUusiSijainti());
-        paketti.setEtaisyydet(etäisyydet);
         
+        // Tässä "robotti kirjoittaa pakettiin omat sijaintiarvionsa."
+        paketti.setNykySijainti(new Point2D.Float(paketti.getUusiSijainti().x,
+                                                  paketti.getUusiSijainti().y));
+        paketti.setEtaisyydet(etäisyydet);
+
         // Bluetooth-yhteys on hidas. Luo vähän viivettä datasiirtoon.
         try { Thread.currentThread().sleep(500 + (long)(Math.random()* 2000));
         } catch (InterruptedException ex) { }
