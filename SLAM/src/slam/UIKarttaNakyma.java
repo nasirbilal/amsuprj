@@ -55,13 +55,14 @@ public class UIKarttaNakyma extends JPanel implements MouseMotionListener{
                 }
         double xratio = getWidth()/(xmax - xmin);
         double yratio = getHeight()/(ymax - ymin);
+        double ratio = Math.min(xratio, yratio);
 
         for (Line2D.Float l : janat)
             if (l != null)
-                g2.drawLine((int)((l.x1 - xmin) * xratio),
-                        -(int)((l.y1 - ymin) * yratio) + getHeight(),
-                         (int)((l.x2 - xmin) * xratio),
-                        -(int)((l.y2 - ymin) * yratio) + getHeight());
+                g2.drawLine((int)((l.x1 - xmin) * ratio),
+                        -(int)((l.y1 - ymin) * ratio) + getHeight(),
+                         (int)((l.x2 - xmin) * ratio),
+                        -(int)((l.y2 - ymin) * ratio) + getHeight());
 
         g.setColor(Color.black);
     }

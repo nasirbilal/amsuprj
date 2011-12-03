@@ -56,9 +56,11 @@ public class UIRoboNakyma extends JPanel {
             ymin = ymin > piste.y ? piste.y : ymin;
             ymax = ymax < piste.y ? piste.y : ymax;
         }
+        
         double xratio = getWidth()/(xmax - xmin);
         double yratio = getHeight()/(ymax - ymin);
-
+        double ratio = Math.min(xratio, yratio);
+        
         //Piirretään viiva pisteiden välillä ja lopuksi vielä viivat
         // 'origosta' ensimmäiseen ja viimeiseen pisteeseen
         // tämä siis simuloi aluetta, jonka robotti näkee
@@ -67,8 +69,8 @@ public class UIRoboNakyma extends JPanel {
             if (piste == null)
                 continue;
 
-            piste.x = 5 + (piste.x - xmin) * xratio * 0.9;
-            piste.y = getHeight() - (piste.y - ymin) * yratio * 0.9 - 5;
+            piste.x = 5 + (piste.x - xmin) * ratio * 0.9;
+            piste.y = getHeight() - (piste.y - ymin) * ratio * 0.9 - 5;
 
             if (ensimmainen == null) {
                 ensimmainen = piste;
