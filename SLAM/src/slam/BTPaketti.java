@@ -57,7 +57,7 @@ public class BTPaketti implements Serializable {
      * Palauttaa robotin katselukulman.
      * 
      * Metodi laskee vektorin (nykySijainti, katselupiste) ja x-akselin
-     * suuntaisen suoran välisen kulman. Kulma on asteina ja aina välillä
+     * suuntaisen suoran välisen kulman. Kulma on RADIAANEINA ja aina välillä
      * [0, 2*PI[.
      * 
      * @return Robotin katselukulma radiaaneina.
