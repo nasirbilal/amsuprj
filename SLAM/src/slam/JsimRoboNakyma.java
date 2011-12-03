@@ -23,11 +23,11 @@ public class JsimRoboNakyma {
         // Luodaan robotin näkyöviivoista robon suuntaan ja paikkaan
         // perustuen taulukko, jota vertaillaan sitten kartan viivoihin.
         sateet = new Line2D.Float[mittausmaara]; // Näköviivojen taulukko
-
+        
         if (mittausmaara <= 1) {
             // Katsekulma on suoraan eteenpäin.
-            sateet[0] = new Line2D.Float(paikka, new Point2D.Float(
-                    paikka.x + infraEtaisyys, paikka.y));
+            sateet[0] = new Line2D.Float(new Point2D.Float(paikka.x, paikka.y),
+                    new Point2D.Float(paikka.x + infraEtaisyys, paikka.y));
             return;
         }
 
@@ -41,12 +41,18 @@ public class JsimRoboNakyma {
             double y = (paikka.y + infraEtaisyys * Math.sin(kulma));
 
             // Näköviiva menee robotin nykyisestä paikasta laskettuun pisteeseen.
-            sateet[i] = new Line2D.Float(paikka, new Point2D.Float((float)x, (float)y));
+            sateet[i] = new Line2D.Float(new Point2D.Float(paikka.x, paikka.y),
+                                         new Point2D.Float((float)x, (float)y));
             katsesuunta -= katsekulma; // Seuraavan katseen suunta: muista yksikköympyrä!!!
         }
     }
 
     public Line2D.Float[] getNakotaulu() {
+        Line2D.Float[] v = new Line2D.Float[sateet.length];
+        for (int i = 0; i < sateet.length; ++i)
+            v[i] = new Line2D.Float(sateet[i].x1, sateet[i].y1,
+                                    sateet[i].x2, sateet[i].y2);
+
         return sateet;
     }
 

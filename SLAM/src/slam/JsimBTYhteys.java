@@ -37,8 +37,7 @@ public class JsimBTYhteys implements BTYhteys {
         }
         
         // Tässä "robotti kirjoittaa pakettiin omat sijaintiarvionsa."
-        paketti.setNykySijainti(new Point2D.Float(paketti.getUusiSijainti().x,
-                                                  paketti.getUusiSijainti().y));
+        paketti.setNykySijainti(paketti.getUusiSijainti());
         paketti.setEtaisyydet(etäisyydet);
 
         // Bluetooth-yhteys on hidas. Luo vähän viivettä datasiirtoon.
