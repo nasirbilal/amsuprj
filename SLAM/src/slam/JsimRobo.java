@@ -82,11 +82,11 @@ public class JsimRobo {
     }
 
     public Point2D.Float getPaikka() {
-        return paikka;
+        return new Point2D.Float(paikka.x, paikka.y);
     }
 
     public void setPaikka(Point2D.Float paikka) {
-        this.paikka = paikka;
+        this.paikka = new Point2D.Float(paikka.x, paikka.y);
     }
 
     /** 
@@ -100,7 +100,7 @@ public class JsimRobo {
     public Point2D.Float etenePisteeseen(Point2D.Float kohde) {
         käännyKohti(kohde);
         setPaikka(kohde);
-        return paikka;
+        return getPaikka();
     }
 
     /** 
@@ -129,13 +129,14 @@ public class JsimRobo {
      * @return IR-sensorin palauttamat etäisyydet lähimpiin esteisiin.
      */
     public float[] mittaa(int mittausMaara) {
+        System.out.append(getNimi() + " @ [" + paikka.x + ", " + paikka.y +
+                          ", suunta " + suunta + " deg.");
         
         float taulu[] = new float[mittausMaara];
-        double pieninetaisyys;
         nakyma = new JsimRoboNakyma(paikka, suunta, mittausMaara, infraKantama);
 
         for (int i = 0; i < nakyma.getNakotaulu().length; i++) {
-            pieninetaisyys = infraKantama;
+            double pieninetaisyys = infraKantama;
             for (int k = 0; k < kartta.length; k++) {
                 Point2D.Float leikkauspiste = nakyma.laskeLeikkauspiste(
                     nakyma.getNakotaulu()[i], kartta[k]);
@@ -167,7 +168,7 @@ public class JsimRobo {
         double y = paikka.y + matka * Math.sin(a);
 
         paikka = new Point2D.Float((float)x, (float)y);
-        return paikka;
+        return getPaikka();
     }
 
     /** 
