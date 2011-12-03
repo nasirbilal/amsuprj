@@ -86,7 +86,8 @@ public class JsimRobo {
     }
 
     public void setPaikka(Point2D.Float paikka) {
-        this.paikka = new Point2D.Float(paikka.x, paikka.y);
+        if (paikka != null)
+            this.paikka = new Point2D.Float(paikka.x, paikka.y);
     }
 
     /** 

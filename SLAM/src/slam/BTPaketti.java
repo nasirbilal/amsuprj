@@ -74,19 +74,27 @@ public class BTPaketti implements Serializable {
     
     
     public Point2D.Float getMittausSuunta() {
-        return mittausSuunta;
+        return new Point2D.Float(mittausSuunta.x, mittausSuunta.y);
     }
 
     public int[] getEtaisyydet() {
-        return etaisyydet;
+        int[] v = new int[etaisyydet.length];
+        for (int i = 0; i < etaisyydet.length; ++i)
+            v[i] = etaisyydet[i];
+
+        return v;
     }
 
     public Point2D.Float getNykySijainti() {
-        return nykySijainti;
+        if (nykySijainti == null)
+            return null;
+        return new Point2D.Float(nykySijainti.x, nykySijainti.y);
     }
 
     public Point2D.Float getUusiSijainti() {
-        return uusiSijainti;
+        if (uusiSijainti == null)
+            return null;
+        return new Point2D.Float(uusiSijainti.x, uusiSijainti.y);
     }
 
     public void setId(int id) {
@@ -94,18 +102,23 @@ public class BTPaketti implements Serializable {
     }
 
     public void setEtaisyydet(int[] etaisyydet) {
-        this.etaisyydet = etaisyydet;
+        this.etaisyydet = new int[etaisyydet.length];
+        for (int i = 0; i < etaisyydet.length; ++i)
+            this.etaisyydet[i] = etaisyydet[i];
     }
 
     public void setMittausSuunta(Point2D.Float mittausSuunta) {
-        this.mittausSuunta = mittausSuunta;
+        if (mittausSuunta != null)
+            this.mittausSuunta = new Point2D.Float(mittausSuunta.x, mittausSuunta.y);
     }
 
     public void setNykySijainti(Point2D.Float nykySijainti) {
-        this.nykySijainti = nykySijainti;
+        if (nykySijainti != null)
+            this.nykySijainti = new Point2D.Float(nykySijainti.x, nykySijainti.y);
     }
 
     public void setUusiSijainti(Point2D.Float uusiSijainti) {
-        this.uusiSijainti = uusiSijainti;
+        if (uusiSijainti != null)
+            this.uusiSijainti = new Point2D.Float(uusiSijainti.x, uusiSijainti.y);
     }
 }
