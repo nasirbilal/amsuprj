@@ -355,7 +355,7 @@ public class RoboOhjain extends Thread {
         Line2D.Float nakoRaja = new Line2D.Float(nakoP0, nakoP1);
 
         // Laske keskimääräinen etäisyys tällä mittauskierroksella.
-        int KA_ETAISYYS = 0;
+        double KA_ETAISYYS = 0;
         for (int i : etaisyydet)
             KA_ETAISYYS += i;
         KA_ETAISYYS /= 3*maara/2; // Kalibrointia: etäisyydestä osa pois.
@@ -373,20 +373,30 @@ public class RoboOhjain extends Thread {
 
             if (P0Vasemmalla == false && P1Vasemmalla == false)
                 continue; // Väärällä puolella robottia.
-            
+
+            if (nakoRaja.ptSegDist(nykysijainti) >= KA_ETAISYYS)
+                continue; // Jana ei leikkaa näköaluetta missään kohtaa.
+
             double dist0 = nykysijainti.distance(kartta.get(i).getP1());
             double dist1 = nykysijainti.distance(kartta.get(i).getP2());
             
-            if (P0Vasemmalla && P1Vasemmalla && dist0 > KA_ETAISYYS &&
-                dist1 > KA_ETAISYYS)
-                continue; // Liian kaukana robotista.
+            // Jos piste on robotin takana, ei etäisyydellä ole väliä.
+            if (P0Vasemmalla == false) dist0 = KA_ETAISYYS * 2;
+            if (P1Vasemmalla == false) dist1 = KA_ETAISYYS * 2;
+            
+            if (dist0 >= KA_ETAISYYS && dist1 >= KA_ETAISYYS)
+                continue; // Jos molemmat pisteet liian kaukana -> anna olla.
+                          // Tässä toteutuksessa on virhe:
+                          // Jos janan molemmat pisteet ovat näkökentän 
+                          // ulkopuolella, mutta jana leikkaa näkökentän 
+                          // jostakin keskikohdasta, ei janaa leikata lainkaan.
 
             // Jos jana on kokonaan uuden näkökentän sisällä niin poista se.
             if (dist0 < KA_ETAISYYS && dist1 < KA_ETAISYYS) {
                 kartta.remove(i--);
                 continue;
             }
-            
+
             // VAIN janan TOINEN piste on näkökentässä: etsi leikkauspiste.
             float x0 = kartta.get(i).x1;
             float y0 = kartta.get(i).y1;
@@ -432,9 +442,8 @@ public class RoboOhjain extends Thread {
             }
         }
 
-        System.out.println("Kartassa janoja " + kartta.size());
-
         // Lisää robotin havaitsemat esteet karttaan PISTEINÄ.
+        final int vanhaKoko = kartta.size();
         for (int i = 0; i < maara; ++i)
             if (etaisyydet[i] < maxEtaisyys) {
                 sateet[i].x2 += (sateet[i].x2 - sateet[i].x1) * etaisyydet[i];
@@ -453,9 +462,30 @@ public class RoboOhjain extends Thread {
                                                 sateet[i].getP2()));
             }
         
-        // Yhdistä kaikki kolmen lähimmän pisteen kautta kulkevalle suoralle
-        // osuvat pisteet janoiksi. Tämä poistaa toisteiset pisteet ja luo
-        // karttaa seinäpätkiä nopeasti.
+        // Yhdistä vastikään lisätyistä pisteistä kolmen perättäisen pisteen 
+        // kautta kulkevalle suoralle osuvat pisteet janoiksi. Tämä poistaa
+        // ylimääräiset välipisteet ja luo karttaa seinäpätkiä nopeasti.
+        // HUOMIO: seinäjanat on luotava oikealta (eli listan lopusta)
+        //         vasemmalle (eli listan alkuun) päin, koska Kokoajan
+        //         asetaKartta-metodissa määritellään, että seinän sisäpuoli
+        //         jää seinäjanan oikealle puolelle!
+        final int alku = Math.max(1, vanhaKoko);
+        if (false) // Yhdistäminen toimii testeissä muttei livenä. Hmm...
+        for (int i = kartta.size() - 1; i > alku; --i) {
+            Point2D p0 = kartta.get(i).getP2();
+            Point2D p1 = kartta.get(i-1).getP2();
+            Point2D p2 = kartta.get(i-2).getP2();
+            Line2D.Float l = new Line2D.Float(p0, p2);
+            
+            double dist = l.ptSegDistSq(p1); // Debuggausta varten erikseen.
+            if (dist < 0.2) { // Virhe on suuri: 0.006, 0.033, 0.15, ... !!! 
+                kartta.remove(i);
+                kartta.remove(i-1);
+                kartta.remove(i-2);
+                kartta.add(l);
+                i -= 1;
+            }
+        }
     }
 
     /** @brief Robotti siirretään uuteen sijaintiin ja suoritetaan mittaukset.
