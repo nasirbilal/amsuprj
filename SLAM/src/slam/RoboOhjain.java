@@ -281,35 +281,49 @@ public class RoboOhjain extends Thread {
 
     private Point2D.Float haeUusiSattumanvarainenMittauspiste(BTPaketti paketti) {
         final int[] etaisyydet = paketti.getEtaisyydet();
-        int[] pisimmat = new int[etaisyydet.length];
-        int numPisimmat = 0;
-        int pisin = 0;
-       
-        // Etsi pisin näköviiva.
-        for (int i = 0; i < etaisyydet.length; ++i)
-            pisin = Math.max(pisin, etaisyydet[i]);
-
-        // Lisää kaikki pisimmät näköviivat listaan.
-        for (int i = 0; i < etaisyydet.length; ++i)
-            if (etaisyydet[i] == pisin)
-                pisimmat[numPisimmat++] = i;
+        int summa = 0;
+        int index = -1;
         
-        // Valitse pisin näköviiva sattumanvaraisesti.
-        int x = pisimmat[(int)(Math.random() * numPisimmat)];
+        for (int i = 0; i < etaisyydet.length; ++i)
+            summa += 1 + etaisyydet[i] * etaisyydet[i];
+
+        // Valitse näköviivoista sattumnvaraisesti jokin niin, että pidemmät
+        // näköviivat saavat suuremman painoarvon kuin lyhyet.
+        summa = (int) Math.floor(Math.random() * summa);
+        
+        // Etsi valittu näköviiva listasta.
+        for (int i = 0; i < etaisyydet.length; ++i)
+            if (1 + etaisyydet[i] * etaisyydet[i] <= summa)
+                summa -= 1 + etaisyydet[i] * etaisyydet[i];
+            else {
+                index = i;
+                break;
+            }
+
+        if (index < 0) // Ehto ei ole koskaan tosi!
+            throw new RuntimeException("Indeksi sai laittoman arvon.");
+
+        // Valitse pisin näköviiva.
         JsimRoboNakyma nakyma = new JsimRoboNakyma(paketti.getNykySijainti(),
             (float)Math.toDegrees(paketti.getMittausKulma()),
-            etaisyydet.length, pisin);
-        Line2D.Float jana = nakyma.getNakotaulu()[x];
+            etaisyydet.length, etaisyydet[index]);
+        Line2D.Float jana = nakyma.getNakotaulu()[index];
 
         // Liiku näköviivaa pitkin. Älä kuitenkaan mene aivan loppuun asti,
         // jotta ei päädyttäisi jonkin seinän sisään.
-        jana.x2 -= (jana.x2 - jana.x1) * 0.05;
-        jana.y2 -= (jana.y2 - jana.y1) * 0.05;
+        jana.x2 -= (jana.x2 - jana.x1) * 0.05f;
+        jana.y2 -= (jana.y2 - jana.y1) * 0.05f;
         
-        // Ristus mitä puukotusta! Emmä silti tajua, miksi tämä vaikuttaa
-        // kartan piirtoon niin, että siellä näkyy jotain ihan ihme noisea.
-        if (jana.x2 < 0 || jana.x2 > 1350) jana.x2 = (float)Math.random() * 1350;
-        if (jana.y2 < 0 || jana.y2 > 2000) jana.y2 = (float)Math.random() * 2000;
+        // Ristus mitä puukotusta! Emmä silti tajua, miksi tämän poistaminen
+        // lisää kartan piirtoon jotain ihan ihme noisea ja samalla rikkoo
+        // näköviivat niin, että robotit menee kentän laitojen yli. :(
+        jana.x2 = (float) (jana.x2 - 10 + Math.random() * 20);
+        if (jana.x2 < 0) jana.x2 = 0.1f;
+        if (jana.x2 > 1350) jana.x2 = 1349.9f;
+
+        jana.y2 = (float) (jana.y2 - 10 + Math.random() * 20);
+        if (jana.y2 < 0) jana.y2 = 0.1f;
+        if (jana.y2 > 2000) jana.y2 = 1999.9f;
 
         return new Point2D.Float(jana.x2, jana.y2);
     }
@@ -379,6 +393,7 @@ public class RoboOhjain extends Thread {
             uusiSijainti.x > 1350 ||
             uusiSijainti.y > 2000)
             throw new RuntimeException("Robotti haluaa mennä reunojen yli: " +
+                    nykySijainti.x + ", " + nykySijainti.y + " -> " +
                     uusiSijainti.x + ", " + uusiSijainti.y);
         
         // Robotin uusi mittaussuunta on sama kuin suunta, johon robotti
