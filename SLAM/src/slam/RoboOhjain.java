@@ -310,8 +310,8 @@ public class RoboOhjain extends Thread {
 
         // Liiku näköviivaa pitkin. Älä kuitenkaan mene aivan loppuun asti,
         // jotta ei päädyttäisi jonkin seinän sisään.
-        jana.x2 -= (jana.x2 - jana.x1) * 0.05f;
-        jana.y2 -= (jana.y2 - jana.y1) * 0.05f;
+        jana.x2 -= (jana.x2 - jana.x1) * 0.95f;
+        jana.y2 -= (jana.y2 - jana.y1) * 0.95f;
         
         // Ristus mitä puukotusta! Emmä silti tajua, miksi tämän poistaminen
         // lisää kartan piirtoon jotain ihan ihme noisea ja samalla rikkoo

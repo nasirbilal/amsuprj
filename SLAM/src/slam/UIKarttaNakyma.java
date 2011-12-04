@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
 import java.util.Random;
 import javax.swing.*;
 
@@ -18,9 +19,8 @@ import javax.swing.*;
 public class UIKarttaNakyma extends JPanel implements MouseMotionListener{
 
     private Line2D.Float[] janat;
+    private Point2D.Float[] robotit;
     private Random r = new Random();
-
-
 
     @Override
     public void paintComponent(Graphics g) {
@@ -30,7 +30,8 @@ public class UIKarttaNakyma extends JPanel implements MouseMotionListener{
 
         Graphics2D g2 = (Graphics2D) g;
         g2.setColor(Color.red);
-        g2.setStroke(new BasicStroke(4));
+        g2.setStroke(new BasicStroke(2));
+
         super.paintComponent(g);
 
         // Laske sovituskertoimet saadulle datalle niin, että se mahtuu
@@ -64,15 +65,25 @@ public class UIKarttaNakyma extends JPanel implements MouseMotionListener{
                          (int)((l.x2 - xmin) * ratio),
                         -(int)((l.y2 - ymin) * ratio) + getHeight());
 
-        g.setColor(Color.black);
+        if (robotit == null)
+            return;
+        
+        g2.setColor(Color.BLUE);
+        g2.setStroke(new BasicStroke(5));
+        for (Point2D.Float p : robotit)
+            g2.drawLine((int)((p.x - xmin) * ratio),
+                        (int)((p.y - xmin) * ratio),
+                        (int)((p.x - xmin) * ratio),
+                        (int)((p.y - xmin) * ratio));
     }
 
     public UIKarttaNakyma() {
         addMouseMotionListener(this);
     }
 
-    void piirraKartta(Line2D.Float[] janat) {
+    void piirraKartta(Line2D.Float[] janat, Point2D.Float[] robotit) {
         this.janat = janat;
+        this.robotit = robotit;
         repaint();
     }
 

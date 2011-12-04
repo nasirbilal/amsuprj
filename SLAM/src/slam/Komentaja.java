@@ -114,8 +114,11 @@ public class Komentaja extends Thread {
              muuttunut = true;
             }
 
-            if (muuttunut)
-                karttaNakyma.piirraKartta(Kokoaja.yhdista());
+            if (muuttunut) {
+                Point2D.Float[] robotit = { r1.annaKoordinaatit(),
+                                            r2.annaKoordinaatit(),};
+                karttaNakyma.piirraKartta(Kokoaja.yhdista(), robotit);
+            }
         }
     }
     
