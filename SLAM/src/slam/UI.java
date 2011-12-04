@@ -112,7 +112,7 @@ public class UI extends JFrame {
         gbc.gridy = 5;
         roboPaneeli.add(robo1, BorderLayout.NORTH);
         roboPaneeli.add(robo2, BorderLayout.SOUTH);
-        paaPaneeli.add(nappulaPaneeli, BorderLayout.EAST);
+        //paaPaneeli.add(nappulaPaneeli, BorderLayout.EAST);
         paaPaneeli.add(roboPaneeli, BorderLayout.WEST);
         paaPaneeli.add(karttaNakyma, BorderLayout.CENTER);
         paaPaneeli.add(scrollPane, BorderLayout.SOUTH);
