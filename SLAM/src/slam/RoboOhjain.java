@@ -6,7 +6,6 @@ package slam;
 
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
-import java.awt.geom.Point2D.Float;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -346,18 +345,117 @@ public class RoboOhjain extends Thread {
         final Line2D.Float[] sateet = nakyma.getNakotaulu();
         final int[] etaisyydet = paketti.getEtaisyydet();
         
+        Point2D.Float nykysijainti = paketti.getNykySijainti();
+        Point2D.Float nakoP0 = nykysijainti; // Vastapäivään PI/2.
+        nakoP0.x -= paketti.getMittausSuunta().y;
+        nakoP0.y += paketti.getMittausSuunta().x;
+        Point2D.Float nakoP1 = nykysijainti; // Myötäpäivään PI/2.
+        nakoP1.x += paketti.getMittausSuunta().y;
+        nakoP1.y -= paketti.getMittausSuunta().x;
+        Line2D.Float nakoRaja = new Line2D.Float(nakoP0, nakoP1);
+
+        // Laske keskimääräinen etäisyys tällä mittauskierroksella.
+        int KA_ETAISYYS = 0;
+        for (int i : etaisyydet)
+            KA_ETAISYYS += i;
+        KA_ETAISYYS /= 3*maara/2; // Kalibrointia: etäisyydestä osa pois.
+        
+        // Poista havaintoalueen vanhat pisteet ja leikkaa sinne jatkuvat janat.
+        // Tämä on hyvin hyvin tärkeä vaihe, koska kun robotti vahingossa
+        // havaitsee jotain väärin esimerkiksi luullessaan toista robottia
+        // seinäksi, niin pyyhkimällä sellaiset vanhat mittaukset pois pystytään
+        // päivittämään kartta aina viimeisimpien havaintojen mukaiseksi!
+        for (int i = 0; i < kartta.size(); ++i) {
+            boolean P0Vasemmalla = onVasemmallaPuolella(nakoRaja,
+                (Point2D.Float)kartta.get(i).getP1());
+            boolean P1Vasemmalla = onVasemmallaPuolella(nakoRaja,
+                (Point2D.Float)kartta.get(i).getP2());
+
+            if (P0Vasemmalla == false && P1Vasemmalla == false)
+                continue; // Väärällä puolella robottia.
+            
+            double dist0 = nykysijainti.distance(kartta.get(i).getP1());
+            double dist1 = nykysijainti.distance(kartta.get(i).getP2());
+            
+            if (P0Vasemmalla && P1Vasemmalla && dist0 > KA_ETAISYYS &&
+                dist1 > KA_ETAISYYS)
+                continue; // Liian kaukana robotista.
+
+            // Jos jana on kokonaan uuden näkökentän sisällä niin poista se.
+            if (dist0 < KA_ETAISYYS && dist1 < KA_ETAISYYS) {
+                kartta.remove(i--);
+                continue;
+            }
+            
+            // VAIN janan TOINEN piste on näkökentässä: etsi leikkauspiste.
+            float x0 = kartta.get(i).x1;
+            float y0 = kartta.get(i).y1;
+            float x1 = kartta.get(i).x2;
+            float y1 = kartta.get(i).y2;
+
+            // Jos alkupiste ei olekaan sisällä, niin tee vaihdos.
+            if (dist0 > KA_ETAISYYS) {
+                x0 = kartta.get(i).x2;
+                y0 = kartta.get(i).y2;
+                x1 = kartta.get(i).x1;
+                y1 = kartta.get(i).y1;
+            }
+
+            // Nyt alkupiste on borottia lähinnä oleva piste ja loppupiste 
+            // robotista kauempi piste. Alusta binäärihaun muuttujat.
+            float dx = x1 - x0;
+            float dy = y1 - y0;
+            float s = 0.5f;
+            float d = 0.25f;
+            double etaisyys = 0;
+            
+            // Etsi leikkauskohta janan alku- ja loppupisteiden välillä
+            // käyttämällä binääristä hakua.
+            do {
+                etaisyys = nykysijainti.distance(new Point2D.Float(
+                    x0 + dx * s, y0 + dy * s));
+
+                s += (etaisyys > KA_ETAISYYS ? -d : d);
+                d *= 0.5f;
+            } while (Math.abs(etaisyys - KA_ETAISYYS) > 0.1);
+            
+            // Kas niin. Uusi alkupite on löytynyt. Talleta se janaan.
+            x0 += dx * s;
+            y0 += dy * s;
+            if (dist0 < KA_ETAISYYS) {
+                kartta.get(i).x1 = x0;
+                kartta.get(i).y1 = y0;
+            }
+            else {
+                kartta.get(i).x1 = x0;
+                kartta.get(i).y1 = y0;
+            }
+        }
+
+        System.out.println("Kartassa janoja " + kartta.size());
+
         // Lisää robotin havaitsemat esteet karttaan PISTEINÄ.
         for (int i = 0; i < maara; ++i)
             if (etaisyydet[i] < maxEtaisyys) {
                 sateet[i].x2 += (sateet[i].x2 - sateet[i].x1) * etaisyydet[i];
                 sateet[i].y2 += (sateet[i].y2 - sateet[i].y1) * etaisyydet[i];
-
-                if (sateet[i].x2 > 1350+5)
-                    System.out.println("Kumma jana: " + sateet[i].x1 + ", " +
-                        sateet[i].y1 + ", " + sateet[i].x2 + ", " + sateet[i].y2);
+                boolean ainutlaatuinen = true;
                 
-                kartta.add(new Line2D.Float(sateet[i].getP2(), sateet[i].getP2()));
+                // Tutki onko piste jo osa jotakin kartan pistettä/janaa.
+                for (Line2D.Float l : kartta)
+                    if (l.ptSegDistSq(sateet[i].getP2()) < 0.001) {
+                        ainutlaatuinen = false;
+                        break;
+                    }
+                
+                if (ainutlaatuinen)
+                    kartta.add(new Line2D.Float(sateet[i].getP2(),
+                                                sateet[i].getP2()));
             }
+        
+        // Yhdistä kaikki kolmen lähimmän pisteen kautta kulkevalle suoralle
+        // osuvat pisteet janoiksi. Tämä poistaa toisteiset pisteet ja luo
+        // karttaa seinäpätkiä nopeasti.
     }
 
     /** @brief Robotti siirretään uuteen sijaintiin ja suoritetaan mittaukset.
@@ -405,5 +503,23 @@ public class RoboOhjain extends Thread {
         uusinPaketti.setMittausSuunta(uusiSijainti);
 
         return onMuuttunut = true;        
+    }
+
+    /**
+     * Määrittää onko piste janan vasemmalla puolella.
+     * 
+     * Janan vasen puoli on se puoli, joka jää vasemman käden puolelle
+     * katsottaessa janaa piton sen alkupisteestä loppupisteeseen.
+     * Idea on kopioitu suoraan osoitteesta
+     * http://stackoverflow.com/questions/3461453/determine-which-side-of-a-line-a-point-lies
+     * 
+     * @param nakoRaja Jana, jonka toisella puolella piste on.
+     * @param p1 Viivaa vasten testattava piste.
+     * @return Tosi, jos piste on janan päällä tai vasemmalla puolella.
+     */
+    private boolean onVasemmallaPuolella(Line2D.Float linja, Point2D.Float c) {
+        Point2D.Float a = (Point2D.Float) linja.getP1(); // Alkupiste.
+        Point2D.Float b = (Point2D.Float) linja.getP2(); // Loppupiste.
+        return ((b.x - a.x)*(c.y - a.y) - (b.y - a.y)*(c.x - a.x)) >= 0;
     }
 }

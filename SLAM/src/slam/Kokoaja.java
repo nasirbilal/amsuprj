@@ -126,6 +126,9 @@ public class Kokoaja {
 
         // Erittele alkulartta vaakasuoriin ja pystysuoriin seiniin.
         for (Line2D.Float l : kartat.get(0)) {
+            if (l == null)
+                continue;
+
             float dx = l.x2 - l.x1;
             float dy = l.y2 - l.y1;
 
