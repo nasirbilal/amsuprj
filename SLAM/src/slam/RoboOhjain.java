@@ -175,7 +175,10 @@ public class RoboOhjain extends Thread {
     protected void kokeileLisataHavainnotKarttaan(BTPaketti paketti) {
         lisaaHavainnotKarttaan(paketti);
     }
-        
+    
+    //urpoilua haeUusiMittauspiste-loppupuolen häkkyrään:
+    Point2D.Float vanhapiste = new Point2D.Float(0,0);
+    int i = 0;    
     private Point2D.Float haeUusiMittauspiste(BTPaketti paketti) {
         Point2D.Float nykySijainti = paketti.getNykySijainti();
         float kulma = (float) Math.toDegrees(paketti.getMittausKulma());
@@ -209,20 +212,22 @@ public class RoboOhjain extends Thread {
         
         //Navigoinnin valinta:
         
+        Point2D.Float menopiste;
+        
         if (tyhjyyslaskuri == etaisyydet.length) { // ei mitään havaittu missään
             //etene(650);
             
             float sx = (float)(nykySijainti.x + 650 * Math.sin(Math.toRadians(kulma))); //Jos ei toimi, koita vaihtaa sini cosinix ja toisinpäin
             float sy = (float)(nykySijainti.y + 650 * Math.cos(Math.toRadians(kulma)));
-            Point2D.Float menopiste = new Point2D.Float(sx,sy);
+            menopiste = new Point2D.Float(sx,sy);
             //paketti.setUusiSijainti(menopiste);
-            return menopiste;
+            //return menopiste;
             
-          /*  float kx = (float)(paketti.getNykySijainti().x + 800 * Math.sin(Math.toRadians(kulma)));
+            float kx = (float)(paketti.getNykySijainti().x + 800 * Math.sin(Math.toRadians(kulma)));
             float ky = (float)(paketti.getNykySijainti().y + 800 * Math.cos(Math.toRadians(kulma)));
             Point2D.Float katsepiste = new Point2D.Float(kx,ky);
             paketti.setMittausSuunta(katsepiste);
-          */  
+            
             
         } else if (tyhjyysmuisti == 0) { //kaikki havaitaittu kaikkialla
             if (edettytäyteen) {     
@@ -230,28 +235,29 @@ public class RoboOhjain extends Thread {
                 //käänny(180);
                 
                 //paketti.setUusiSijainti(paketti.getNykySijainti()); // ei liikettä
-                return nykySijainti;
+                //return nykySijainti;
+                menopiste = nykySijainti;
                 
-              /*  float kx = (float)(paketti.getNykySijainti().x - 800 * Math.sin(Math.toRadians(kulma)));
+                float kx = (float)(paketti.getNykySijainti().x - 800 * Math.sin(Math.toRadians(kulma)));
                 float ky = (float)(paketti.getNykySijainti().y - 800 * Math.cos(Math.toRadians(kulma)));
                 Point2D.Float katsepiste = new Point2D.Float(kx,ky);
                 paketti.setMittausSuunta(katsepiste);
-               */ 
+                
             } else {
                 //etene(etaisyydet[19] / 2);// edetään suoraan eteenpäin puolet eteenpäin mitatusta pituudesta
                 edettytäyteen = true;
                 float sx = (float)(nykySijainti.x + (etaisyydet[19] / 2) * Math.sin(Math.toRadians(kulma))); //Jos ei toimi, koita vaihtaa sini cosinix ja toisinpäin
                 float sy = (float)(nykySijainti.y + (etaisyydet[19] / 2) * Math.cos(Math.toRadians(kulma)));
-                Point2D.Float menopiste = new Point2D.Float(sx,sy);
+                menopiste = new Point2D.Float(sx,sy);
                 //paketti.setUusiSijainti(menopiste);
                  
-                return menopiste;
+                //return menopiste;
                 
-                /*float kx = (float)(paketti.getNykySijainti().x + ((etaisyydet[19] / 2) *1.5) * Math.sin(Math.toRadians(kulma)));
+                float kx = (float)(paketti.getNykySijainti().x + ((etaisyydet[19] / 2) *1.5) * Math.sin(Math.toRadians(kulma)));
                 float ky = (float)(paketti.getNykySijainti().y + ((etaisyydet[19] / 2) *1.5) * Math.cos(Math.toRadians(kulma)));
                 Point2D.Float katsepiste = new Point2D.Float(kx,ky);
                 paketti.setMittausSuunta(katsepiste);
-                */
+                
                 
             }
         } else {    //normiliikettä eli hidasta batistiinikävelyä
@@ -267,32 +273,59 @@ public class RoboOhjain extends Thread {
                 //etene((mtaulu[tyhjyysalkumuisti - 1] + mtaulu[tyhjyysalkumuisti + tyhjyysmuisti]) / 2);
                 float sx = (float)(nykySijainti.x + ((etaisyydet[tyhjyysalkumuisti - 1] + etaisyydet[tyhjyysalkumuisti + tyhjyysmuisti]) / 2) * Math.sin(Math.toRadians(modkulma))); //Jos ei toimijnejne...
                 float sy = (float)(nykySijainti.y + ((etaisyydet[tyhjyysalkumuisti - 1] + etaisyydet[tyhjyysalkumuisti + tyhjyysmuisti]) / 2) * Math.cos(Math.toRadians(modkulma)));
-                Point2D.Float menopiste = new Point2D.Float(sx,sy);
+                menopiste = new Point2D.Float(sx,sy);
                 //paketti.setUusiSijainti(menopiste);
-                return menopiste;
+                //return menopiste;
                 
                 
-                /* kx = (float)(paketti.getNykySijainti().x + (((etaisyydet[tyhjyysalkumuisti - 1] + etaisyydet[tyhjyysalkumuisti + tyhjyysmuisti]) / 2)*1.5) * Math.sin(Math.toRadians(modkulma)));
+                float kx = (float)(paketti.getNykySijainti().x + (((etaisyydet[tyhjyysalkumuisti - 1] + etaisyydet[tyhjyysalkumuisti + tyhjyysmuisti]) / 2)*1.5) * Math.sin(Math.toRadians(modkulma)));
                 float ky = (float)(paketti.getNykySijainti().y + (((etaisyydet[tyhjyysalkumuisti - 1] + etaisyydet[tyhjyysalkumuisti + tyhjyysmuisti]) / 2)*1.5) * Math.cos(Math.toRadians(modkulma)));
                 Point2D.Float katsepiste = new Point2D.Float(kx,ky);
                 paketti.setMittausSuunta(katsepiste);
-                */
+                
             } else {
                 //etene((etaisyydet[tyhjyysalkumuisti + tyhjyysmuisti]) / 2);
                 float sx = (float)(nykySijainti.x + ((etaisyydet[tyhjyysalkumuisti + tyhjyysmuisti]) / 2) * Math.sin(Math.toRadians(modkulma))); //Jos ei toimi, koita vaihtaa sini cosinix ja toisinpäin
                 float sy = (float)(nykySijainti.y + ((etaisyydet[tyhjyysalkumuisti + tyhjyysmuisti]) / 2) * Math.cos(Math.toRadians(modkulma)));
-                Point2D.Float menopiste = new Point2D.Float(sx,sy);
+                menopiste = new Point2D.Float(sx,sy);
                 //paketti.setUusiSijainti(menopiste);
                 
-                return menopiste;
+                //return menopiste;
 
-                /*float kx = (float)(paketti.getNykySijainti().x + (((etaisyydet[tyhjyysalkumuisti + tyhjyysmuisti]) / 2)*1.5) * Math.sin(Math.toRadians(modkulma)));
+                float kx = (float)(paketti.getNykySijainti().x + (((etaisyydet[tyhjyysalkumuisti + tyhjyysmuisti]) / 2)*1.5) * Math.sin(Math.toRadians(modkulma)));
                 float ky = (float)(paketti.getNykySijainti().y + (((etaisyydet[tyhjyysalkumuisti + tyhjyysmuisti]) / 2)*1.5) * Math.cos(Math.toRadians(modkulma)));
                 Point2D.Float katsepiste = new Point2D.Float(kx,ky);
                 paketti.setMittausSuunta(katsepiste);
-                */
+                
             }
         }
+        
+        
+        // QUICK & DIRTY + toimii miten sattuu + edelleen seinien läpi
+        if (menopiste.x < 0){
+            menopiste.x = 50;
+        }
+        if (menopiste.x > 1350){
+            menopiste.x = 1300;
+        }
+        if (menopiste.y < 0){
+            menopiste.y = 50;
+        }
+        if (menopiste.y > 2000){
+            menopiste.y = 1950;
+        }
+        
+        if (vanhapiste.x == menopiste.x && vanhapiste.y == menopiste.y){
+            i++;
+        }
+        if (vanhapiste.x == menopiste.x && vanhapiste.y == menopiste.y && i == 2){
+            i=0;
+            menopiste = haeUusiSattumanvarainenMittauspiste(paketti);
+        }
+        
+        vanhapiste = menopiste;
+        return menopiste;
+        
     }
 
     private Point2D.Float haeUusiSattumanvarainenMittauspiste(BTPaketti paketti) {
