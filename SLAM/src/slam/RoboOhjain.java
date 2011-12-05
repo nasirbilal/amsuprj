@@ -117,7 +117,11 @@ public class RoboOhjain extends Thread {
      * @return Taulukko robotin havaitsemista seinistä/esteistä.
      */
     public Line2D.Float[] haeKartta() {
+        try {
         return kartta.toArray(new Line2D.Float[kartta.size()]);
+        } catch (Exception ex) {
+            return new Line2D.Float[0];
+        }
     }
     
     //Käyttäjä klikkaa kartalla pistettä ja käskemme robottia liikkumaan siihen pisteeseen
