@@ -4,6 +4,7 @@
  */
 package slam;
 
+import java.awt.geom.Line2D;
 import java.awt.geom.Line2D.Float;
 import java.awt.geom.Point2D.Double;
 import java.util.ArrayList;
@@ -60,15 +61,22 @@ public class KokoajaTest {
     @Test
     public void testKokeileKarttojenYhteensopivuutta() {
         System.out.println("kokeileKarttojenYhteensopivuutta");
-        ArrayList<Float> vaaka0 = null;
-        ArrayList<Float> vaaka1 = null;
-        ArrayList<Float> pysty0 = null;
-        ArrayList<Float> pysty1 = null;
+        ArrayList<Line2D.Float> vaaka0 = new ArrayList<Line2D.Float>();
+        ArrayList<Line2D.Float> vaaka1 = new ArrayList<Line2D.Float>();
+        ArrayList<Line2D.Float> pysty0 = new ArrayList<Line2D.Float>();
+        ArrayList<Line2D.Float> pysty1 = new ArrayList<Line2D.Float>();
+        
+        //Lisätään kartan viivat; alkuperäinen kartta
+        vaaka0.add(new Line2D.Float(3,13,3,5));
+        pysty0.add(new Line2D.Float(3,5,11,5));
+        
+        //alkuperäiseen karttaan lisättävä kartta
+        vaaka1.add(new Line2D.Float(4,3,4,8));
+        pysty1.add(new Line2D.Float(4,8,12,8));
+        
         boolean expResult = false;
         boolean result = Kokoaja.kokeileKarttojenYhteensopivuutta(vaaka0, vaaka1, pysty0, pysty1);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
