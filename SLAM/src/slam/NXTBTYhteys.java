@@ -46,7 +46,7 @@ public class NXTBTYhteys extends Thread implements BTYhteys {
     private void alustaYhteys() {
         try {
             // Luodaan yhteys robottiin nimen perusteella
-            if (!yhteys.connectTo(robo.getNimi())) {
+            if (!yhteys.connectTo("Hiiri")){
                 yrityksia++;
                 System.err.println("Yhdistaminen epaonnistui");
                 if (yrityksia < 5) {
