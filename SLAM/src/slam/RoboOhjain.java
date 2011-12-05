@@ -189,8 +189,8 @@ public class RoboOhjain extends Thread {
         int tyhjyysmuisti = 0;
         int tyhjyysalkumuisti = 0;
         
-        //if (Math.random() < 2.0) // Tämä on tässä kunnes testit menee läpi!
-        //    return haeUusiSattumanvarainenMittauspiste(paketti);
+        if (Math.random() < 2.0) // Tämä on tässä kunnes mittauspisteen laskenta toimii oikein!
+            return haeUusiSattumanvarainenMittauspiste(paketti);
         
         for (int i = 0; i < etaisyydet.length; i++) {
             if (etaisyydet[i] >= maxEtaisyys) {                // jos ei nähdä mitään
@@ -518,7 +518,7 @@ public class RoboOhjain extends Thread {
         //         asetaKartta-metodissa määritellään, että seinän sisäpuoli
         //         jää seinäjanan oikealle puolelle!
         final int alku = Math.max(1, vanhaKoko);
-        if (false) // Yhdistäminen toimii testeissä muttei livenä. Hmm...
+        if (false)
         for (int i = kartta.size() - 1; i > alku; --i) {
             Point2D p0 = kartta.get(i).getP2();
             Point2D p1 = kartta.get(i-1).getP2();
@@ -626,12 +626,12 @@ public class RoboOhjain extends Thread {
         int kierrokset = 100;
         
         while (kierrokset-- > 0) {
-            Point2D.Float nykySijainti = alkuperNykySijainti;
-            Point2D.Float mittausSuunta = alkuperNykySijainti;
-            nykySijainti.x += -10 + Math.random()*20;
-            nykySijainti.y += -10 + Math.random()*20;
-            mittausSuunta.x += -10 + Math.random()*20;
-            mittausSuunta.y += -10 + Math.random()*20;
+            Point2D.Float nykySijainti = new Point2D.Float(
+                    alkuperNykySijainti.x - 10 + (float)Math.random() * 20,
+                    alkuperNykySijainti.y - 10 + (float)Math.random() * 20);
+            Point2D.Float mittausSuunta = new Point2D.Float(
+                    alkuperMittausSuunta.x - 10 + (float)Math.random() * 20,
+                    alkuperMittausSuunta.y - 10 + (float)Math.random() * 20);
             paketti.setNykySijainti(nykySijainti);
             paketti.setMittausSuunta(mittausSuunta);
             
@@ -643,6 +643,8 @@ public class RoboOhjain extends Thread {
             
         }
         
+        paketti.setNykySijainti(alkuperNykySijainti);
+        paketti.setMittausSuunta(alkuperMittausSuunta);
         return paketti.getNykySijainti();
     }
 }
