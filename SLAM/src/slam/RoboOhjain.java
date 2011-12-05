@@ -4,10 +4,8 @@
  */
 package slam;
 
-import java.awt.geom.Line2D;
-import java.awt.geom.Point2D;
-import java.util.ArrayList;
-import java.util.Calendar;
+import java.awt.geom.*;
+import java.util.*;
 
 /**
  * @brief Luokka ohjaa robottia ja käsittelee siltä tulevaa dataa.
@@ -54,6 +52,10 @@ public class RoboOhjain extends Thread {
         this.mittausJanat = nakyma.getNakotaulu();
     }
 
+    /**
+     * 
+     * @return
+     */
     public Point2D.Float annaKoordinaatit(){
         return uusinPaketti.getNykySijainti();
     }
@@ -120,6 +122,10 @@ public class RoboOhjain extends Thread {
     
     //Käyttäjä klikkaa kartalla pistettä ja käskemme robottia liikkumaan siihen pisteeseen
     //emmekä laske erikseen uutta pistettä.
+    /**
+     * 
+     * @param p
+     */
     public void liikuTahan(Point2D.Float p){
         annettuPiste = p;
         kayttajaltaKoordinaatit = true;
@@ -142,6 +148,13 @@ public class RoboOhjain extends Thread {
         }
     }
 
+    /**
+     * 
+     * @param nykySijainti
+     * @param kulma
+     * @param etaisyydet
+     * @return
+     */
     protected Point2D.Float kokeileHakeaUusiMittauspiste(Point2D.Float nykySijainti, float kulma, int[] etaisyydet) {
         BTPaketti p = new BTPaketti(0);
         p.setNykySijainti(nykySijainti);
@@ -155,6 +168,10 @@ public class RoboOhjain extends Thread {
         return haeUusiMittauspiste(p);
     }
 
+    /**
+     * 
+     * @param paketti
+     */
     protected void kokeileLisataHavainnotKarttaan(BTPaketti paketti) {
         lisaaHavainnotKarttaan(paketti);
     }

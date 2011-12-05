@@ -11,6 +11,9 @@ public class JsimBTYhteys implements BTYhteys {
     private JsimRobo robo;
     private BTPaketti paketti;
 
+    /**
+     * 
+     */
     public JsimBTYhteys() {
         this.robo = new JsimRobo();
         this.paketti = new BTPaketti(robo.getID());
@@ -20,8 +23,18 @@ public class JsimBTYhteys implements BTYhteys {
                 robo.getPaikka().x+1, robo.getPaikka().y));
     }
 
+    /**
+     * 
+     * @return
+     */
     public int getRoboID() { return robo != null ? robo.getID() : -1; }
 
+    /**
+     * 
+     * @param paketti
+     * @param odotusAikaMs
+     * @return
+     */
     @Override
     public BTPaketti lahetaJaVastaanota(BTPaketti paketti, int odotusAikaMs) {
         // Lähetä data robotille ja odota sen vastausta.
@@ -47,11 +60,18 @@ public class JsimBTYhteys implements BTYhteys {
         return paketti; // Palauta "BT:n yli tullut" robotin vastauspaketti.
     }
 
+    /**
+     * 
+     */
     @Override
     public void uudelleenKaynnista() {
         this.robo = new JsimRobo();
     }
     
+    /**
+     * 
+     * @return
+     */
     @Override
     public BTPaketti annaOletusPaketti() {
         BTPaketti p = new BTPaketti(robo.getID());

@@ -5,14 +5,8 @@
 package slam;
 
 import java.awt.Rectangle;
-import java.awt.geom.Line2D;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.awt.geom.*;
+import java.util.*;
 
 /**
  * @brief Kokoaja yhdistää robottien yksityiset kartat yhdeksi kokonaiskartaksi.
@@ -49,6 +43,26 @@ public class Kokoaja {
         Kokoaja.robotinHalk = robotinHalkaisija;
     }
 
+    /**
+     * 
+     */
+    public Kokoaja() {
+    }
+
+    /**
+     * 
+     * @param seinanPaksuus
+     * @param robotinHalkaisija
+     */
+    public Kokoaja(double seinanPaksuus,
+            double robotinHalkaisija) {
+        
+        Kokoaja.seinanPaksuus = (seinanPaksuus <= 0) ? 7.0 : seinanPaksuus; 
+        Kokoaja.robotinHalk = (robotinHalk <= 0) ? 16.5 : robotinHalkaisija; 
+    }
+    
+    
+
     /** @brief Asettaa virheensietorajat.
      * 
      * Virheensietorajoja käytetään, kun lyhyitä seinäpätkiä yhdistellään
@@ -80,6 +94,7 @@ public class Kokoaja {
      * @param id Robotin identifioiva tunnusluku.
      * @param kartta Kartta robotin tutkimista alueista.
      * 
+     * @return 
      * @warning Välitettyä karttaa muutetaan! Kopioi se ennen kutsua.
      */
     public static boolean asetaKartta(int id, Line2D.Float[] kartta) {
@@ -256,18 +271,37 @@ public class Kokoaja {
         return kartta.toArray(new Line2D.Float[kartta.size()]);
     }
 
+    /**
+     * 
+     * @param vaaka
+     * @param pysty
+     * @return
+     */
     protected static Point2D.Double kokeileEtsiaMahdotontaRisteysta(
             ArrayList<Line2D.Float> vaaka,
             ArrayList<Line2D.Float> pysty) {
         return etsiMahdotonRisteys(vaaka, pysty);
     }
 
+    /**
+     * 
+     * @param vaaka0
+     * @param vaaka1
+     * @param pysty0
+     * @param pysty1
+     * @return
+     */
     protected static boolean kokeileKarttojenYhteensopivuutta(
             ArrayList<Line2D.Float> vaaka0, ArrayList<Line2D.Float> vaaka1,
             ArrayList<Line2D.Float> pysty0, ArrayList<Line2D.Float> pysty1) {
         return kartatSopivatYhteen(vaaka0, vaaka1, pysty0, pysty1);
     }
     
+    /**
+     * 
+     * @param kartta
+     * @return
+     */
     protected static Line2D.Float[] kokeileSiistiaKarttaa(Line2D.Float[] kartta) {
         return (siistiKartta(kartta));
     }

@@ -22,6 +22,10 @@ public class NXTBTYhteys extends Thread implements BTYhteys {
     private volatile boolean lahetys;
     private int yrityksia;
 
+    /**
+     * 
+     * @param robo
+     */
     public NXTBTYhteys(JsimRobo robo) {
         this.yrityksia = 0;
         this.jatkuu = true;                             //NXTBYhteys main looppi
@@ -112,6 +116,12 @@ public class NXTBTYhteys extends Thread implements BTYhteys {
 
     //lahetaJaVastaanota vastaanottaa paketin josta lähetetään tieto robotille ja 
     //johon kirjoitetaan uudet tiedot
+    /**
+     * 
+     * @param paketti
+     * @param odotusAikaMs
+     * @return
+     */
     @Override
     public BTPaketti lahetaJaVastaanota(BTPaketti paketti, int odotusAikaMs) {
         this.paketti = paketti;
@@ -124,11 +134,18 @@ public class NXTBTYhteys extends Thread implements BTYhteys {
         return paketti;
     }
 
+    /**
+     * 
+     */
     @Override
     public void uudelleenKaynnista() {
         //   alustaYhteys();
     }
     
+    /**
+     * 
+     * @return
+     */
     @Override
     public BTPaketti annaOletusPaketti() {
         BTPaketti p = new BTPaketti(robo.getID());

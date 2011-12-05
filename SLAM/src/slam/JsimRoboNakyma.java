@@ -13,7 +13,7 @@ public class JsimRoboNakyma {
 
     /**
      * @param paikka Robotin sijainti mittaushetkellä.
-     * @param suunta Robotin katseen suunta asteina yksikköympyrän mukaisesti.
+     * @param katsesuunta 
      * @param mittausmaara Mittausten määrä (default 37 eli 5 asteen välein).
      * @param infraEtaisyys Robotin "katseen" (IR-sensorin) kantama MILLIMETREINÄ.
      */
@@ -47,6 +47,10 @@ public class JsimRoboNakyma {
         }
     }
 
+    /**
+     * 
+     * @return
+     */
     public Line2D.Float[] getNakotaulu() {
         Line2D.Float[] v = new Line2D.Float[sateet.length];
         for (int i = 0; i < sateet.length; ++i)

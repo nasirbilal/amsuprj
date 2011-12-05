@@ -45,10 +45,18 @@ public class JsimRobo {
     private final int infraKantama;   /// Robotin infrapunasensorin kantama MILLIMETREISSÄ
     private static int id_count;      /// Robotin yksilötunnuksen juokseva numero.
 
+    /**
+     * 
+     */
     public JsimRobo() {
         this(0, 800);
     }
 
+    /**
+     * 
+     * @param suunta
+     * @param infraKantama
+     */
     public JsimRobo(float suunta, int infraKantama) {
         id = id_count++;
         this.infraKantama = infraKantama;
@@ -73,18 +81,34 @@ public class JsimRobo {
         this.paikka = p;
     }
 
+    /**
+     * 
+     * @return
+     */
     public int getID() {
         return id;
     }
 
+    /**
+     * 
+     * @return
+     */
     public String getNimi() {
         return "JsimRobo[" + getID() + "]";
     }
 
+    /**
+     * 
+     * @return
+     */
     public Point2D.Float getPaikka() {
         return new Point2D.Float(paikka.x, paikka.y);
     }
 
+    /**
+     * 
+     * @param paikka
+     */
     public void setPaikka(Point2D.Float paikka) {
         if (paikka != null)
             this.paikka = new Point2D.Float(paikka.x, paikka.y);

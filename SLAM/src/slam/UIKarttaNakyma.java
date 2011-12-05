@@ -5,7 +5,6 @@ package slam;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
@@ -22,6 +21,9 @@ public class UIKarttaNakyma extends JPanel implements MouseMotionListener{
     private Point2D.Float[] robotit;
     private Random r = new Random();
 
+    
+    
+    //TODO: doublebuffering
     @Override
     public void paintComponent(Graphics g) {
 
@@ -33,7 +35,7 @@ public class UIKarttaNakyma extends JPanel implements MouseMotionListener{
         g2.setStroke(new BasicStroke(2));
 
         super.paintComponent(g);
-
+        setDoubleBuffered(true);
         // Laske sovituskertoimet saadulle datalle niin, että se mahtuu
         // ikkunaan. Tässä pitäisi data skaalata jotenkin muutein kuin koko
         // ikkunan kokoiseksi, esim. maksimietäisyyden mukaan, mutta tämä
@@ -77,6 +79,9 @@ public class UIKarttaNakyma extends JPanel implements MouseMotionListener{
                         (int)((p.y - xmin) * ratio));
     }
 
+    /**
+     * 
+     */
     public UIKarttaNakyma() {
         addMouseMotionListener(this);
     }

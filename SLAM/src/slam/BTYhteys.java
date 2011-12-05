@@ -16,10 +16,23 @@ public interface BTYhteys {
     /// @param odotusAikaMs Odotettava aika (ms) enne yhteyden katkaisemista.
     /// @return Vastaanotettu paketti tai null jos sattui virhe.
 
+    /**
+     * 
+     * @param paketti
+     * @param odotusAikaMs
+     * @return
+     */
     public BTPaketti lahetaJaVastaanota(BTPaketti paketti, int odotusAikaMs);
 
     /// @brief Tuhoaa vanhan yhteyden ja luo sen uudestaan alusta.
+    /**
+     * 
+     */
     public void uudelleenKaynnista();
     
+    /**
+     * 
+     * @return
+     */
     public BTPaketti annaOletusPaketti();
 }

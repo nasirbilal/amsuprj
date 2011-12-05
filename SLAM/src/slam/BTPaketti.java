@@ -37,6 +37,9 @@ import java.io.Serializable;
  */
 public class BTPaketti implements Serializable {
 
+    /**
+     * 
+     */
     public static final int MAARA = 37;
     private int id;
     private Point2D.Float nykySijainti;
@@ -44,11 +47,19 @@ public class BTPaketti implements Serializable {
     private Point2D.Float mittausSuunta;
     private int[] etaisyydet;
 
+    /**
+     * 
+     * @param id
+     */
     public BTPaketti(int id) {
         this.id = id;
         this.etaisyydet = new int[MAARA];
     }
 
+    /**
+     * 
+     * @return
+     */
     public int getId() {
         return id;
     }
@@ -73,10 +84,18 @@ public class BTPaketti implements Serializable {
     }
     
     
+    /**
+     * 
+     * @return
+     */
     public Point2D.Float getMittausSuunta() {
         return new Point2D.Float(mittausSuunta.x, mittausSuunta.y);
     }
 
+    /**
+     * 
+     * @return
+     */
     public int[] getEtaisyydet() {
         int[] v = new int[etaisyydet.length];
         for (int i = 0; i < etaisyydet.length; ++i)
@@ -85,38 +104,66 @@ public class BTPaketti implements Serializable {
         return v;
     }
 
+    /**
+     * 
+     * @return
+     */
     public Point2D.Float getNykySijainti() {
         if (nykySijainti == null)
             return null;
         return new Point2D.Float(nykySijainti.x, nykySijainti.y);
     }
 
+    /**
+     * 
+     * @return
+     */
     public Point2D.Float getUusiSijainti() {
         if (uusiSijainti == null)
             return null;
         return new Point2D.Float(uusiSijainti.x, uusiSijainti.y);
     }
 
+    /**
+     * 
+     * @param id
+     */
     public void setId(int id) {
         this.id = id;
     }
 
+    /**
+     * 
+     * @param etaisyydet
+     */
     public void setEtaisyydet(int[] etaisyydet) {
         this.etaisyydet = new int[etaisyydet.length];
         for (int i = 0; i < etaisyydet.length; ++i)
             this.etaisyydet[i] = etaisyydet[i];
     }
 
+    /**
+     * 
+     * @param mittausSuunta
+     */
     public void setMittausSuunta(Point2D.Float mittausSuunta) {
         if (mittausSuunta != null)
             this.mittausSuunta = new Point2D.Float(mittausSuunta.x, mittausSuunta.y);
     }
 
+    /**
+     * 
+     * @param nykySijainti
+     */
     public void setNykySijainti(Point2D.Float nykySijainti) {
         if (nykySijainti != null)
             this.nykySijainti = new Point2D.Float(nykySijainti.x, nykySijainti.y);
     }
 
+    /**
+     * 
+     * @param uusiSijainti
+     */
     public void setUusiSijainti(Point2D.Float uusiSijainti) {
         if (uusiSijainti != null)
             this.uusiSijainti = new Point2D.Float(uusiSijainti.x, uusiSijainti.y);

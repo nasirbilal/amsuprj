@@ -15,6 +15,9 @@ public class UIRoboNakyma extends JPanel {
 
     private Point2D.Double[] pisteet;
 
+    /**
+     * 
+     */
     public UIRoboNakyma() {
         this.pisteet = null;
         final float katko[] = {10.0f};

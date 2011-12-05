@@ -9,8 +9,6 @@ import java.awt.geom.Point2D;
 import java.util.Random;
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.event.MouseInputAdapter;
-import javax.swing.event.MouseInputListener;
 
 /**
  *
@@ -158,6 +156,7 @@ public class UI extends JFrame {
 
                 //Ei tarvitse laskea erikseen neliöjuurta;
                 //Isomman luvun omaava on kauempana
+                //Kiitti Lauri <3
                 if (robo1Matka < robo2Matka) {
                     komentaja.asetaRobo1Paikka(new Point2D.Float(x, y));
                     System.out.println("Käskettiin 1 Robotin ajamaan pisteeseen: " + x + "," + y);
@@ -196,7 +195,6 @@ public class UI extends JFrame {
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
                 KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "Cancel");
         getRootPane().getActionMap().put("Cancel", new AbstractAction() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.exit(0);

@@ -19,9 +19,15 @@ public class Komentaja extends Thread {
     private RoboOhjain r1;
     private RoboOhjain r2;
 
+    /**
+     * 
+     */
     public Komentaja() {
     }
 
+    /**
+     * 
+     */
     public void roboNakymaKoe() {
         // TODO: tee RoboOhjaimen yksikkötestit ja syötä tulos tänne samalla!
 
@@ -78,15 +84,20 @@ public class Komentaja extends Thread {
         karttaNakyma.repaint();
     }
 
+    /**
+     * 
+     * @param args
+     */
     public static void main(String[] args) {
+        //Muutetaan ohjelman ulkonäkö windows tyyliseksi
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception e) {
-        }
+        } catch (Exception e) {}
+        
         Komentaja komentaja = new Komentaja();
        UI  ui = new UI(komentaja);
        komentaja.rekisteroiUI(ui);
-        komentaja.start();
+       komentaja.start();
     }
 
     @Override
@@ -123,17 +134,33 @@ public class Komentaja extends Thread {
     }
     
     //Käyttöliittymältä tuleva liikkumiskäsky, ohittaa robotin uuden pisteen laskun
+    /**
+     * 
+     * @param p
+     */
     public void asetaRobo1Paikka(Point2D.Float p){
         r1.liikuTahan(p);
     }
     
+    /**
+     * 
+     * @param p
+     */
     public void asetaRobo2Paikka(Point2D.Float p){
         r2.liikuTahan(p);
     }
     
+    /**
+     * 
+     * @return
+     */
     public Point2D.Float annaRobo1Koordinaatit(){
         return r1.annaKoordinaatit();
     }
+    /**
+     * 
+     * @return
+     */
     public Point2D.Float annaRobo2Koordinaatit(){
         return r2.annaKoordinaatit();
     }
