@@ -524,6 +524,13 @@ public class RoboOhjain extends Thread {
             Point2D p2 = kartta.get(i-2).getP2();
             Line2D.Float l = new Line2D.Float(p0, p2);
             
+            // Jos kahden perättäisen pisteen etäisyys on suurempi kuin 
+            // robotin halkaisija, voi olla, että pisteet ovat osa eri seiniä.
+            // robotin mitat on nyt raakasti kovakoodattu - ne pitäis siirtää
+            // tänne samanlaisiksi kuin Kokoajassa.
+            if (p0.distance(p1) > 150 || p1.distance(p2) > 150)
+                continue;
+            
             double dist = l.ptSegDistSq(p1); // Debuggausta varten erikseen.
             if (dist < 0.2) { // Virhe on suuri: 0.006, 0.033, 0.15, ... !!! 
                 kartta.remove(i);
