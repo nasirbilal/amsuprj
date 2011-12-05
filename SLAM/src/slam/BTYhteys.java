@@ -15,6 +15,12 @@ public interface BTYhteys {
     /// @param paketti Lähetettävä paketti.
     /// @param odotusAikaMs Odotettava aika (ms) enne yhteyden katkaisemista.
     /// @return Vastaanotettu paketti tai null jos sattui virhe.
+
+    /**
+     * Palauta robotin yksilöivä numeerinen tunnus.
+     * @return 
+     */
+    public int getRoboID();
     
     /**
      * 
