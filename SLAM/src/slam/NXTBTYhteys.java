@@ -26,10 +26,10 @@ public class NXTBTYhteys extends Thread implements BTYhteys {
      * 
      * @param robo
      */
-    public NXTBTYhteys(JsimRobo robo) {
+    public NXTBTYhteys() {
         this.yrityksia = 0;
         this.jatkuu = true;                             //NXTBYhteys main looppi
-        this.robo = robo;
+        this.robo = new JsimRobo();
         this.paketti = null;                            //BTPaketti
         this.tempEtaisyydet = new int[BTPaketti.MAARA];
         this.odotusAikaMS = 5;                          //"Connection timeout" -EI IMPLEMENTOITU
@@ -39,6 +39,9 @@ public class NXTBTYhteys extends Thread implements BTYhteys {
         alustaYhteys();
 
     }
+
+    @Override
+    public int getRoboID() {return robo != null ? robo.getID() : -1; }
 
     private void alustaYhteys() {
         try {
@@ -154,4 +157,5 @@ public class NXTBTYhteys extends Thread implements BTYhteys {
         p.setMittausSuunta(new Point2D.Float(1, 0));
         return p;
     }
+
 }

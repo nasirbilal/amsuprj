@@ -14,8 +14,8 @@ public class Komentaja extends Thread {
     private UIKarttaNakyma karttaNakyma;
     private UI ui;
     
-    private JsimBTYhteys b1;
-    private JsimBTYhteys b2;
+    private NXTBTYhteys b1;
+    private NXTBTYhteys b2;
     private RoboOhjain r1;
     private RoboOhjain r2;
 
@@ -102,8 +102,8 @@ public class Komentaja extends Thread {
 
     @Override
     public void run() {
-        b1 = new JsimBTYhteys();
-        b2 = new JsimBTYhteys();
+        b1 = new NXTBTYhteys();
+        b2 = new NXTBTYhteys();
         r1 = new RoboOhjain(b1, b1.getRoboID(), 10*1000, 80*10);
         r2 = new RoboOhjain(b2, b2.getRoboID(), 10*1000, 80*10);
         r1.start();
