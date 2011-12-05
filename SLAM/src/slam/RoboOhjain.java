@@ -330,14 +330,11 @@ public class RoboOhjain extends Thread {
         jana.x2 -= (jana.x2 - jana.x1) * 0.95f;
         jana.y2 -= (jana.y2 - jana.y1) * 0.95f;
         
-        // Ristus mitä puukotusta! Emmä silti tajua, miksi tämän poistaminen
-        // lisää kartan piirtoon jotain ihan ihme noisea ja samalla rikkoo
-        // näköviivat niin, että robotit menee kentän laitojen yli. :(
-        jana.x2 = (float) (jana.x2 - 10 + Math.random() * 20);
+        // Kun robotti pääty aivan seinän viereen on sillä luontainen taipumus
+        // Ampaista siitä läpi! Siispä varmuuden vuoksi puukotamme tähän
+        // kivat pikku rajatapaustestit.
         if (jana.x2 < 0) jana.x2 = 0.1f;
         if (jana.x2 > 1350) jana.x2 = 1349.9f;
-
-        jana.y2 = (float) (jana.y2 - 10 + Math.random() * 20);
         if (jana.y2 < 0) jana.y2 = 0.1f;
         if (jana.y2 > 2000) jana.y2 = 1999.9f;
 

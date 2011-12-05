@@ -75,19 +75,19 @@ public class JsimRoboNakyma {
         }
         
         // Find the point of intersection of the lines extended to infinity
-        if (s.x1 == s.x2 && t.y1 == t.y2) { // perpendicular
+        if (Math.abs(s.x1 - s.x2) < 0.01 && Math.abs(t.y1 - t.y2) < 0.01) { // perpendicular
             x = s.x1;
             y = t.y1;
-        } else if (s.y1 == s.y2 && t.x1 == t.x2) { // perpendicular
+        } else if (Math.abs(s.y1 - s.y2) < 0.01 && Math.abs(t.x1 - t.x2) < 0.01) { // perpendicular
             x = t.x1;
             y = s.y1;
-        } else if (s.y2 == s.y1 || t.y2 == t.y1) { // one line is horizontal
+        } else if (Math.abs(s.y2 - s.y1) < 0.01 || Math.abs(t.y2 - t.y1) < 0.01) { // one line is horizontal
             a1 = (s.y2 - s.y1) / (s.x2 - s.x1);
             b1 = s.y1 - a1 * s.x1;
             a2 = (t.y2 - t.y1) / (t.x2 - t.x1);
             b2 = t.y1 - a2 * t.x1;
 
-            if (a1 == a2)
+            if (Math.abs(a1 - a2) < 0.01)
                 return null; // parallel
 
             x = (b2 - b1) / (a1 - a2);
@@ -98,7 +98,7 @@ public class JsimRoboNakyma {
             a2 = (t.x2 - t.x1) / (t.y2 - t.y1);
             b2 = t.x1 - a2 * t.y1;
 
-            if (a1 == a2)
+            if (Math.abs(a1 - a2) < 0.01)
                 return null; // parallel
 
             y = (b2 - b1) / (a1 - a2);
