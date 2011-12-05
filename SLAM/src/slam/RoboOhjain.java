@@ -1,6 +1,7 @@
 package slam;
 
 import java.awt.geom.*;
+import java.awt.geom.Point2D.Float;
 import java.util.*;
 
 /**
@@ -551,12 +552,11 @@ public class RoboOhjain extends Thread {
         else
             uusinPaketti = vastaus;  //Talleta uusimmat tulokset
         
+        // Laske robotin sijainti kartan datan perusteella.
+        uusinPaketti.setNykySijainti(arvioiTodellinenSijainti(uusinPaketti));
+
         // Lisää robotin havaitsemat esteet karttaan.
         lisaaHavainnotKarttaan(uusinPaketti);
-
-        // Laske robotin sijainti kartan datan perusteella.
-        // TODO.
-
 
         // Laske robotille uusi mittauspiste.
         Point2D.Float nykySijainti = uusinPaketti.getNykySijainti();
@@ -598,5 +598,51 @@ public class RoboOhjain extends Thread {
         Point2D.Float a = (Point2D.Float) linja.getP1(); // Alkupiste.
         Point2D.Float b = (Point2D.Float) linja.getP2(); // Loppupiste.
         return ((b.x - a.x)*(c.y - a.y) - (b.y - a.y)*(c.x - a.x)) >= 0;
+    }
+
+    /**
+     * Tarkistaa robotin mittaustuloksista, missä päin karttaa se oikesti on.
+     *
+     * Robotin sijainti voi erilaisista syistä, kuten kitkan määrän mutoksista
+     * tai sensorien epätarkkuudesta, johtuen heittää siitä, missä se oikeasti
+     * kartalla on. Metodi tutkii robotin ilmoittamaa, antureidensa perusteella
+     * todelliseksi arvioimaansa sijaintia ja sen lähiympäristöä määrittäen
+     * robotin laskennallisesti todelliseksi sijainniksi sen, joka vastaa
+     * historian saatussa kertyneitä mittaustuloksia parhainten.
+     * 
+     * HUOMAA, että metodi edellyttää toimiakseen sen, että robotti mittaa aina
+     * jonkin verran myös vanhaa aluetta kartoittaessaan uutta! Jos robotti
+     * kartoittaa aina 100% uutta aluetta, ei vanhan datan perusteella enää
+     * pystytä määrittämään sijaintia ja koko järjestelmän oikeellisuus nojaa
+     * robotin antureiden virheettömyyteen.
+     * 
+     * @param paketti Viimeksi saatu paketti, joka sis. robotin todell. tiedot.
+     * @return Robotin todellisen sijainnin mittaamallaan kartalla.
+     */
+    private Point2D.Float arvioiTodellinenSijainti(BTPaketti paketti) {
+
+        final Point2D.Float alkuperNykySijainti = paketti.getNykySijainti();
+        final Point2D.Float alkuperMittausSuunta = paketti.getMittausSuunta();
+        int kierrokset = 100;
+        
+        while (kierrokset-- > 0) {
+            Point2D.Float nykySijainti = alkuperNykySijainti;
+            Point2D.Float mittausSuunta = alkuperNykySijainti;
+            nykySijainti.x += -10 + Math.random()*20;
+            nykySijainti.y += -10 + Math.random()*20;
+            mittausSuunta.x += -10 + Math.random()*20;
+            mittausSuunta.y += -10 + Math.random()*20;
+            paketti.setNykySijainti(nykySijainti);
+            paketti.setMittausSuunta(mittausSuunta);
+            
+            // Kaikki on valmiina uusia "mittauksia" varten.
+            // Tähän tarvittaisiin koodi, joka ottaa simuloidut
+            // mittaustulokset robotin aiemminsta havainnoista. Siitä voi tulla
+            // HIEMAN vaikeaa, koska robotin kartta on tällä hetkellä kasa
+            // PISTEITÄ eikä yhtenäisiä viivoja. :(
+            
+        }
+        
+        return paketti.getNykySijainti();
     }
 }
