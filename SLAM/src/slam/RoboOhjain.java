@@ -518,7 +518,6 @@ public class RoboOhjain extends Thread {
         //         asetaKartta-metodissa määritellään, että seinän sisäpuoli
         //         jää seinäjanan oikealle puolelle!
         final int alku = Math.max(1, vanhaKoko);
-        if (false)
         for (int i = kartta.size() - 1; i > alku; --i) {
             Point2D p0 = kartta.get(i).getP2();
             Point2D p1 = kartta.get(i-1).getP2();
