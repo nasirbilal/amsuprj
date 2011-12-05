@@ -188,8 +188,8 @@ public class RoboOhjain extends Thread {
         int tyhjyysmuisti = 0;
         int tyhjyysalkumuisti = 0;
         
-        if (Math.random() < 2.0) // Tämä on tässä kunnes testit menee läpi!
-            return haeUusiSattumanvarainenMittauspiste(paketti);
+        //if (Math.random() < 2.0) // Tämä on tässä kunnes testit menee läpi!
+        //    return haeUusiSattumanvarainenMittauspiste(paketti);
         
         for (int i = 0; i < etaisyydet.length; i++) {
             if (etaisyydet[i] >= maxEtaisyys) {                // jos ei nähdä mitään
