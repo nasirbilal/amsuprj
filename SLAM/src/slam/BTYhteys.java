@@ -15,7 +15,7 @@ public interface BTYhteys {
     /// @param paketti Lähetettävä paketti.
     /// @param odotusAikaMs Odotettava aika (ms) enne yhteyden katkaisemista.
     /// @return Vastaanotettu paketti tai null jos sattui virhe.
-
+    
     /**
      * 
      * @param paketti
