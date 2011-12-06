@@ -490,8 +490,8 @@ public class RoboOhjain extends Thread {
             }
         }
 
-        // Lisää robotin havaitsemat esteet karttaan PISTEINÄ.
-        final int vanhaKoko = kartta.size();
+        // Ota erikseen robotin havaitsemat esteet PISTEINÄ.
+        ArrayList<Point2D.Float> pisteet = new ArrayList<Point2D.Float>();
         for (int i = 0; i < maara; ++i)
             if (etaisyydet[i] < maxEtaisyys) {
                 sateet[i].x2 += (sateet[i].x2 - sateet[i].x1) * etaisyydet[i];
@@ -506,10 +506,13 @@ public class RoboOhjain extends Thread {
                     }
                 
                 if (ainutlaatuinen)
-                    kartta.add(new Line2D.Float(sateet[i].getP2(),
-                                                sateet[i].getP2()));
+                    pisteet.add((Point2D.Float) sateet[i].getP2());
             }
         
+        // HUOM! Maksimi mittausetäisyys puukotettu koodiin! Kovaa koodaamista!
+        final double maksimiEtaisyys = Math.sqrt(800 * 800 + 800 * 800 -
+            2*800*800*Math.cos(Math.PI/(paketti.getEtaisyydet().length - 1)));
+
         // Yhdistä vastikään lisätyistä pisteistä kolmen perättäisen pisteen 
         // kautta kulkevalle suoralle osuvat pisteet janoiksi. Tämä poistaa
         // ylimääräiset välipisteet ja luo karttaa seinäpätkiä nopeasti.
@@ -517,28 +520,50 @@ public class RoboOhjain extends Thread {
         //         vasemmalle (eli listan alkuun) päin, koska Kokoajan
         //         asetaKartta-metodissa määritellään, että seinän sisäpuoli
         //         jää seinäjanan oikealle puolelle!
-        final int alku = Math.max(1, vanhaKoko);
-        for (int i = kartta.size() - 1; i > alku; --i) {
-            Point2D p0 = kartta.get(i).getP2();
-            Point2D p1 = kartta.get(i-1).getP2();
-            Point2D p2 = kartta.get(i-2).getP2();
-            Line2D.Float l = new Line2D.Float(p0, p2);
+        while (!pisteet.isEmpty()) {
+            int i = pisteet.size()-1;
+            Line2D.Float l = new Line2D.Float(pisteet.get(i),
+                                              pisteet.get(i));
+            ArrayList<Point2D.Float> sulautetutPisteet = new 
+                    ArrayList<Point2D.Float>();
             
-            // Jos kahden perättäisen pisteen etäisyys on suurempi kuin 
-            // robotin halkaisija, voi olla, että pisteet ovat osa eri seiniä.
-            // robotin mitat on nyt raakasti kovakoodattu - ne pitäis siirtää
-            // tänne samanlaisiksi kuin Kokoajassa.
-            if (p0.distance(p1) > 150 || p1.distance(p2) > 150)
-                continue;
-            
-            double dist = l.ptSegDistSq(p1); // Debuggausta varten erikseen.
-            if (dist < 0.2) { // Virhe on suuri: 0.006, 0.033, 0.15, ... !!! 
-                kartta.remove(i);
-                kartta.remove(i-1);
-                kartta.remove(i-2);
-                kartta.add(l);
-                i -= 1;
+            pisteet.remove(i);
+            while (!pisteet.isEmpty()) {
+                    i = pisteet.size() - 1;
+                    Point2D p0 = l.getP1();
+                    Point2D p1 = l.getP2();
+                    Point2D p2 = pisteet.get(i);
+                    
+                    // Jos naapuripisteeseen on matkaa enemmän kuin
+                    // maksiminäköetäisyyden päässä olevien mittauspisteiden
+                    // maksimietäisyys, niin pisteet eivät varmasti ole osa
+                    // samaa seinää.
+                    if (p1.distance(p2) > maksimiEtaisyys)
+                        break;
+                    
+                    Line2D.Float koeSeina = new Line2D.Float(p0, p2);
+
+                    // Jos mikään aiemmin lisätyistä pisteistä on liian kaukana
+                    // uutta seinää kuvaavasta janasta, niin älä lisää uutta
+                    // pistettä seinään.
+                    boolean liianKaukana = false;
+                    for (Point2D.Float px : sulautetutPisteet) {
+                        double etaisyys = koeSeina.ptSegDistSq(px);
+                        liianKaukana = etaisyys > 0.15;
+                    }
+
+                    if (liianKaukana)
+                        break;
+                    
+                    // Lisää piste viivan jatkoksi ja "siirrä" se kokeiltavien
+                    // pisteiden listasta sulautettujen pisteiden listaan.
+                    l.x2 = (float)p2.getX();
+                    l.y2 = (float)p2.getY();
+                    pisteet.remove(i);
+                    sulautetutPisteet.add((Point2D.Float)p1);
             }
+
+            kartta.add(l); // Lisää lopullinen seinä karttaan.
         }
     }
 
