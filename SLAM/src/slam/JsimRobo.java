@@ -43,7 +43,7 @@ public class JsimRobo {
                                              
                                             
     private final int infraKantama;   /// Robotin infrapunasensorin kantama MILLIMETREISSÄ
-    private static int id_count;      /// Robotin yksilötunnuksen juokseva numero.
+    private static int id_count = 0;      /// Robotin yksilötunnuksen juokseva numero.
 
     /**
      * 
@@ -180,8 +180,8 @@ public class JsimRobo {
      * @return IR-sensorin palauttamat etäisyydet lähimpiin esteisiin.
      */
     public float[] mittaa(int mittausMaara) {
-        System.out.append(getNimi() + " @ [" + paikka.x + ", " + paikka.y +
-                          ", suunta " + suunta + " deg.");
+        //System.out.println(getNimi() + " @ [" + paikka.x + ", " + paikka.y +
+         //                 ", suunta " + suunta + " deg.");
         
         float taulu[] = new float[mittausMaara];
         nakyma = new JsimRoboNakyma(paikka, suunta, mittausMaara, infraKantama);
