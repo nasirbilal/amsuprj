@@ -159,6 +159,8 @@ public class NXTBTYhteys extends Thread implements BTYhteys {
      * @param odotusAikaMs
      * @return
      */
+    
+    //Siis mitä vittua tässä tapahtuu, niinkun oikeesti.. mitä vittua
     @Override
     public BTPaketti lahetaJaVastaanota(BTPaketti paketti, int odotusAikaMs) {
         //  this.odotusAikaMS = odotusAikaMs;
