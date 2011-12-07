@@ -398,15 +398,35 @@ public class RoboOhjain extends Thread {
         }
         
         //kuinka paljon liikutaan:
-        if (etaisyydet[liikeviiva] > 250){
-            liikepituus = etaisyydet[liikeviiva]-200;
-        }
-        if (etaisyydet[liikeviiva] <= 250){
-            liikepituus = etaisyydet[liikeviiva]-300;   //pakitetaan eli valmiina tunaroimaan
+        if (etaisyydet[liikeviiva] > 500){
+            liikepituus = etaisyydet[liikeviiva]-(200+(int)(Math.random()*100));
+        } else if (etaisyydet[liikeviiva] > 250){
+            liikepituus = etaisyydet[liikeviiva]-(100+(int)(Math.random()*100));
         }
         
+        if (etaisyydet[liikeviiva] <= 250){
+            //liikepituus = etaisyydet[liikeviiva]-300;   //pakitetaan eli valmiina tunaroimaan
+            
+            //eipäs pakitetakkaan -> käännytään ympäri:
+            
+            menopiste = nykySijainti;
+            
+            if (suunta == 0){
+                suunta = 180;
+                paketti.setMittausSuunta(new Point2D.Float((nykySijainti.x),(nykySijainti.y-maxEtaisyys)));
+            } else if (suunta == 90){
+                suunta = 270;
+                paketti.setMittausSuunta(new Point2D.Float((nykySijainti.x-maxEtaisyys),(nykySijainti.y)));
+            } else if (suunta == 180){
+                suunta = 0;
+                paketti.setMittausSuunta(new Point2D.Float((nykySijainti.x),(nykySijainti.y+maxEtaisyys)));
+            } else if (suunta == 270){
+                suunta = 90;
+                paketti.setMittausSuunta(new Point2D.Float((nykySijainti.x+maxEtaisyys),(nykySijainti.y)));
+            }
+        }
         //tämä hajoaa jos alkusuunta ei ole 0 !!!!!!! elikkä +y akselin suuntaan // hajoaa näemmä ihan muutenkin
-        if (true){    //trolololo tweakkasin vähän
+        else{    //trolololo tweakkasin vähän
             if (suunta == 0){
                 if (liikeviiva == 0){
                     paketti.setMittausSuunta(new Point2D.Float((nykySijainti.x - maxEtaisyys),nykySijainti.y));
