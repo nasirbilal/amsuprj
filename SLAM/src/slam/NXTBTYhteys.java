@@ -39,7 +39,6 @@ public class NXTBTYhteys extends Thread implements BTYhteys {
         this.yhteys = new NXTConnector();
         this.nimi = str;
         alustaYhteys();
-
     }
 
     @Override
@@ -95,7 +94,7 @@ public class NXTBTYhteys extends Thread implements BTYhteys {
                         dataUlos.flush();
                     } catch (Exception e) {
                         e.printStackTrace();
-                        //uudelleenKaynnista();
+                        uudelleenKaynnista();
                     }
                     try {
                         for (int i = 0; i < lukuMaara; i++) {
