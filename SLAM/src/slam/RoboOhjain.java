@@ -27,6 +27,8 @@ public class RoboOhjain extends Thread {
     private Point2D.Float annettuPiste;   /// Käyttäjän antama piste. Jos käyttäjä antaa pisteen, sinne kuljetaan aina.
     
     boolean edettytäyteen;  //Käytetään navigointiin
+    
+    private int suunta = 0; // humiin
 
     /** @brief Alustaa robotin ohjaimen.
      * 
@@ -189,7 +191,8 @@ public class RoboOhjain extends Thread {
         int tyhjyysalkumuisti = 0;
         
         if (Math.random() < 2.0) // Tämä on tässä kunnes mittauspisteen laskenta toimii oikein!
-            return haeUusiSattumanvarainenMittauspiste(paketti);
+            return haeUusiMittauspisteIdiotEdition(paketti); // juhiksen testi, kattokaa ininää sen päältä
+            //return haeUusiSattumanvarainenMittauspiste(paketti);
         
         for (int i = 0; i < etaisyydet.length; i++) {
             if (etaisyydet[i] >= maxEtaisyys) {                // jos ei nähdä mitään
@@ -350,6 +353,124 @@ public class RoboOhjain extends Thread {
         */
         vanhapiste = menopiste;
         return menopiste;
+        
+    }
+    
+    //aivokääpiörobotin haeuusimittauspiste:
+    //  -huomatkaa että tämä ei toimi kunnolla ainakaan tässä muodossa (robot kiertää kehää)
+    //  -tää menee (sisä)seinien läpi että virhe on erittäin todennäkösesti jossain muualla kun uuden mittauspisteen navigoinneissa
+    //      menisi myös rectanglen rajojen ulkopuolelle ilman loppupuolen iffejä
+    //      saattaa olla että GUI piirtää seinät väärään paikkaan?
+    private Point2D.Float haeUusiMittauspisteIdiotEdition(BTPaketti paketti){
+        
+        int[] etaisyydet = paketti.getEtaisyydet();
+        Point2D.Float nykySijainti = paketti.getNykySijainti();
+        
+        int liikeviiva = -1;
+        
+        int liikepituus = 600;
+        
+        Point2D.Float menopiste;
+        
+        //valitaan pitkin nähdyistä pääilmansuunnista:
+        if (etaisyydet[0] >= etaisyydet[18] && etaisyydet[0] >= etaisyydet[36]){
+            liikeviiva = 0;
+        } else if (etaisyydet[18] >= etaisyydet[0] && etaisyydet[18] >= etaisyydet[36]){
+            liikeviiva = 18;
+        } else if (etaisyydet[36] >= etaisyydet[18] && etaisyydet[36] >= etaisyydet[0]){
+            liikeviiva = 36;
+        }
+        
+        if (liikeviiva == -1){
+            System.out.println("eisssss...");//maailmassa on virhe jos tänne mennään.
+        }
+        
+        //kuinka paljon liikutaan:
+        if (etaisyydet[liikeviiva] > 300){
+            liikepituus = etaisyydet[liikeviiva]-200;
+        }
+        
+        //tämä hajoaa jos alkusuunta ei ole 0 !!!!!!! elikkä +y akselin suuntaan // hajoaa näemmä ihan muutenkin
+        if (true){    //trolololo tweakkasin vähän
+            if (suunta == 0){
+                if (liikeviiva == 0){
+                    paketti.setMittausSuunta(new Point2D.Float((nykySijainti.x - maxEtaisyys),nykySijainti.y));
+                    suunta = 270;
+                    menopiste = new Point2D.Float((nykySijainti.x - liikepituus),nykySijainti.y);
+                } else if (liikeviiva == 18){
+                    paketti.setMittausSuunta(new Point2D.Float((nykySijainti.x),nykySijainti.y + maxEtaisyys));
+                    suunta = 0;
+                    menopiste = new Point2D.Float(nykySijainti.x,(nykySijainti.y+liikepituus));
+                } else { //if (liikeviiva == 36)
+                    paketti.setMittausSuunta(new Point2D.Float((nykySijainti.x + maxEtaisyys),nykySijainti.y));
+                    suunta = 90;
+                    menopiste = new Point2D.Float((nykySijainti.x + liikepituus),nykySijainti.y);
+                }
+            } else if (suunta == 90){
+                if (liikeviiva == 0){
+                    paketti.setMittausSuunta(new Point2D.Float((nykySijainti.x),(nykySijainti.y+maxEtaisyys)));
+                    suunta = 0;
+                    menopiste = new Point2D.Float((nykySijainti.x),nykySijainti.y+liikepituus);
+                } else if (liikeviiva == 18){
+                    paketti.setMittausSuunta(new Point2D.Float((nykySijainti.x+maxEtaisyys),nykySijainti.y));
+                    suunta = 90;
+                    menopiste = new Point2D.Float(nykySijainti.x+liikepituus,(nykySijainti.y));
+                } else { //if (liikeviiva == 36)
+                    paketti.setMittausSuunta(new Point2D.Float((nykySijainti.x),nykySijainti.y-maxEtaisyys));
+                    suunta = 180;
+                    menopiste = new Point2D.Float((nykySijainti.x),nykySijainti.y-liikepituus);
+                }
+            } else if (suunta == 180){
+                if (liikeviiva == 0){
+                    paketti.setMittausSuunta(new Point2D.Float((nykySijainti.x + maxEtaisyys),nykySijainti.y));
+                    suunta = 90;
+                    menopiste = new Point2D.Float((nykySijainti.x + liikepituus),nykySijainti.y);
+                } else if (liikeviiva == 18){
+                    paketti.setMittausSuunta(new Point2D.Float((nykySijainti.x),nykySijainti.y - maxEtaisyys));
+                    suunta = 180;
+                    menopiste = new Point2D.Float(nykySijainti.x,(nykySijainti.y-liikepituus));
+                } else { //if (liikeviiva == 36)
+                    paketti.setMittausSuunta(new Point2D.Float((nykySijainti.x - maxEtaisyys),nykySijainti.y));
+                    suunta = 270;
+                    menopiste = new Point2D.Float((nykySijainti.x - liikepituus),nykySijainti.y);
+                }
+            } else {// if (suunta == 270)
+                if (liikeviiva == 0){
+                    paketti.setMittausSuunta(new Point2D.Float((nykySijainti.x),(nykySijainti.y-maxEtaisyys)));
+                    suunta = 180;
+                    menopiste = new Point2D.Float((nykySijainti.x),nykySijainti.y-liikepituus);
+                } else if (liikeviiva == 18){
+                    paketti.setMittausSuunta(new Point2D.Float((nykySijainti.x-maxEtaisyys),nykySijainti.y));
+                    suunta = 270;
+                    menopiste = new Point2D.Float(nykySijainti.x-liikepituus,(nykySijainti.y));
+                } else { //if (liikeviiva == 36)
+                    paketti.setMittausSuunta(new Point2D.Float((nykySijainti.x),nykySijainti.y+maxEtaisyys));
+                    suunta = 0;
+                    menopiste = new Point2D.Float((nykySijainti.x),nykySijainti.y+liikepituus);
+                }
+            }
+        }
+        
+        if (menopiste != null){
+            
+            if (menopiste.x > 1350) // ei pitäis mennä ulos mutta tahtoo kuitenkin
+                menopiste.x = 1330;
+            
+            if (menopiste.x < 0)
+                menopiste.x = 20;
+            
+            if (menopiste.y > 2000)
+                menopiste.y = 1980;
+            
+            if (menopiste.y < 0)
+                menopiste.y = 20;
+            
+            
+            return menopiste;
+        } else {
+            menopiste = new Point2D.Float(-666,-666);
+        } 
+        return menopiste;//error
         
     }
 
