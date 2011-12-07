@@ -361,6 +361,9 @@ public class RoboOhjain extends Thread {
     //  -tää menee (sisä)seinien läpi että virhe on erittäin todennäkösesti jossain muualla kun uuden mittauspisteen navigoinneissa
     //      menisi myös rectanglen rajojen ulkopuolelle ilman loppupuolen iffejä
     //      saattaa olla että GUI piirtää seinät väärään paikkaan?
+    
+    //update: nyt vältellään seiniä vähäsen, robot ei varsinaisesti kierrä enää kehää, 
+    //  kuva on kaunis, mutta välillä tulee jotain outoja koukeroita kartan ulkopuolelle
     private Point2D.Float haeUusiMittauspisteIdiotEdition(BTPaketti paketti){
         
         int[] etaisyydet = paketti.getEtaisyydet();
@@ -381,13 +384,25 @@ public class RoboOhjain extends Thread {
             liikeviiva = 36;
         }
         
+        //vähän vaihtelua elämään:
+        if ((liikeviiva == 0 || liikeviiva == 36) && (etaisyydet[0] == etaisyydet[36])){
+            
+            if (Math.random()<0.5D){
+                liikeviiva = 0;
+            } else liikeviiva = 36;
+            
+        }
+        
         if (liikeviiva == -1){
             System.out.println("eisssss...");//maailmassa on virhe jos tänne mennään.
         }
         
         //kuinka paljon liikutaan:
-        if (etaisyydet[liikeviiva] > 300){
+        if (etaisyydet[liikeviiva] > 250){
             liikepituus = etaisyydet[liikeviiva]-200;
+        }
+        if (etaisyydet[liikeviiva] <= 250){
+            liikepituus = etaisyydet[liikeviiva]-300;   //pakitetaan eli valmiina tunaroimaan
         }
         
         //tämä hajoaa jos alkusuunta ei ole 0 !!!!!!! elikkä +y akselin suuntaan // hajoaa näemmä ihan muutenkin
