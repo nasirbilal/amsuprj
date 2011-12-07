@@ -3,6 +3,7 @@ package slam;
 import java.awt.geom.Point2D;
 import java.io.*;
 import lejos.pc.comm.*;
+import lejos.util.KalmanFilter;
 
 /**
  *
@@ -11,17 +12,20 @@ import lejos.pc.comm.*;
 public class NXTBTYhteys extends Thread implements BTYhteys {
 
     private volatile boolean jatkuu;
-    private final int lukuMaara;
     private int tempEtaisyydet[];
     private JsimRobo robo;
     private BTPaketti paketti;
     private NXTConnector yhteys;
     private DataOutputStream dataUlos;
     private DataInputStream dataSisaan;
-    private int odotusAikaMS;  //default odotusaika on 5 sek
-    private volatile boolean lahetys;
+    //  private int odotusAikaMS;  //default odotusaika on 5 sek
+    public static volatile boolean varattu = true;
     private int yrityksia;
     private final String nimi;
+    private boolean luku;
+    private boolean kirjoitus;
+    private boolean ekaAjo;
+    private boolean kaytossa;
 
     /**
      * 
@@ -29,15 +33,19 @@ public class NXTBTYhteys extends Thread implements BTYhteys {
      */
     public NXTBTYhteys(String str) {
         this.yrityksia = 0;
-        this.jatkuu = true;                             //NXTBYhteys main looppi
         this.robo = new JsimRobo();
-        this.paketti = null;                            //BTPaketti
+        this.paketti = new BTPaketti(robo.getID());                            //BTPaketti
         this.tempEtaisyydet = new int[BTPaketti.MAARA];
-        this.odotusAikaMS = 5;                          //"Connection timeout" -EI IMPLEMENTOITU
-        this.lahetys = false;                           //Lähetetäänkö tavaraa
-        this.lukuMaara = BTPaketti.MAARA + 1;           //Etaisyyksien maara + id ja itse maara lukema
+        // this.odotusAikaMS = 5;                          //"Connection timeout" -EI IMPLEMENTOITU
         this.yhteys = new NXTConnector();
         this.nimi = str;
+        this.jatkuu = true;
+        this.kirjoitus = true;
+        this.luku = false;
+        this.kirjoitus = true;
+        this.ekaAjo = true;
+        this.kaytossa = false;
+
         alustaYhteys();
     }
 
@@ -77,63 +85,74 @@ public class NXTBTYhteys extends Thread implements BTYhteys {
     public void run() {
         if (robo != null) {
             while (jatkuu) {
-                /*Jos kutsutaan lahetaJaVastaanota() -metodia, alamme toimimaan*/
-                if (lahetys) {
-                    try {
-                        System.out.println("");
-                        System.out.println("Datan kirjoitus alkaa");
-                        dataUlos.writeInt(paketti.getId());
-                        dataUlos.flush();
-                        System.out.println("ID kirjoitettu");
-                        dataUlos.writeFloat(paketti.getNykySijainti().x);
-                        dataUlos.flush();
-                        System.out.println("Nykysijainti X kirjoitettu");
-                        dataUlos.writeFloat(paketti.getNykySijainti().y);
-                        dataUlos.flush();
-                        System.out.println("Nykysijainti Y kirjoitettu");
-                        dataUlos.writeFloat(paketti.getUusiSijainti().x);
-                        dataUlos.flush();
-                        System.out.println("UusiSijainti X kirjoitettu");
-                        dataUlos.writeFloat(paketti.getUusiSijainti().y);
-                        dataUlos.flush();
-                        System.out.println("UusiSijainti Y kirjoitettu");
-                        dataUlos.writeFloat(paketti.getMittausSuunta().x);
-                        dataUlos.flush();
-                        System.out.println("GetMittausSuunta X kirjoitettu");
-                        dataUlos.writeFloat(paketti.getMittausSuunta().y);
-                        dataUlos.flush();
-                        System.out.println("getMittausSuunta Y kirjoitettu");
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        uudelleenKaynnista();
-                    }
-                    try {
-                        System.out.println("#######LUKU ALKAA#######");
-                        paketti.setId(dataSisaan.readInt());
-                        System.out.println("ID luettu");
-                        for (int i = 0; i < lukuMaara; i++) {
-                            tempEtaisyydet[i] = dataSisaan.readInt();
-                            System.out.println("Etaisyyksiä luetaan");
+                if (kaytossa) {
+                    /*Jos kutsutaan lahetaJaVastaanota() -metodia, alamme toimimaan*/
+                    if (kirjoitus) {
+                        try {
+                            System.out.println("");
+                            System.out.println("#######KIRJOITUS ALKAA#######");
+                            dataUlos.writeInt(paketti.getId());
+                            dataUlos.flush();
+                            Thread.sleep(50);
+                            System.out.println("ID kirjoitettu");
+                            dataUlos.writeFloat(paketti.getNykySijainti().x);
+                            dataUlos.flush();
+                            Thread.sleep(50);
+                            System.out.println("Nykysijainti X kirjoitettu");
+                            dataUlos.writeFloat(paketti.getNykySijainti().y);
+                            dataUlos.flush();
+                            Thread.sleep(50);
+                            System.out.println("Nykysijainti Y kirjoitettu");
+                            dataUlos.writeFloat(paketti.getUusiSijainti().x);
+                            dataUlos.flush();
+                            Thread.sleep(50);
+                            System.out.println("UusiSijainti X kirjoitettu");
+                            dataUlos.writeFloat(paketti.getUusiSijainti().y);
+                            dataUlos.flush();
+                            Thread.sleep(50);
+                            System.out.println("UusiSijainti Y kirjoitettu");
+                            dataUlos.writeFloat(paketti.getMittausSuunta().x);
+                            dataUlos.flush();
+                            Thread.sleep(50);
+                            System.out.println("GetMittausSuunta X kirjoitettu");
+                            dataUlos.writeFloat(paketti.getMittausSuunta().y);
+                            dataUlos.flush();
+                            Thread.sleep(50);
+                            System.out.println("getMittausSuunta Y kirjoitettu");
+                            kirjoitus = false;
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            uudelleenKaynnista();
                         }
+                    } else if (luku) {
 
-                        paketti.setNykySijainti(new Point2D.Float(dataSisaan.readFloat(), dataSisaan.readFloat()));
-                        System.out.println("Nykysijainti Luettu");
-                        paketti.setUusiSijainti(new Point2D.Float(dataSisaan.readFloat(), dataSisaan.readFloat()));
-                        System.out.println("Nykysijainti Luettu");
-                        paketti.setMittausSuunta(new Point2D.Float(dataSisaan.readFloat(), dataSisaan.readFloat()));
-                        System.out.println("Nykysijainti Luettu");
+                        try {
+                            System.out.println("#######LUKU ALKAA#######");
+                            paketti.setId(dataSisaan.readInt());
+                            System.out.println("ID luettu");
+                            for (int i = 0; i < BTPaketti.MAARA; i++) {
+                                tempEtaisyydet[i] = dataSisaan.readInt();
+                                System.out.println("Etaisyyksiä luetaan");
+                            }
 
-                    } catch (Exception e) {
-                        // uudelleenKaynnista();
+                            paketti.setNykySijainti(new Point2D.Float(dataSisaan.readFloat(), dataSisaan.readFloat()));
+                            System.out.println("Nykysijainti Luettu");
+                            paketti.setUusiSijainti(new Point2D.Float(dataSisaan.readFloat(), dataSisaan.readFloat()));
+                            System.out.println("UusiSijaint Luettu");
+                            paketti.setMittausSuunta(new Point2D.Float(dataSisaan.readFloat(), dataSisaan.readFloat()));
+                            System.out.println("MittausSuunta Luettu");
+                            luku = false;
+                        } catch (Exception e) {
+                            // uudelleenKaynnista();
+                        }
                     }
-                    lahetys = false;
                 }
             }
         }
     }
-
     //lahetaJaVastaanota vastaanottaa paketin josta lähetetään tieto robotille ja 
     //johon kirjoitetaan uudet tiedot
+
     /**
      * 
      * @param paketti
@@ -142,14 +161,31 @@ public class NXTBTYhteys extends Thread implements BTYhteys {
      */
     @Override
     public BTPaketti lahetaJaVastaanota(BTPaketti paketti, int odotusAikaMs) {
+        //  this.odotusAikaMS = odotusAikaMs;
+        this.kaytossa = true;
         this.paketti = paketti;
-        this.odotusAikaMS = odotusAikaMs;
-        this.lahetys = true;
-
-        //odotetaan kunnes paketti on päivitetty
-        while (lahetys) {
+        if (ekaAjo) {
+            ekaAjo = false;
+            kirjoitus = true;
+            while (kirjoitus) {
+            }
+            luku = true;
+            while (luku) {
+            }
+            this.kaytossa = false;
+            return paketti;
+        } else {
+            luku = true;
+            while (luku) {
+            }
+            kirjoitus = true;
+            while (kirjoitus) {
+            }
+            this.kaytossa = false;
+            return paketti;
         }
-        return paketti;
+
+
     }
 
     /**

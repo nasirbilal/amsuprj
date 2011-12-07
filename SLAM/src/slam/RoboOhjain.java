@@ -892,6 +892,6 @@ public class RoboOhjain extends Thread {
                     alkuperMittausSuunta.y - 0 + (float)Math.random() * 0);            
         } while (--kierrokset > 0);
 
-        return tarkinNykySijainti;
+        return alkuperNykySijainti;
     }
 }
