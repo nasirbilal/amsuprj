@@ -1,7 +1,6 @@
 package slam;
 
 import java.awt.geom.*;
-import java.awt.geom.Point2D.Float;
 import java.util.*;
 
 /**
@@ -141,7 +140,7 @@ public class RoboOhjain extends Thread {
     public void run() {
         long i = 0;
         while (true) {
-            System.out.println(Calendar.getInstance().getTime().toString() +
+            System.out.println("RoboID "+uusinPaketti.getId()+" "+Calendar.getInstance().getTime().toString() +
                                " kierros " + i++ + ".");
             if (!teeMittaukset()) {
                 System.out.println("Mittaukset epäonnistuivat.");
