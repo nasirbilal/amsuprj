@@ -42,12 +42,14 @@ public class NXTBTYhteys extends Thread implements BTYhteys {
     }
 
     @Override
-    public int getRoboID() {return robo != null ? robo.getID() : -1; }
+    public int getRoboID() {
+        return robo != null ? robo.getID() : -1;
+    }
 
     private void alustaYhteys() {
         try {
             // Luodaan yhteys robottiin nimen perusteella
-            if (!yhteys.connectTo(nimi)){
+            if (!yhteys.connectTo(nimi)) {
                 yrityksia++;
                 System.err.println("Yhdistaminen epaonnistui");
                 if (yrityksia < 5) {
@@ -78,36 +80,48 @@ public class NXTBTYhteys extends Thread implements BTYhteys {
                 /*Jos kutsutaan lahetaJaVastaanota() -metodia, alamme toimimaan*/
                 if (lahetys) {
                     try {
+                        System.out.println("");
+                        System.out.println("Datan kirjoitus alkaa");
                         dataUlos.writeInt(paketti.getId());
                         dataUlos.flush();
+                        System.out.println("ID kirjoitettu");
                         dataUlos.writeFloat(paketti.getNykySijainti().x);
                         dataUlos.flush();
+                        System.out.println("Nykysijainti X kirjoitettu");
                         dataUlos.writeFloat(paketti.getNykySijainti().y);
                         dataUlos.flush();
+                        System.out.println("Nykysijainti Y kirjoitettu");
                         dataUlos.writeFloat(paketti.getUusiSijainti().x);
                         dataUlos.flush();
+                        System.out.println("UusiSijainti X kirjoitettu");
                         dataUlos.writeFloat(paketti.getUusiSijainti().y);
                         dataUlos.flush();
+                        System.out.println("UusiSijainti Y kirjoitettu");
                         dataUlos.writeFloat(paketti.getMittausSuunta().x);
                         dataUlos.flush();
+                        System.out.println("GetMittausSuunta X kirjoitettu");
                         dataUlos.writeFloat(paketti.getMittausSuunta().y);
                         dataUlos.flush();
+                        System.out.println("getMittausSuunta Y kirjoitettu");
                     } catch (Exception e) {
                         e.printStackTrace();
                         uudelleenKaynnista();
                     }
                     try {
+                        System.out.println("#######LUKU ALKAA#######");
+                        paketti.setId(dataSisaan.readInt());
+                        System.out.println("ID luettu");
                         for (int i = 0; i < lukuMaara; i++) {
-                            if (i < 1) {
-                                paketti.setId(dataSisaan.readInt());
-                            } else {
-                                tempEtaisyydet[i - 1] = dataSisaan.readInt();
-                            }
+                            tempEtaisyydet[i] = dataSisaan.readInt();
+                            System.out.println("Etaisyyksiä luetaan");
                         }
 
                         paketti.setNykySijainti(new Point2D.Float(dataSisaan.readFloat(), dataSisaan.readFloat()));
+                        System.out.println("Nykysijainti Luettu");
                         paketti.setUusiSijainti(new Point2D.Float(dataSisaan.readFloat(), dataSisaan.readFloat()));
+                        System.out.println("Nykysijainti Luettu");
                         paketti.setMittausSuunta(new Point2D.Float(dataSisaan.readFloat(), dataSisaan.readFloat()));
+                        System.out.println("Nykysijainti Luettu");
 
                     } catch (Exception e) {
                         // uudelleenKaynnista();
@@ -143,9 +157,9 @@ public class NXTBTYhteys extends Thread implements BTYhteys {
      */
     @Override
     public void uudelleenKaynnista() {
-           alustaYhteys();
+        alustaYhteys();
     }
-    
+
     /**
      * 
      * @return
@@ -158,5 +172,4 @@ public class NXTBTYhteys extends Thread implements BTYhteys {
         p.setMittausSuunta(new Point2D.Float(1, 0));
         return p;
     }
-
 }
