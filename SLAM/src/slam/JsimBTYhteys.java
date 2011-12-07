@@ -20,7 +20,7 @@ public class JsimBTYhteys implements BTYhteys {
         this.paketti.setNykySijainti(robo.getPaikka());
         this.paketti.setUusiSijainti(robo.getPaikka());
         this.paketti.setMittausSuunta(new Point2D.Float(
-                robo.getPaikka().x+1, robo.getPaikka().y));
+                robo.getPaikka().x, robo.getPaikka().y+1));
     }
 
     /**
