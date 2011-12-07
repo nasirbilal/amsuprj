@@ -223,8 +223,8 @@ public class RoboOhjain extends Thread {
             //paketti.setUusiSijainti(menopiste);
             //return menopiste;
             
-            float kx = (float)(paketti.getNykySijainti().x + 800 * Math.sin(Math.toRadians(kulma)));
-            float ky = (float)(paketti.getNykySijainti().y + 800 * Math.cos(Math.toRadians(kulma)));
+            float kx = (float)(paketti.getNykySijainti().x + maxEtaisyys * Math.sin(Math.toRadians(kulma)));
+            float ky = (float)(paketti.getNykySijainti().y + maxEtaisyys * Math.cos(Math.toRadians(kulma)));
             Point2D.Float katsepiste = new Point2D.Float(kx,ky);
             paketti.setMittausSuunta(katsepiste);
             
@@ -238,8 +238,8 @@ public class RoboOhjain extends Thread {
                 //return nykySijainti;
                 menopiste = nykySijainti;
                 
-                float kx = (float)(paketti.getNykySijainti().x - 800 * Math.sin(Math.toRadians(kulma)));
-                float ky = (float)(paketti.getNykySijainti().y - 800 * Math.cos(Math.toRadians(kulma)));
+                float kx = (float)(paketti.getNykySijainti().x - maxEtaisyys * Math.sin(Math.toRadians(kulma)));
+                float ky = (float)(paketti.getNykySijainti().y - maxEtaisyys * Math.cos(Math.toRadians(kulma)));
                 Point2D.Float katsepiste = new Point2D.Float(kx,ky);
                 paketti.setMittausSuunta(katsepiste);
                 
@@ -509,8 +509,9 @@ public class RoboOhjain extends Thread {
             }
         
         // HUOM! Maksimi mittausetäisyys puukotettu koodiin! Kovaa koodaamista!
-        final double maksimiEtaisyys = Math.sqrt(800 * 800 + 800 * 800 -
-            2*800*800*Math.cos(Math.PI/(paketti.getEtaisyydet().length - 1)));
+        final double maksimiEtaisyys = Math.sqrt(maxEtaisyys * maxEtaisyys + 
+            maxEtaisyys * maxEtaisyys - 2 * maxEtaisyys * maxEtaisyys *
+            Math.cos(Math.PI/(paketti.getEtaisyydet().length - 1)));
 
         // Yhdistä vastikään lisätyistä pisteistä kolmen perättäisen pisteen 
         // kautta kulkevalle suoralle osuvat pisteet janoiksi. Tämä poistaa
@@ -650,31 +651,66 @@ public class RoboOhjain extends Thread {
      * @return Robotin todellisen sijainnin mittaamallaan kartalla.
      */
     private Point2D.Float arvioiTodellinenSijainti(BTPaketti paketti) {
-
         final Point2D.Float alkuperNykySijainti = paketti.getNykySijainti();
         final Point2D.Float alkuperMittausSuunta = paketti.getMittausSuunta();
+        Point2D.Float tarkinNykySijainti = alkuperNykySijainti;
+        Point2D.Float nykySijainti = alkuperNykySijainti;
+        Point2D.Float mittausSuunta = alkuperMittausSuunta;
+        final int[] alkuperEtaisyydet = paketti.getEtaisyydet();
+        final int mittausMaara = alkuperEtaisyydet.length;
+        
+        for (int i = 0; i < mittausMaara; ++i)
+            if (alkuperEtaisyydet[i] < maxEtaisyys)
+                break;
+            else if (i == mittausMaara - 1)
+                return tarkinNykySijainti; // Jos nähtiin vain tyhjää, niin
+                                           // jätä kokeilut tekemättä.
+        
+        JsimRobo simulaattori = new JsimRobo();
+        simulaattori.setKartta(kartta.toArray(new Line2D.Float[kartta.size()]));
+
+        float pieninVirhe = Float.MAX_VALUE;
         int kierrokset = 100;
         
-        while (kierrokset-- > 0) {
-            Point2D.Float nykySijainti = new Point2D.Float(
+        do {
+            simulaattori.setPaikka(nykySijainti);
+            simulaattori.käännyKohti(mittausSuunta);
+            float[] tulokset = simulaattori.mittaa(mittausMaara);
+            float virhe = 0;
+            
+            // Vertaa robotin mittaustuloksia simuloituihin mitaustuloksiin ja
+            // laske niiden virheiden neliön summa.
+            for (int i = 0; i < tulokset.length; ++i)
+                // Jätä laskuista pois tulokset, joissa kartassa on tyhjää.
+                // Kun robotti mittaa uusia alueita ja löytää sieltä UUSIA
+                // esteitä, kasvaisi mittausvirhe aivan suunnattomaksi jos
+                // verrattaisiin vanhan kartan tyhjiä kohtia uusien mittaus-
+                // tulosten ei-tyhjiin kohtiin!
+                if (tulokset[i] < maxEtaisyys) {
+                    float ero = alkuperEtaisyydet[i] - tulokset[i];
+                    virhe += ero * ero;
+                }
+
+            if (virhe < pieninVirhe) {
+                // Löytyi piste, jossa robotti todennäköisemmin VANHOJEN
+                // mitaustulosten perusteella sijaitsee. Talleta se.
+                tarkinNykySijainti = nykySijainti;
+                pieninVirhe = virhe;
+            }
+
+            // Arvo uusi sijainti ja mittaussuunta siirtämällä robotti
+            // sattumanvaraisesti nykysijainnin lähiympäristöön. Siirrä
+            // katsomispistettä samoin.
+            nykySijainti = new Point2D.Float(
                     alkuperNykySijainti.x - 10 + (float)Math.random() * 20,
                     alkuperNykySijainti.y - 10 + (float)Math.random() * 20);
-            Point2D.Float mittausSuunta = new Point2D.Float(
-                    alkuperMittausSuunta.x - 10 + (float)Math.random() * 20,
-                    alkuperMittausSuunta.y - 10 + (float)Math.random() * 20);
-            paketti.setNykySijainti(nykySijainti);
-            paketti.setMittausSuunta(mittausSuunta);
-            
-            // Kaikki on valmiina uusia "mittauksia" varten.
-            // Tähän tarvittaisiin koodi, joka ottaa simuloidut
-            // mittaustulokset robotin aiemminsta havainnoista. Siitä voi tulla
-            // HIEMAN vaikeaa, koska robotin kartta on tällä hetkellä kasa
-            // PISTEITÄ eikä yhtenäisiä viivoja. :(
-            
-        }
-        
-        paketti.setNykySijainti(alkuperNykySijainti);
-        paketti.setMittausSuunta(alkuperMittausSuunta);
-        return paketti.getNykySijainti();
+
+            // Puukotetaan mittaussuunnan muutos pois toistaiseksi.
+            mittausSuunta = new Point2D.Float(
+                    alkuperMittausSuunta.x - 0 + (float)Math.random() * 0,
+                    alkuperMittausSuunta.y - 0 + (float)Math.random() * 0);            
+        } while (--kierrokset > 0);
+
+        return tarkinNykySijainti;
     }
 }
