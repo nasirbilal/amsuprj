@@ -21,12 +21,13 @@ public class NXTBTYhteys extends Thread implements BTYhteys {
     private int odotusAikaMS;  //default odotusaika on 5 sek
     private volatile boolean lahetys;
     private int yrityksia;
+    private final String nimi;
 
     /**
      * 
      * @param robo
      */
-    public NXTBTYhteys() {
+    public NXTBTYhteys(String str) {
         this.yrityksia = 0;
         this.jatkuu = true;                             //NXTBYhteys main looppi
         this.robo = new JsimRobo();
@@ -36,6 +37,7 @@ public class NXTBTYhteys extends Thread implements BTYhteys {
         this.lahetys = false;                           //Lähetetäänkö tavaraa
         this.lukuMaara = BTPaketti.MAARA + 1;           //Etaisyyksien maara + id ja itse maara lukema
         this.yhteys = new NXTConnector();
+        this.nimi = str;
         alustaYhteys();
 
     }
@@ -46,7 +48,7 @@ public class NXTBTYhteys extends Thread implements BTYhteys {
     private void alustaYhteys() {
         try {
             // Luodaan yhteys robottiin nimen perusteella
-            if (!yhteys.connectTo(robo.getNimi())){
+            if (!yhteys.connectTo(nimi)){
                 yrityksia++;
                 System.err.println("Yhdistaminen epaonnistui");
                 if (yrityksia < 5) {
