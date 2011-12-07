@@ -17,8 +17,8 @@ public class JsimRobo {
     private boolean edettytäyteen = false;  ///(navigointiin) Jos (false)-> edetään täyteen näkymään, =true; jos (true) -> käännytään 180, =false.
 
     /// Kartta maailmasta, jossa robotti kulkee. 
-    private final Rectangle      reunat =  new Rectangle(0, 0, 1350, 2000);                        
-    private final Line2D.Float[] kartta = {new Line2D.Float(440,   0, 440, 750),
+    private Rectangle      reunat =  new Rectangle(0, 0, 1350, 2000);                        
+    private Line2D.Float[] kartta = {new Line2D.Float(440,   0, 440, 750),
                                            new Line2D.Float(440, 750, 870, 750),
                                            new Line2D.Float(870, 750, 870, 550),
                                            new Line2D.Float(870, 550, 640, 550),
@@ -108,6 +108,29 @@ public class JsimRobo {
         return new Point2D.Float(paikka.x, paikka.y);
     }
 
+    public void setKartta(Line2D.Float[] kartta) {
+        this.kartta = kartta;
+        
+        reunat.x = reunat.y = Integer.MAX_VALUE;
+        reunat.width = reunat.height = Integer.MIN_VALUE;
+        for (Line2D.Float l : kartta) {
+            if (l.x1 < reunat.x) reunat.x = (int) l.x1;
+            if (l.x2 < reunat.x) reunat.x = (int) l.x2;
+            if (l.x1 > reunat.width) reunat.width = (int) l.x1;
+            if (l.x2 > reunat.width) reunat.width = (int) l.x2;
+            if (l.y1 < reunat.y) reunat.y = (int) l.y1;
+            if (l.y2 < reunat.y) reunat.y = (int) l.y2;
+            if (l.y1 > reunat.height) reunat.height = (int) l.y1;
+            if (l.y2 > reunat.height) reunat.height = (int) l.y2;
+        }
+        
+        // Siirrä kehikkoa sen verran, että sen alkunurkka on origossa.
+        reunat.width -= reunat.x;
+        reunat.x -= reunat.x;
+        reunat.height -= reunat.y;
+        reunat.y -= reunat.y;
+    }
+    
     /**
      * 
      * @param paikka
