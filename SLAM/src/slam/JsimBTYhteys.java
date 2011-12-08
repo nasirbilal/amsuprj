@@ -37,11 +37,6 @@ public class JsimBTYhteys implements BTYhteys {
      */
     @Override
     public BTPaketti lahetaJaVastaanota(BTPaketti paketti, int odotusAikaMs) {
-        // Lähetä data robotille ja odota sen vastausta.
-        robo.setPaikka(paketti.getNykySijainti());
-        robo.etenePisteeseen(paketti.getUusiSijainti());
-        robo.käännyKohti(paketti.getMittausSuunta());
-
         // Robotti suorittaa mittauksia...
         final float[] mittaukset = robo.mittaa(paketti.getEtaisyydet().length);
         int[] etäisyydet = new int[paketti.getEtaisyydet().length];
