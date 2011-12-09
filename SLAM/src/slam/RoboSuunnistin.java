@@ -375,8 +375,18 @@ public class RoboSuunnistin {
 
         // Liiku näköviivaa pitkin. Älä kuitenkaan mene aivan loppuun asti,
         // jotta ei päädyttäisi jonkin seinän sisään.
-        jana.x2 -= (jana.x2 - jana.x1) * 0.05f;
-        jana.y2 -= (jana.y2 - jana.y1) * 0.05f;
+        jana.x2 -= (jana.x2 - jana.x1) * 0.85f;
+        jana.y2 -= (jana.y2 - jana.y1) * 0.85f;
+
+        // Kun robotti pääty aivan seinän viereen on sillä luontainen taipumus		
+        // Ampaista siitä läpi! Siispä varmuuden vuoksi puukotamme tähän		
+        // kivat pikku rajatapaustestit.
+        boolean puukkoHeiluu = false;
+        if (jana.x2 < 0) { jana.x2 = 0.1f; puukkoHeiluu = true; }
+        if (jana.x2 > 1350) { jana.x2 = 1349.9f; puukkoHeiluu = true; }
+        if (jana.y2 < 0) { jana.y2 = 0.1f; puukkoHeiluu = true; }
+        if (jana.y2 > 2000) { jana.y2 = 1999.9f; puukkoHeiluu = true; }
+        if (puukkoHeiluu) throw new RuntimeException("Robotti haluaa mennä laitojen yli.");
 
         return new Point2D.Float(jana.x2, jana.y2);
     }
