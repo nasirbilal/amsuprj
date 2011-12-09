@@ -30,10 +30,9 @@ public class RoboOhjain implements Runnable {
     /** @brief Alustaa robotin ohjaimen.
      * 
      * @param bt Bluetooth-yhteys robottiin, jota tämä instanssi ohjaa.
-     * @param ID Robotin (ja samalla tämän ohjaimen) tunnusluku.
      * @param odotusMilliSek Odotusika, jonka kuluttua BT-yhteys alustetaan.
      */
-    RoboOhjain(BTYhteys bt, int ID, int odotusMilliSek, int maxEtaisyys) {
+    RoboOhjain(BTYhteys bt, int odotusMilliSek, int maxEtaisyys) {
         this.odotusMs = odotusMilliSek;
         this.onMuuttunut = false;
         this.maxEtaisyys = maxEtaisyys;
