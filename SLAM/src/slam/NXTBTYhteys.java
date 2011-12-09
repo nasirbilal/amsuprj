@@ -83,69 +83,69 @@ public class NXTBTYhteys extends BTYhteys {
     public void run() {
         if (robo != null) {
             while (jatkuu) {
-                /*Jos kutsutaan lahetaJaVastaanota() -metodia, alamme toimimaan*/
-                if (kirjoitus) {
-                    try {
-                        ui.asetaDebugTeksti("");
-                        ui.asetaDebugTeksti("#######KIRJOITUS ALKAA#######");
-                        dataUlos.writeInt(paketti.getId());
-                        dataUlos.flush();
-                        Thread.sleep(50);
-                        ui.asetaDebugTeksti("ID kirjoitettu");
-                        dataUlos.writeFloat(paketti.getNykySijainti().x);
-                        dataUlos.flush();
-                        Thread.sleep(50);
-                       ui.asetaDebugTeksti("Nykysijainti X kirjoitettu");
-                        dataUlos.writeFloat(paketti.getNykySijainti().y);
-                        dataUlos.flush();
-                        Thread.sleep(50);
-                        ui.asetaDebugTeksti("Nykysijainti Y kirjoitettu");
-                        dataUlos.writeFloat(paketti.getUusiSijainti().x);
-                        dataUlos.flush();
-                        Thread.sleep(50);
-                        ui.asetaDebugTeksti("UusiSijainti X kirjoitettu");
-                        dataUlos.writeFloat(paketti.getUusiSijainti().y);
-                        dataUlos.flush();
-                        Thread.sleep(50);
-                        ui.asetaDebugTeksti("UusiSijainti Y kirjoitettu");
-                        dataUlos.writeFloat(paketti.getMittausSuunta().x);
-                        dataUlos.flush();
-                        Thread.sleep(50);
-                        ui.asetaDebugTeksti("GetMittausSuunta X kirjoitettu");
-                        dataUlos.writeFloat(paketti.getMittausSuunta().y);
-                        dataUlos.flush();
-                        Thread.sleep(50);
-                        ui.asetaDebugTeksti("getMittausSuunta Y kirjoitettu");
-                        kirjoitus = false;
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        uudelleenKaynnista();
-                    }
-                }
-                if (luku) {
-
-                    try {
-                        ui.asetaDebugTeksti("#######LUKU ALKAA#######");
-                        paketti.setId(dataSisaan.readInt());
-                        ui.asetaDebugTeksti("ID luettu");
-                        for (int i = 0; i < BTPaketti.MAARA; i++) {
-                            tempEtaisyydet[i] = dataSisaan.readInt();
-                            ui.asetaDebugTeksti("Etaisyyksiä luetaan");
+                    /*Jos kutsutaan lahetaJaVastaanota() -metodia, alamme toimimaan*/
+                    if (kirjoitus) {
+                        try {
+                            ui.asetaDebugTeksti("");
+                            ui.asetaDebugTeksti("#######KIRJOITUS ALKAA#######");
+                            dataUlos.writeInt(paketti.getId());
+                            dataUlos.flush();
+                            Thread.sleep(50);
+                            ui.asetaDebugTeksti("ID kirjoitettu");
+                            dataUlos.writeFloat(paketti.getNykySijainti().x);
+                            dataUlos.flush();
+                            Thread.sleep(50);
+                            ui.asetaDebugTeksti("Nykysijainti X kirjoitettu");
+                            dataUlos.writeFloat(paketti.getNykySijainti().y);
+                            dataUlos.flush();
+                            Thread.sleep(50);
+                            ui.asetaDebugTeksti("Nykysijainti Y kirjoitettu");
+                            dataUlos.writeFloat(paketti.getUusiSijainti().x);
+                            dataUlos.flush();
+                            Thread.sleep(50);
+                            ui.asetaDebugTeksti("UusiSijainti X kirjoitettu");
+                            dataUlos.writeFloat(paketti.getUusiSijainti().y);
+                            dataUlos.flush();
+                            Thread.sleep(50);
+                            ui.asetaDebugTeksti("UusiSijainti Y kirjoitettu");
+                            dataUlos.writeFloat(paketti.getMittausSuunta().x);
+                            dataUlos.flush();
+                            Thread.sleep(50);
+                            ui.asetaDebugTeksti("GetMittausSuunta X kirjoitettu");
+                            dataUlos.writeFloat(paketti.getMittausSuunta().y);
+                            dataUlos.flush();
+                            Thread.sleep(50);
+                            ui.asetaDebugTeksti("getMittausSuunta Y kirjoitettu");
+                            kirjoitus = false;
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            uudelleenKaynnista();
                         }
-
-                        paketti.setNykySijainti(new Point2D.Float(dataSisaan.readFloat(), dataSisaan.readFloat()));
-                        ui.asetaDebugTeksti("Nykysijainti Luettu");
-                        paketti.setUusiSijainti(new Point2D.Float(dataSisaan.readFloat(), dataSisaan.readFloat()));
-                        ui.asetaDebugTeksti("UusiSijaint Luettu");
-                        paketti.setMittausSuunta(new Point2D.Float(dataSisaan.readFloat(), dataSisaan.readFloat()));
-                        ui.asetaDebugTeksti("MittausSuunta Luettu");
-                        muuttunut = true;
-                        
-                        luku = false;
-                    } catch (Exception e) {
-                        // uudelleenKaynnista();
                     }
-                }
+                    if (luku) {
+
+                        try {
+                            ui.asetaDebugTeksti("#######LUKU ALKAA#######");
+                            paketti.setId(dataSisaan.readInt());
+                            ui.asetaDebugTeksti("ID luettu");
+                            for (int i = 0; i < BTPaketti.MAARA; i++) {
+                                tempEtaisyydet[i] = dataSisaan.readInt();
+                                ui.asetaDebugTeksti("Etaisyyksiä luetaan");
+                            }
+
+                            paketti.setNykySijainti(new Point2D.Float(dataSisaan.readFloat(), dataSisaan.readFloat()));
+                            ui.asetaDebugTeksti("Nykysijainti Luettu");
+                            paketti.setUusiSijainti(new Point2D.Float(dataSisaan.readFloat(), dataSisaan.readFloat()));
+                            ui.asetaDebugTeksti("UusiSijaint Luettu");
+                            paketti.setMittausSuunta(new Point2D.Float(dataSisaan.readFloat(), dataSisaan.readFloat()));
+                            ui.asetaDebugTeksti("MittausSuunta Luettu");
+                            muuttunut = true;
+
+                            luku = false;
+                        } catch (Exception e) {
+                            // uudelleenKaynnista();
+                        }
+                    }
             }
         }
     }
@@ -155,8 +155,8 @@ public class NXTBTYhteys extends BTYhteys {
         //  this.odotusAikaMS = odotusAikaMs;
         this.paketti = paketti;
         kirjoitus = true;
-        while(kirjoitus){}
-        
+        while (kirjoitus) {}
+
         luku = true;
         muuttunut = false;
         while (!muuttunut) {}
