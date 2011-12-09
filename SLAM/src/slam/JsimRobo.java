@@ -13,8 +13,6 @@ public class JsimRobo {
     private int id;                         /// Robotin yksilöllinen tunnus.
     private float suunta;                   /// Robotin suunta, range: 0-359, jossa 0 ON POHJOINEN
     private Point2D.Float paikka;           /// Robotin paikka Point-oliona MILLIMETREISSÄ
-    private JsimRoboNakyma nakyma;          /// luodaan mittaa()-metodilla, debugausta
-    private boolean edettytäyteen = false;  ///(navigointiin) Jos (false)-> edetään täyteen näkymään, =true; jos (true) -> käännytään 180, =false.
 
     /// Kartta maailmasta, jossa robotti kulkee. 
     private Rectangle      reunat =  new Rectangle(0, 0, 1350, 2000);                        
@@ -177,11 +175,8 @@ public class JsimRobo {
      * @return IR-sensorin palauttamat etäisyydet lähimpiin esteisiin.
      */
     public float[] mittaa(int mittausMaara) {
-        //System.out.println(getNimi() + " @ [" + paikka.x + ", " + paikka.y +
-         //                 ", suunta " + suunta + " deg.");
-        
         float taulu[] = new float[mittausMaara];
-        nakyma = new JsimRoboNakyma(paikka, suunta, mittausMaara, infraKantama);
+        JsimRoboNakyma nakyma = new JsimRoboNakyma(paikka, suunta, mittausMaara, infraKantama);
 
         for (int i = 0; i < nakyma.getNakotaulu().length; i++) {
             double pieninetaisyys = infraKantama;
@@ -201,32 +196,5 @@ public class JsimRobo {
         }
 
         return taulu;
-    }
-
-    /**
-     * Laskee uudet x- ja y-koordinaatit kun kuljtaan nykyisestä sijainnista
-     * nykyiseen suuntaan annetun matkan verran.
-     * 
-     * @param matka Robotin kulkema etäisyys MILLIMETREISSÄ.
-     * @return Robotin uusi sijainti.
-     */
-    private Point2D.Float etene(double matka) {
-        double a = Math.toRadians(suunta);
-        double x = paikka.x + matka * Math.cos(a);
-        double y = paikka.y + matka * Math.sin(a);
-
-        paikka = new Point2D.Float((float)x, (float)y);
-        return getPaikka();
-    }
-
-    /** 
-     * @param aste Robotin kääntymä määrä väliltä -90 (oikealle) ja 90 (vasemmalle).
-     * @return Robotin uusi suunta.
-     */
-    private float käänny(float aste) {
-        suunta = (suunta + aste) % 360; /* Pakota suunta välille 0-359. */
-        if (suunta < 0)
-            suunta = suunta + 360;
-        return suunta;
     }
 }
