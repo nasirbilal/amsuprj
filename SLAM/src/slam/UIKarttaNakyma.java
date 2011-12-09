@@ -18,7 +18,7 @@ import javax.swing.*;
 public class UIKarttaNakyma extends JPanel implements MouseMotionListener {
 
     private Line2D.Float[] janat;
-    private Point2D.Float[] robotit;
+    private Line2D.Float[][] robottiNakymat;
     private Random r = new Random();
 
     //TODO: doublebuffering
@@ -69,19 +69,29 @@ public class UIKarttaNakyma extends JPanel implements MouseMotionListener {
             }
         }
 
-        if (robotit == null) {
+        if (robottiNakymat == null) {
             return;
         }
 
-        g2.setColor(Color.BLUE);
-        g2.setStroke(new BasicStroke(5));
-        for (Point2D.Float p : robotit) {
-            if (g2.getColor() == Color.BLUE) {
-                g2.setColor(Color.GREEN);
-            }
-            else{
-                g2.setColor(Color.BLUE);
-            }
+        for (int i = 0; i < robottiNakymat.length; ++i) {
+            if (robottiNakymat[i] == null || robottiNakymat[i].length == 0)
+                continue;
+
+            g2.setColor(Color.GRAY);
+            g2.setStroke(new BasicStroke(1));
+
+            // Piirrä robotin näköviivat.
+            for (Line2D.Float l : robottiNakymat[i])
+                g2.drawLine((int) ((l.x1 - xmin) * ratio),
+                        (int) ((l.y1 - xmin) * ratio),
+                        (int) ((l.x2 - xmin) * ratio),
+                        (int) ((l.y2 - xmin) * ratio));                
+            
+            g2.setColor(i % 2 == 0 ? Color.GREEN : Color.BLUE);
+            g2.setStroke(new BasicStroke(5));
+
+            // Piirrä itse robotti.
+            Point2D.Float p = (Point2D.Float)robottiNakymat[i][0].getP1();
             g2.drawLine((int) ((p.x - xmin) * ratio),
                     (int) ((p.y - xmin) * ratio),
                     (int) ((p.x - xmin) * ratio),
@@ -96,9 +106,9 @@ public class UIKarttaNakyma extends JPanel implements MouseMotionListener {
         addMouseMotionListener(this);
     }
 
-    void piirraKartta(Line2D.Float[] janat, Point2D.Float[] robotit) {
+    void piirraKartta(Line2D.Float[] janat, Line2D.Float[][] robottiNakymat) {
         this.janat = janat;
-        this.robotit = robotit;
+        this.robottiNakymat = robottiNakymat;
         repaint();
     }
 

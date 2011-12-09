@@ -5,6 +5,7 @@ package slam;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.util.Random;
 import javax.swing.*;
@@ -139,17 +140,19 @@ public class UI extends JFrame {
 
             @Override
             public void mousePressed(MouseEvent e) {
-                  int x = e.getX();
+                int x = e.getX();
                 int y = e.getY();
-                Point2D.Float robo1 = komentaja.annaRobo1Koordinaatit();
-                Point2D.Float robo2 = komentaja.annaRobo2Koordinaatit();
-
+                Line2D.Float[] robo1 = komentaja.annaRobo1Koordinaatit();
+                Line2D.Float[] robo2 = komentaja.annaRobo2Koordinaatit();
+                Point2D pRobo1 = robo1[0].getP1();
+                Point2D pRobo2 = robo2[0].getP1();
+                
                 //Lasketaan kumpi robo on lähempänä klikattua pistettä 
                 //ja lähetämme sen pisteeseen
-                int delta1X = (int) (robo1.getX() - x);
-                int delta1Y = (int) (robo1.getY() - y);
-                int delta2X = (int) (robo2.getX() - x);
-                int delta2Y = (int) (robo2.getY() - y);
+                int delta1X = (int) (pRobo1.getX() - x);
+                int delta1Y = (int) (pRobo1.getY() - y);
+                int delta2X = (int) (pRobo2.getX() - x);
+                int delta2Y = (int) (pRobo2.getY() - y);
 
                 int robo1Matka = ((delta1X * delta1X) + (delta1Y * delta1Y));
                 int robo2Matka = ((delta2X * delta2X) + (delta2Y * delta2Y));

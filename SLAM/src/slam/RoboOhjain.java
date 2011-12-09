@@ -54,8 +54,18 @@ public class RoboOhjain extends Thread {
      * 
      * @return
      */
-    public Point2D.Float annaKoordinaatit(){
-        return uusinPaketti.getNykySijainti();
+    public Line2D.Float[] annaKoordinaatit(){
+        int[] etaisyydet = uusinPaketti.getEtaisyydet();
+        JsimRoboNakyma nakyma = new JsimRoboNakyma(uusinPaketti.getNykySijainti(),
+                (float)uusinPaketti.getMittausKulma(), etaisyydet.length, 1);
+        Line2D.Float[] taulu = nakyma.getNakotaulu();
+        
+        for (int i = 0; i < etaisyydet.length; ++i) {
+            taulu[i].x2 += (taulu[i].x2 - taulu[i].x1) * etaisyydet[i];
+            taulu[i].y2 += (taulu[i].y2 - taulu[i].y1) * etaisyydet[i];
+        }
+        
+        return taulu;
     }
 
     /**
@@ -116,8 +126,9 @@ public class RoboOhjain extends Thread {
      */
     public Line2D.Float[] haeKartta() {
         try {
-        return kartta.toArray(new Line2D.Float[kartta.size()]);
+            return kartta.toArray(new Line2D.Float[kartta.size()]);
         } catch (Exception ex) {
+            System.out.println("\nKartan haku epäonnistui!");
             return new Line2D.Float[0];
         }
     }
@@ -892,6 +903,6 @@ public class RoboOhjain extends Thread {
                     alkuperMittausSuunta.y - 0 + (float)Math.random() * 0);            
         } while (--kierrokset > 0);
 
-        return alkuperNykySijainti;
+        return tarkinNykySijainti;
     }
 }
