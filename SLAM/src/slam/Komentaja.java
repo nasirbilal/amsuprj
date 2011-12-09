@@ -1,5 +1,6 @@
 package slam;
 
+import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import javax.swing.UIManager;
 
@@ -133,9 +134,9 @@ public class Komentaja extends Thread {
             }
 
             if (muuttunut) {
-                Point2D.Float[] robotit = { r1.annaKoordinaatit(),
-                                            r2.annaKoordinaatit(),};
-                karttaNakyma.piirraKartta(Kokoaja.yhdista(), robotit);
+                Line2D.Float[][] robottienNakymat = { r1.annaKoordinaatit(),
+                                                      r2.annaKoordinaatit()};
+                karttaNakyma.piirraKartta(Kokoaja.yhdista(), robottienNakymat);
             }
         }
     }
@@ -161,14 +162,14 @@ public class Komentaja extends Thread {
      * 
      * @return
      */
-    public Point2D.Float annaRobo1Koordinaatit(){
+    public Line2D.Float[] annaRobo1Koordinaatit(){
         return r1.annaKoordinaatit();
     }
     /**
      * 
      * @return
      */
-    public Point2D.Float annaRobo2Koordinaatit(){
+    public Line2D.Float[] annaRobo2Koordinaatit(){
         return r2.annaKoordinaatit();
     }
     
