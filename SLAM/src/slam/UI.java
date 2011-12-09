@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
+import java.io.PrintWriter;
 import java.util.Random;
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -33,6 +34,7 @@ public class UI extends JFrame {
     private JButton debugValitsinN, paivitaNakymaN;
     private GridBagConstraints gbc;
     private boolean debug;
+    private PrintWriter tuloste;
 
     /**
      * Konstruktori
@@ -75,6 +77,7 @@ public class UI extends JFrame {
         reunus = BorderFactory.createEtchedBorder();
         debugTekstit = new JTextArea(8, 50);
         scrollPane = new JScrollPane(debugTekstit);
+        debugTekstit.setCaretPosition(debugTekstit.getText().length());
 
         //isoon N-kirjaimeen loppuvat muuttujat ovat nappuloita.
         debugValitsinN = new JButton("Debug OFF");
@@ -90,7 +93,13 @@ public class UI extends JFrame {
         debugTekstit.setLineWrap(true);
         debugTekstit.setEditable(false);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-
+        
+        //Debug-viestien tallennuspaikka
+        try{
+            PrintWriter tuloste = new PrintWriter("debugtuloste.txt");
+        }catch(Exception e){
+            e.printStackTrace();
+        }
 
 
         //reunukset
@@ -230,6 +239,7 @@ public class UI extends JFrame {
         if (str != null && debug) {
             debugTekstit.append(str.concat("\n"));
             debugTekstit.setCaretPosition(debugTekstit.getText().length());
+            tuloste.println(str);
         }
     }
 }
