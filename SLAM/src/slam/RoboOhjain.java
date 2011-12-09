@@ -57,7 +57,7 @@ public class RoboOhjain extends Thread {
     public Line2D.Float[] annaKoordinaatit(){
         int[] etaisyydet = uusinPaketti.getEtaisyydet();
         JsimRoboNakyma nakyma = new JsimRoboNakyma(uusinPaketti.getNykySijainti(),
-                (float)uusinPaketti.getMittausKulma(), etaisyydet.length, 1);
+                (float)Math.toDegrees(uusinPaketti.getMittausKulma()), etaisyydet.length, 1);
         Line2D.Float[] taulu = nakyma.getNakotaulu();
         
         for (int i = 0; i < etaisyydet.length; ++i) {
