@@ -375,16 +375,8 @@ public class RoboSuunnistin {
 
         // Liiku näköviivaa pitkin. Älä kuitenkaan mene aivan loppuun asti,
         // jotta ei päädyttäisi jonkin seinän sisään.
-        jana.x2 -= (jana.x2 - jana.x1) * 0.95f;
-        jana.y2 -= (jana.y2 - jana.y1) * 0.95f;
-        
-        // Kun robotti pääty aivan seinän viereen on sillä luontainen taipumus
-        // Ampaista siitä läpi! Siispä varmuuden vuoksi puukotamme tähän
-        // kivat pikku rajatapaustestit.
-        if (jana.x2 < 0) jana.x2 = 0.1f;
-        if (jana.x2 > 1350) jana.x2 = 1349.9f;
-        if (jana.y2 < 0) jana.y2 = 0.1f;
-        if (jana.y2 > 2000) jana.y2 = 1999.9f;
+        jana.x2 -= (jana.x2 - jana.x1) * 0.05f;
+        jana.y2 -= (jana.y2 - jana.y1) * 0.05f;
 
         return new Point2D.Float(jana.x2, jana.y2);
     }
