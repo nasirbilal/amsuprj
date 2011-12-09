@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 import java.util.Random;
 import javax.swing.*;
 
@@ -19,8 +20,8 @@ public class UIKarttaNakyma extends JPanel implements MouseMotionListener {
 
     private Line2D.Float[] janat;
     private Line2D.Float[][] robottiNakymat;
-    private Random r = new Random();
-
+    private ArrayList<Point2D.Float>[] robottiPolut;
+    
     //TODO: doublebuffering
     @Override
     public void paintComponent(Graphics g) {
@@ -69,6 +70,21 @@ public class UIKarttaNakyma extends JPanel implements MouseMotionListener {
             }
         }
 
+        for (int i = 0; i < robottiPolut.length; ++i) {
+            g2.setColor(i % 2 == 0 ? Color.GREEN : Color.BLUE);
+            g2.setStroke(new BasicStroke(1));
+            
+            if (robottiPolut[i].isEmpty())
+                continue;
+
+            Point2D.Float p = robottiPolut[i].get(0);
+            for (int j = 1; j < robottiPolut[i].size(); p = robottiPolut[i].get(j++))
+                g2.drawLine((int) ((p.x - xmin) * ratio),
+                        (int) ((p.y - ymin) * ratio),
+                        (int) ((robottiPolut[i].get(j).x - xmin) * ratio),
+                        (int) ((robottiPolut[i].get(j).y - ymin) * ratio));                
+        }
+
         if (robottiNakymat == null) {
             return;
         }
@@ -83,9 +99,9 @@ public class UIKarttaNakyma extends JPanel implements MouseMotionListener {
             // Piirrä robotin näköviivat.
             for (Line2D.Float l : robottiNakymat[i])
                 g2.drawLine((int) ((l.x1 - xmin) * ratio),
-                        (int) ((l.y1 - xmin) * ratio),
+                        (int) ((l.y1 - ymin) * ratio),
                         (int) ((l.x2 - xmin) * ratio),
-                        (int) ((l.y2 - xmin) * ratio));                
+                        (int) ((l.y2 - ymin) * ratio));                
             
             g2.setColor(i % 2 == 0 ? Color.GREEN : Color.BLUE);
             g2.setStroke(new BasicStroke(5));
@@ -93,9 +109,9 @@ public class UIKarttaNakyma extends JPanel implements MouseMotionListener {
             // Piirrä itse robotti.
             Point2D.Float p = (Point2D.Float)robottiNakymat[i][0].getP1();
             g2.drawLine((int) ((p.x - xmin) * ratio),
-                    (int) ((p.y - xmin) * ratio),
+                    (int) ((p.y - ymin) * ratio),
                     (int) ((p.x - xmin) * ratio),
-                    (int) ((p.y - xmin) * ratio));
+                    (int) ((p.y - ymin) * ratio));
         }
     }
 
@@ -109,6 +125,20 @@ public class UIKarttaNakyma extends JPanel implements MouseMotionListener {
     void piirraKartta(Line2D.Float[] janat, Line2D.Float[][] robottiNakymat) {
         this.janat = janat;
         this.robottiNakymat = robottiNakymat;
+        
+        if (this.robottiPolut == null) {
+            this.robottiPolut = new ArrayList[robottiNakymat.length];
+            for (int i = 0; i < robottiNakymat.length; ++i)
+                robottiPolut[i] = new ArrayList<Point2D.Float>();
+        }
+        // Lisää robottien uudet sijainnit niiden kulmkemaan polkuun.
+        for (int i = 0; i < robottiNakymat.length; ++i) {
+            if (robottiNakymat[i] != null && robottiNakymat[i].length > 0)
+                robottiPolut[i].add((Point2D.Float)robottiNakymat[i][0].getP1());
+            
+            if (robottiPolut[i].size() > 100) // Jos polku liian pitkä...
+                robottiPolut[i].remove(0);   // Poista vanhin polkupiste.
+        }
         repaint();
     }
 
