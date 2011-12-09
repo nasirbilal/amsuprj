@@ -30,14 +30,14 @@ public class NXTBTYhteys extends Thread implements BTYhteys {
      * 
      * @param robo
      */
-    public NXTBTYhteys(String str,UI ui) {
+    public NXTBTYhteys(UI ui) {
         this.yrityksia = 0;
         this.robo = new JsimRobo();
         this.paketti = new BTPaketti(robo.getID());                            //BTPaketti
         this.tempEtaisyydet = new int[BTPaketti.MAARA];
         // this.odotusAikaMS = 5;                          //"Connection timeout" -EI IMPLEMENTOITU
         this.yhteys = new NXTConnector();
-        this.nimi = str;
+        this.nimi = robo.getNimi();
         this.jatkuu = true;
         this.luku = false;
         this.kirjoitus = false;

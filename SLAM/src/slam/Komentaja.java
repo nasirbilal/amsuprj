@@ -96,7 +96,7 @@ public class Komentaja extends Thread {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {}
         
-        Komentaja komentaja = new Komentaja();
+       Komentaja komentaja = new Komentaja();
        UI  ui = new UI(komentaja);
        komentaja.rekisteroiUI(ui);
        komentaja.start();
@@ -105,8 +105,8 @@ public class Komentaja extends Thread {
     @Override
     public void run() {
         if(bluukka){
-        b1 = new NXTBTYhteys("Jantunen");
-        b2 = new NXTBTYhteys("Hiiri");
+        b1 = new NXTBTYhteys(ui);
+        b2 = new NXTBTYhteys(ui);
         }else{
             b1 = new JsimBTYhteys();
             b2 = new JsimBTYhteys();

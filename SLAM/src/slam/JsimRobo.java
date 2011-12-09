@@ -94,10 +94,7 @@ public class JsimRobo {
      * @return
      */
     public String getNimi() {
-        String nimi;
-        nimi =  getID() == 0 ? "Jantunen": "JsimRobo[" + getID() + "]";
-        nimi =  getID() == 1 ? "Hiiri": "JsimRobo[" + getID() + "]";
-        return nimi;
+        return id % 2 == 0 ? "Jantunen" : "Hiiri";
     }
 
     /**
