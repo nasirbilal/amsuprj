@@ -98,7 +98,7 @@ public class Komentaja extends Thread {
 
     @Override
     public void run() {
-        if (true) {
+        if (false) {
             b1 = new NXTBTYhteys(this.ui);
             b2 = new NXTBTYhteys(this.ui);
         }else{
@@ -107,11 +107,6 @@ public class Komentaja extends Thread {
         }
         
         b1.start();
-        try {
-            Thread.sleep(100);
-        } catch (Exception e) {
-        }
-        
         b2.start();
         
         r1 = new RoboOhjain(b1, b1.getRoboID(), 10*1000, 80*10);
