@@ -79,9 +79,9 @@ public class UIKarttaNakyma extends JPanel implements MouseMotionListener {
             Point2D.Float p = robottiPolut[i].get(0);
             for (int j = 1; j < robottiPolut[i].size(); p = robottiPolut[i].get(j++))
                 g2.drawLine((int) ((p.x - xmin) * ratio),
-                        (int) ((p.y - ymin) * ratio),
-                        (int) ((robottiPolut[i].get(j).x - xmin) * ratio),
-                        (int) ((robottiPolut[i].get(j).y - ymin) * ratio));                
+                        getHeight() - (int) ((p.y - ymin) * ratio),
+                                      (int) ((robottiPolut[i].get(j).x - xmin) * ratio),
+                        getHeight() - (int) ((robottiPolut[i].get(j).y - ymin) * ratio));                
         }
 
         if (robottiNakymat == null) {
@@ -98,9 +98,9 @@ public class UIKarttaNakyma extends JPanel implements MouseMotionListener {
             // Piirrä robotin näköviivat.
             for (Line2D.Float l : robottiNakymat[i])
                 g2.drawLine((int) ((l.x1 - xmin) * ratio),
-                        (int) ((l.y1 - ymin) * ratio),
-                        (int) ((l.x2 - xmin) * ratio),
-                        (int) ((l.y2 - ymin) * ratio));                
+                        getHeight() - (int) ((l.y1 - ymin) * ratio),
+                                      (int) ((l.x2 - xmin) * ratio),
+                        getHeight() - (int) ((l.y2 - ymin) * ratio));                
             
             g2.setColor(i % 2 == 0 ? Color.GREEN : Color.BLUE);
             g2.setStroke(new BasicStroke(5));
@@ -108,9 +108,9 @@ public class UIKarttaNakyma extends JPanel implements MouseMotionListener {
             // Piirrä itse robotti.
             Point2D.Float p = (Point2D.Float)robottiNakymat[i][0].getP1();
             g2.drawLine((int) ((p.x - xmin) * ratio),
-                    (int) ((p.y - ymin) * ratio),
-                    (int) ((p.x - xmin) * ratio),
-                    (int) ((p.y - ymin) * ratio));
+                    getHeight() - (int) ((p.y - ymin) * ratio),
+                                  (int) ((p.x - xmin) * ratio),
+                    getHeight() - (int) ((p.y - ymin) * ratio));
         }
     }
 
@@ -130,7 +130,8 @@ public class UIKarttaNakyma extends JPanel implements MouseMotionListener {
             for (int i = 0; i < robottiNakymat.length; ++i)
                 robottiPolut[i] = new ArrayList<Point2D.Float>();
         }
-        // Lisää robottien uudet sijainnit niiden kulmkemaan polkuun.
+
+        // Lisää robottien uudet sijainnit niiden kulkemaan polkuun.
         for (int i = 0; i < robottiNakymat.length; ++i) {
             if (robottiNakymat[i] != null && robottiNakymat[i].length > 0)
                 robottiPolut[i].add((Point2D.Float)robottiNakymat[i][0].getP1());
