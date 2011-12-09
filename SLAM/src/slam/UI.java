@@ -7,8 +7,11 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
+import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.border.Border;
 
@@ -56,7 +59,7 @@ public class UI extends JFrame {
     /**
      * Alustetaan kaikki näkyvät komponentit
      */
-    private void alustaKomponentit() {
+    private void alustaKomponentit(){
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 600);
@@ -93,12 +96,11 @@ public class UI extends JFrame {
         debugTekstit.setLineWrap(true);
         debugTekstit.setEditable(false);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        
-        //Debug-viestien tallennuspaikka
-        try{
-            PrintWriter tuloste = new PrintWriter("debugtuloste.txt");
-        }catch(Exception e){
-            e.printStackTrace();
+        try {
+            //Debug-viestien tallennuspaikka
+              tuloste = new PrintWriter("debuguloste.txt");
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, ex);
         }
 
 
