@@ -110,33 +110,41 @@ public class Komentaja extends Thread {
         
         r1 = new RoboOhjain(b1, 10*1000, 80*10);
         r2 = new RoboOhjain(b2, 10*1000, 80*10);
-        Thread t1 = new Thread(r1);
-        Thread t2 = new Thread(r2);
-        
-        t1.start();
-        t2.start();
 
+        // HUOM HUOM TÄSSÄ ON ONGELMA! Joskus piirto tapahtuu vanhasta
+        // sijainnista mutta uusilla mittaustuloksilla == VIRHE!
+        // Aikapulan takia on tehty tämä puukotus, jossa "säikeitä" kutsutaan
+        // synkronisesti yksi kerrallaan eli odotetaan, että robotti N saa
+        // mittaukset tehtyä ennen kuin siirrytään ajamaan robottia N+1.
+//        Thread t1 = new Thread(r1);
+//        Thread t2 = new Thread(r2);
+          
+//        t1.start();
+//        t2.start();
+
+        Line2D.Float[][] robottienNakymat = new Line2D.Float[2][];
         Kokoaja.asetaVirhemitat(Math.toRadians(5.0), 1.0*10);
         while (roboNakyma1 != null && roboNakyma2 != null) {
             boolean muuttunut = false;
             
+            r1.suorita();
             if (r1.onMuuttunut()) {
-             roboNakyma1.piirraEtaisyydet(r1.haeEtaisyydet());
-             Kokoaja.asetaKartta(b1.getRoboID(), r1.haeKartta());
-             muuttunut = true;
+                roboNakyma1.piirraEtaisyydet(r1.haeEtaisyydet());
+                Kokoaja.asetaKartta(b1.getRoboID(), r1.haeKartta());
+                robottienNakymat[0] = r1.annaKoordinaatit();
+                muuttunut = true;
             }
             
+            r2.suorita();
             if (r2.onMuuttunut()) {
-             roboNakyma2.piirraEtaisyydet(r2.haeEtaisyydet());
-             Kokoaja.asetaKartta(b2.getRoboID(), r2.haeKartta());
-             muuttunut = true;
+                roboNakyma2.piirraEtaisyydet(r2.haeEtaisyydet());
+                Kokoaja.asetaKartta(b2.getRoboID(), r2.haeKartta());
+                robottienNakymat[1] = r2.annaKoordinaatit();
+                muuttunut = true;
             }
 
-            if (muuttunut) {
-                Line2D.Float[][] robottienNakymat = { r1.annaKoordinaatit(),
-                                                      r2.annaKoordinaatit()};
+            if (muuttunut)
                 karttaNakyma.piirraKartta(Kokoaja.yhdista(), robottienNakymat);
-            }
         }
     }
     
