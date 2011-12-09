@@ -155,13 +155,11 @@ public class NXTBTYhteys extends BTYhteys {
         //  this.odotusAikaMS = odotusAikaMs;
         this.paketti = paketti;
         kirjoitus = true;
-        while (kirjoitus) {
-        }
+        while (kirjoitus) {}
 
         luku = true;
         muuttunut = false;
-        while (!muuttunut) {
-        }
+        while (!muuttunut) {}
 
         return this.paketti;
     }

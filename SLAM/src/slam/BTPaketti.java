@@ -85,7 +85,7 @@ public class BTPaketti implements Serializable {
      * @return
      */
     public Point2D.Float getMittausSuunta() {
-        return new Point2D.Float(mittausSuunta.x, mittausSuunta.y);
+        return mittausSuunta;
     }
 
     /**
@@ -107,7 +107,7 @@ public class BTPaketti implements Serializable {
     public Point2D.Float getNykySijainti() {
         if (nykySijainti == null)
             return null;
-        return new Point2D.Float(nykySijainti.x, nykySijainti.y);
+        return nykySijainti;
     }
 
     /**
@@ -117,7 +117,7 @@ public class BTPaketti implements Serializable {
     public Point2D.Float getUusiSijainti() {
         if (uusiSijainti == null)
             return null;
-        return new Point2D.Float(uusiSijainti.x, uusiSijainti.y);
+        return uusiSijainti;
     }
 
     /**
