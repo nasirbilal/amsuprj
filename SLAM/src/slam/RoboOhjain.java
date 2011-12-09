@@ -191,8 +191,8 @@ public class RoboOhjain extends Thread {
         int tyhjyysalkumuisti = 0;
         
         if (Math.random() < 2.0) // Tämä on tässä kunnes mittauspisteen laskenta toimii oikein!
-            return haeUusiMittauspisteIdiotEdition(paketti); // juhiksen testi, kattokaa ininää sen päältä
-            //return haeUusiSattumanvarainenMittauspiste(paketti);
+            //return haeUusiMittauspisteIdiotEdition(paketti); // juhiksen testi, kattokaa ininää sen päältä
+            return haeUusiSattumanvarainenMittauspiste(paketti);
         
         for (int i = 0; i < etaisyydet.length; i++) {
             if (etaisyydet[i] >= maxEtaisyys) {                // jos ei nähdä mitään
@@ -765,7 +765,7 @@ public class RoboOhjain extends Thread {
             uusinPaketti = vastaus;  //Talleta uusimmat tulokset
         
         // Laske robotin sijainti kartan datan perusteella.
-        uusinPaketti.setNykySijainti(arvioiTodellinenSijainti(uusinPaketti));
+        //uusinPaketti.setNykySijainti(arvioiTodellinenSijainti(uusinPaketti));
 
         // Lisää robotin havaitsemat esteet karttaan.
         lisaaHavainnotKarttaan(uusinPaketti);

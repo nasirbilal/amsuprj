@@ -20,7 +20,7 @@ public class JsimBTYhteys implements BTYhteys {
         this.paketti.setNykySijainti(robo.getPaikka());
         this.paketti.setUusiSijainti(robo.getPaikka());
         this.paketti.setMittausSuunta(new Point2D.Float(
-                robo.getPaikka().x, robo.getPaikka().y+1));
+                robo.getPaikka().x, robo.getPaikka().y));
     }
 
     /**
@@ -37,6 +37,11 @@ public class JsimBTYhteys implements BTYhteys {
      */
     @Override
     public BTPaketti lahetaJaVastaanota(BTPaketti paketti, int odotusAikaMs) {
+        // Lähetä data robotille ja odota sen vastausta.
+        robo.setPaikka(paketti.getNykySijainti());
+        robo.etenePisteeseen(paketti.getUusiSijainti()); 
+        robo.käännyKohti(paketti.getMittausSuunta());
+        
         // Robotti suorittaa mittauksia...
         final float[] mittaukset = robo.mittaa(paketti.getEtaisyydet().length);
         int[] etäisyydet = new int[paketti.getEtaisyydet().length];
