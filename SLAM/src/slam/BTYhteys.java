@@ -4,7 +4,7 @@ package slam;
  * @@brief Bluetooth-yhteyden rajapinta.
  * @author L
  */
-public interface BTYhteys {
+public abstract class BTYhteys extends Thread {
     /// @brief Lähettää paketin yhteyden yli ja palauttaa saadun vastauksen.
     ///
     /// Bluetooth-yhteyden yli lähetetään annettu paketti. Vastausta
@@ -20,7 +20,7 @@ public interface BTYhteys {
      * Palauta robotin yksilöivä numeerinen tunnus.
      * @return 
      */
-    public int getRoboID();
+    public abstract int getRoboID();
     
     /**
      * 
@@ -28,17 +28,17 @@ public interface BTYhteys {
      * @param odotusAikaMs
      * @return
      */
-    public BTPaketti lahetaJaVastaanota(BTPaketti paketti, int odotusAikaMs);
+    public abstract BTPaketti lahetaJaVastaanota(BTPaketti paketti, int odotusAikaMs);
 
     /// @brief Tuhoaa vanhan yhteyden ja luo sen uudestaan alusta.
     /**
      * 
      */
-    public void uudelleenKaynnista();
+    public abstract void uudelleenKaynnista();
     
     /**
      * 
      * @return
      */
-    public BTPaketti annaOletusPaketti();
+    public abstract BTPaketti annaOletusPaketti();
 }

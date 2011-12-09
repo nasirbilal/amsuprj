@@ -13,7 +13,7 @@ import java.util.*;
  * tapahtuu tämän luokan kautta. Jokaista robottia vastaa yksi RoboOhjain-
  * luokan ilmentymä.
  */
-public class RoboOhjain extends Thread {
+public class RoboOhjain implements Runnable {
 
     private int odotusMs; /// Kauanko BT-yhteyttä odotetaan ennen time outia.
     private boolean onMuuttunut; /// Onko tullut BT:ltä uutta dataa.
