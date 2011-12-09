@@ -92,6 +92,7 @@ public class UI extends JFrame {
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
 
+
         //reunukset
         debugTekstit.setBorder(reunus);
         nappulaPaneeli.setBorder(reunus);
@@ -146,7 +147,7 @@ public class UI extends JFrame {
                 Line2D.Float[] robo2 = komentaja.annaRobo2Koordinaatit();
                 Point2D pRobo1 = robo1[0].getP1();
                 Point2D pRobo2 = robo2[0].getP1();
-                
+
                 //Lasketaan kumpi robo on lähempänä klikattua pistettä 
                 //ja lähetämme sen pisteeseen
                 int delta1X = (int) (pRobo1.getX() - x);
@@ -181,7 +182,7 @@ public class UI extends JFrame {
             public void mouseExited(MouseEvent e) {
             }
         });
-        
+
         paivitaNakymaN.addActionListener(new ActionListener() {
 
             @Override
@@ -198,6 +199,7 @@ public class UI extends JFrame {
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
                 KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "Cancel");
         getRootPane().getActionMap().put("Cancel", new AbstractAction() {
+
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.exit(0);
@@ -227,6 +229,7 @@ public class UI extends JFrame {
     public void asetaDebugTeksti(String str) {
         if (str != null && debug) {
             debugTekstit.append(str.concat("\n"));
+            debugTekstit.setCaretPosition(debugTekstit.getText().length());
         }
     }
 }
