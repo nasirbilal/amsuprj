@@ -158,6 +158,12 @@ public class RoboOhjain implements Runnable {
         }
     }
 
+    public void suorita() {
+        System.out.println("RoboID "+uusinPaketti.getId()+" "+Calendar.
+                getInstance().getTime().toString() + ".");
+        teeMittaukset();
+    }
+
     /**
      * 
      * @param nykySijainti
@@ -184,6 +190,10 @@ public class RoboOhjain implements Runnable {
      */
     protected void kokeileLisataHavainnotKarttaan(BTPaketti paketti) {
         lisaaHavainnotKarttaan(paketti);
+    }
+
+    private Point2D.Float haeUusiMittauspiste(BTPaketti p) {
+        return suunnistin.haeUusiSattumanvarainenMittauspiste(p);
     }
     
     /**
@@ -215,8 +225,11 @@ public class RoboOhjain implements Runnable {
 
         // Laske keskimääräinen etäisyys tällä mittauskierroksella.
         double KA_ETAISYYS = 0;
-        for (int i : etaisyydet)
-            KA_ETAISYYS += i;
+        
+        if (maara > 9) // Edellytä edes jonkinlaista mittaustarkkuutta!
+            for (int i : etaisyydet)
+                KA_ETAISYYS += i;
+        
         KA_ETAISYYS /= 3*maara/2; // Kalibrointia: etäisyydestä osa pois.
         
         // Poista havaintoalueen vanhat pisteet ja leikkaa sinne jatkuvat janat.
@@ -320,10 +333,10 @@ public class RoboOhjain implements Runnable {
                     pisteet.add((Point2D.Float) sateet[i].getP2());
             }
         
-        // HUOM! Maksimi mittausetäisyys puukotettu koodiin! Kovaa koodaamista!
-        final double maksimiEtaisyys = Math.sqrt(maxEtaisyys * maxEtaisyys + 
-            maxEtaisyys * maxEtaisyys - 2 * maxEtaisyys * maxEtaisyys *
-            Math.cos(Math.PI/(paketti.getEtaisyydet().length - 1)));
+        final double maksimiEtaisyys = 50; // Vaadi nyt edes vähän tarkkuutta!
+//            Math.sqrt(maxEtaisyys * maxEtaisyys + 
+//            maxEtaisyys * maxEtaisyys - 2 * maxEtaisyys * maxEtaisyys *
+//            Math.cos(Math.PI/(paketti.getEtaisyydet().length - 1)));
 
         // Yhdistä vastikään lisätyistä pisteistä kolmen perättäisen pisteen 
         // kautta kulkevalle suoralle osuvat pisteet janoiksi. Tämä poistaa
@@ -524,9 +537,5 @@ public class RoboOhjain implements Runnable {
         } while (--kierrokset > 0);
 
         return tarkinNykySijainti;
-    }
-
-    private Point2D.Float haeUusiMittauspiste(BTPaketti p) {
-        return suunnistin.haeUusiSattumanvarainenMittauspiste(p);
     }
 }
