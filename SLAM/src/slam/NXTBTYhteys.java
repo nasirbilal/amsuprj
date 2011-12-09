@@ -8,7 +8,7 @@ import lejos.pc.comm.*;
  *
  * @author Olli Koskinen
  */
-public class NXTBTYhteys extends Thread implements BTYhteys {
+public class NXTBTYhteys extends BTYhteys {
 
     private volatile boolean jatkuu;
     private int tempEtaisyydet[];

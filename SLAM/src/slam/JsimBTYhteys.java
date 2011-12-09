@@ -6,7 +6,7 @@ import java.awt.geom.Point2D;
  *
  * @author Mudi
  */
-public class JsimBTYhteys implements BTYhteys {
+public class JsimBTYhteys extends BTYhteys {
 
     private JsimRobo robo;
     private BTPaketti paketti;

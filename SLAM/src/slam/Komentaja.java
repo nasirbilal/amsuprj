@@ -15,19 +15,12 @@ public class Komentaja extends Thread {
     private UIKarttaNakyma karttaNakyma;
     private UI ui;
     
-    private BTYhteys b1;
-    private BTYhteys b2;
+    BTYhteys b1;
+    BTYhteys b2;
+    
     private RoboOhjain r1;
     private RoboOhjain r2;
-    private boolean bluukka; //Vaihdin bluetoothin ja simulaattorin välille
-
-    /**
-     * 
-     */
-    public Komentaja() {
-        this.bluukka = false; //Vaihdin bluetoothin ja simulaattorin välille
-    }
-
+    
     /**
      * 
      */
@@ -105,17 +98,29 @@ public class Komentaja extends Thread {
 
     @Override
     public void run() {
-        if(bluukka){
-        b1 = new NXTBTYhteys(ui);
-        b2 = new NXTBTYhteys(ui);
+        if (true) {
+            b1 = new NXTBTYhteys(this.ui);
+            b2 = new NXTBTYhteys(this.ui);
         }else{
             b1 = new JsimBTYhteys();
             b2 = new JsimBTYhteys();
         }
+        
+        b1.start();
+        try {
+            Thread.sleep(100);
+        } catch (Exception e) {
+        }
+        
+        b2.start();
+        
         r1 = new RoboOhjain(b1, b1.getRoboID(), 10*1000, 80*10);
         r2 = new RoboOhjain(b2, b2.getRoboID(), 10*1000, 80*10);
-        r1.start();
-        r2.start();
+        Thread t1 = new Thread(r1);
+        Thread t2 = new Thread(r2);
+        
+        t1.start();
+        t2.start();
 
         Kokoaja.asetaVirhemitat(Math.toRadians(5.0), 1.0*10);
         while (roboNakyma1 != null && roboNakyma2 != null) {
