@@ -98,7 +98,7 @@ public class Komentaja extends Thread {
 
     @Override
     public void run() {
-        if (true) {
+        if (false) {
             b1 = new NXTBTYhteys(this.ui);
             b2 = new NXTBTYhteys(this.ui);
         }else{

@@ -92,7 +92,7 @@ public class UIKarttaNakyma extends JPanel implements MouseMotionListener {
             if (robottiNakymat[i] == null || robottiNakymat[i].length == 0)
                 continue;
 
-            g2.setColor(Color.GRAY);
+            g2.setColor(Color.LIGHT_GRAY);
             g2.setStroke(new BasicStroke(1));
 
             // Piirrä robotin näköviivat.
@@ -136,7 +136,7 @@ public class UIKarttaNakyma extends JPanel implements MouseMotionListener {
             if (robottiNakymat[i] != null && robottiNakymat[i].length > 0)
                 robottiPolut[i].add((Point2D.Float)robottiNakymat[i][0].getP1());
             
-            if (robottiPolut[i].size() > 100) // Jos polku liian pitkä...
+            if (robottiPolut[i].size() > 50) // Jos polku liian pitkä...
                 robottiPolut[i].remove(0);   // Poista vanhin polkupiste.
         }
         repaint();
