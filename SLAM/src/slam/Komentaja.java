@@ -105,12 +105,11 @@ public class Komentaja extends Thread {
             b1 = new JsimBTYhteys();
             b2 = new JsimBTYhteys();
         }
-        
         b1.start();
         b2.start();
         
-        r1 = new RoboOhjain(b1, b1.getRoboID(), 10*1000, 80*10);
-        r2 = new RoboOhjain(b2, b2.getRoboID(), 10*1000, 80*10);
+        r1 = new RoboOhjain(b1, 10*1000, 80*10);
+        r2 = new RoboOhjain(b2, 10*1000, 80*10);
         Thread t1 = new Thread(r1);
         Thread t2 = new Thread(r2);
         
