@@ -67,7 +67,7 @@ public class JsimRoboNakyma {
      * @param t Ympäristössä olevaa estettä eli seinää kuvaava jana.
      * @return Janojen leikkauspisteen tai null, jos ne eivät leikkaa.
      */
-    public Point2D.Float laskeLeikkauspiste(Line2D.Float s, Line2D.Float t) {
+    public static Point2D.Float laskeLeikkauspiste(Line2D.Float s, Line2D.Float t) {
         float x, y, a1, a2, b1, b2;
 
         if (!s.intersectsLine(t)){
