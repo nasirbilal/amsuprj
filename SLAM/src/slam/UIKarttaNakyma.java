@@ -9,7 +9,6 @@ import java.awt.event.MouseMotionListener;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
-import java.util.Random;
 import javax.swing.*;
 
 /**
