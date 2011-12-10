@@ -429,13 +429,14 @@ public class RoboOhjain implements Runnable {
         Point2D.Float uusiSijainti = haeUusiMittauspiste(uusinPaketti);
         seuraavaPaketti.setUusiSijainti(uusiSijainti);
         
-        if (uusiSijainti.x < 0 ||
-            uusiSijainti.y < 0 ||
-            uusiSijainti.x > 1350 ||
-            uusiSijainti.y > 2000)
-            throw new RuntimeException("Robotti haluaa mennä reunojen yli: " +
-                    nykySijainti.x + ", " + nykySijainti.y + " -> " +
-                    uusiSijainti.x + ", " + uusiSijainti.y);
+        // Puukko, joka varmisti, että simulaatio toimii oikein.
+//        if (uusiSijainti.x < 0 ||
+//            uusiSijainti.y < 0 ||
+//            uusiSijainti.x > 1350 ||
+//            uusiSijainti.y > 2000)
+//            throw new RuntimeException("Robotti haluaa mennä reunojen yli: " +
+//                    nykySijainti.x + ", " + nykySijainti.y + " -> " +
+//                    uusiSijainti.x + ", " + uusiSijainti.y);
         
         // Robotin uusi mittaussuunta on sama kuin suunta, johon robotti
         // kulkee nykypisteestä uuteen mittauspisteeseensä.
