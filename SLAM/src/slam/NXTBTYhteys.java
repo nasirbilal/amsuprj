@@ -11,7 +11,6 @@ import lejos.pc.comm.*;
 public class NXTBTYhteys extends BTYhteys {
 
     private volatile boolean jatkuu;
-    private int tempEtaisyydet[];
     private JsimRobo robo;
     private BTPaketti paketti;
     private NXTConnector yhteys;
@@ -34,7 +33,6 @@ public class NXTBTYhteys extends BTYhteys {
         this.yrityksia = 0;
         this.robo = new JsimRobo();
         this.paketti = new BTPaketti(robo.getID());                            //BTPaketti
-        this.tempEtaisyydet = new int[BTPaketti.MAARA];
         // this.odotusAikaMS = 5;                          //"Connection timeout" -EI IMPLEMENTOITU
         this.yhteys = new NXTConnector();
         this.nimi = robo.getNimi();
@@ -127,18 +125,23 @@ public class NXTBTYhteys extends BTYhteys {
                     try {
                         ui.asetaDebugTeksti("#######LUKU ALKAA#######");
                         paketti.setId(dataSisaan.readInt());
-                        ui.asetaDebugTeksti("ID luettu");
+                        String tulosTeksti = "";
+                        int[] tempEtaisyydet = new int[paketti.getEtaisyydet().length];
+
                         for (int i = 0; i < BTPaketti.MAARA; i++) {
                             tempEtaisyydet[i] = dataSisaan.readInt();
-                            ui.asetaDebugTeksti("Robo "+paketti.getId()+" Etäisyys " + i + ". = " + tempEtaisyydet[i]);
+                            tulosTeksti += tempEtaisyydet[i] + ", ";
                         }
+                        paketti.setEtaisyydet(tempEtaisyydet);
+                        ui.asetaDebugTeksti("Robo "+paketti.getId()+": " + tulosTeksti);
 
                         paketti.setNykySijainti(new Point2D.Float(dataSisaan.readFloat(), dataSisaan.readFloat()));
-                        ui.asetaDebugTeksti("Robo "+paketti.getId()+" Nykysijainti  " + paketti.getNykySijainti().x + "," + paketti.getNykySijainti().y);
                         paketti.setUusiSijainti(new Point2D.Float(dataSisaan.readFloat(), dataSisaan.readFloat()));
-                        ui.asetaDebugTeksti("Robo "+paketti.getId()+" UusiSijainti  " + paketti.getUusiSijainti().x + "," + paketti.getUusiSijainti().y);
                         paketti.setMittausSuunta(new Point2D.Float(dataSisaan.readFloat(), dataSisaan.readFloat()));
-                        ui.asetaDebugTeksti("Robo "+paketti.getId()+" MittausSuunta "+ paketti.getMittausSuunta());
+                        ui.asetaDebugTeksti("Robo " + paketti.getId() + ": " +
+                            paketti.getNykySijainti().x + "," + paketti.getNykySijainti().y +
+                             " -> " + paketti.getUusiSijainti().x + "," + paketti.getUusiSijainti().y +
+                             " @ " + paketti.getMittausSuunta());
                         muuttunut = true;
 
                         luku = false;
