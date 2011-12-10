@@ -20,6 +20,7 @@ public class RoboOhjain implements Runnable {
     private int maxEtaisyys; /// Etäisyys, jota kauempia esteitä ei havaita.
     private BTYhteys bt; /// BT-yhteys oikeaan tai simuloituun robottiin.
     private BTPaketti uusinPaketti; /// Viimeisin saatu tulos Bluetoothilta.
+    private BTPaketti seuraavaPaketti; /// Seurv. kierroksella lähetettävä paketti.
     private Point2D.Double[] roboNakyma; /// Mittaustulokset koordinaatistossa.
     private Line2D.Float[] mittausJanat; /// Robotin mittaussuuntien janat.
     private ArrayList<Line2D.Float> kartta; /// Robotin tutkima alue.
@@ -38,6 +39,7 @@ public class RoboOhjain implements Runnable {
         this.maxEtaisyys = maxEtaisyys;
         this.bt = bt;
         this.uusinPaketti = bt.annaOletusPaketti();
+        this.seuraavaPaketti = bt.annaOletusPaketti();
         this.roboNakyma = new Point2D.Double[BTPaketti.MAARA];
         this.kartta = new ArrayList<Line2D.Float>();
         this.suunnistin = new RoboSuunnistin(maxEtaisyys);
@@ -71,6 +73,7 @@ public class RoboOhjain implements Runnable {
      */
     public void asetaTestausPaketti(BTPaketti paketti) {
         this.uusinPaketti = paketti;
+        this.seuraavaPaketti = paketti;
         JsimRoboNakyma nakyma = new JsimRoboNakyma(new Point2D.Float(0, 0),
                 0, paketti.getEtaisyydet().length, 1);
         this.mittausJanat = nakyma.getNakotaulu();
@@ -193,7 +196,13 @@ public class RoboOhjain implements Runnable {
     }
 
     private Point2D.Float haeUusiMittauspiste(BTPaketti p) {
-        return suunnistin.haeUusiSattumanvarainenMittauspiste(p);
+        Point2D.Float pt = annettuPiste;
+
+        if (!kayttajaltaKoordinaatit)
+            pt = suunnistin.haeUusiSattumanvarainenMittauspiste(p);
+
+        kayttajaltaKoordinaatit = false;
+        return pt;
     }
     
     /**
@@ -402,14 +411,15 @@ public class RoboOhjain implements Runnable {
      *  saatu odotusajan umpeuduttua.
      */
     private boolean teeMittaukset() {
-        BTPaketti vastaus = bt.lahetaJaVastaanota(uusinPaketti, odotusMs);
+        BTPaketti vastaus = bt.lahetaJaVastaanota(seuraavaPaketti, odotusMs);
         if (vastaus == null)
             return false;
         else
             uusinPaketti = vastaus;  //Talleta uusimmat tulokset
-        
+
         // Laske robotin sijainti kartan datan perusteella.
-        //uusinPaketti.setNykySijainti(arvioiTodellinenSijainti(uusinPaketti));
+        seuraavaPaketti.setNykySijainti(uusinPaketti.getNykySijainti());
+        //seuraavaPaketti.setNykySijainti(arvioiTodellinenSijainti(uusinPaketti));
 
         // Lisää robotin havaitsemat esteet karttaan.
         lisaaHavainnotKarttaan(uusinPaketti);
@@ -417,7 +427,7 @@ public class RoboOhjain implements Runnable {
         // Laske robotille uusi mittauspiste.
         Point2D.Float nykySijainti = uusinPaketti.getNykySijainti();
         Point2D.Float uusiSijainti = haeUusiMittauspiste(uusinPaketti);
-        uusinPaketti.setUusiSijainti(uusiSijainti);
+        seuraavaPaketti.setUusiSijainti(uusiSijainti);
         
         if (uusiSijainti.x < 0 ||
             uusiSijainti.y < 0 ||
@@ -433,7 +443,7 @@ public class RoboOhjain implements Runnable {
         float dy = uusiSijainti.y - nykySijainti.y;
         uusiSijainti.x += dx;
         uusiSijainti.y += dy;
-        uusinPaketti.setMittausSuunta(uusiSijainti);
+        seuraavaPaketti.setMittausSuunta(uusiSijainti);
 
         return onMuuttunut = true;        
     }
