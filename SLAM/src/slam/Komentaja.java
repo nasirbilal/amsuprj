@@ -98,18 +98,18 @@ public class Komentaja extends Thread {
 
     @Override
     public void run() {
-        if (false) {
+        if (true) {
             b1 = new NXTBTYhteys(this.ui);
-            b2 = new NXTBTYhteys(this.ui);
+           // b2 = new NXTBTYhteys(this.ui);
         }else{
             b1 = new JsimBTYhteys();
             b2 = new JsimBTYhteys();
         }
         b1.start();
-        b2.start();
+       // b2.start();
         
         r1 = new RoboOhjain(b1, 10*1000, 80*10);
-        r2 = new RoboOhjain(b2, 10*1000, 80*10);
+        //r2 = new RoboOhjain(b2, 10*1000, 80*10);
 
         // HUOM HUOM TÄSSÄ ON ONGELMA! Joskus piirto tapahtuu vanhasta
         // sijainnista mutta uusilla mittaustuloksilla == VIRHE!
@@ -124,7 +124,7 @@ public class Komentaja extends Thread {
 
         Line2D.Float[][] robottienNakymat = new Line2D.Float[2][];
         Kokoaja.asetaVirhemitat(Math.toRadians(5.0), 1.0*10);
-        while (roboNakyma1 != null && roboNakyma2 != null) {
+        while (roboNakyma1 != null/* && roboNakyma2 != null*/) {
             boolean muuttunut = false;
             
             r1.suorita();
@@ -135,14 +135,14 @@ public class Komentaja extends Thread {
                 muuttunut = true;
             }
             
-            r2.suorita();
+           /* r2.suorita();
             if (r2.onMuuttunut()) {
                 roboNakyma2.piirraEtaisyydet(r2.haeEtaisyydet());
                 Kokoaja.asetaKartta(b2.getRoboID(), r2.haeKartta());
                 robottienNakymat[1] = r2.annaKoordinaatit();
                 muuttunut = true;
             }
-
+*/
             if (muuttunut)
                 karttaNakyma.piirraKartta(Kokoaja.yhdista(), robottienNakymat);
         }
