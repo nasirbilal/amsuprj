@@ -49,7 +49,7 @@ public class RoboOhjainTest {
         paketti.setEtaisyydet(etaisyydet);
 
         JsimBTYhteys bt = new JsimBTYhteys();
-        RoboOhjain instance = new RoboOhjain(bt, 0, 0, 800);
+        RoboOhjain instance = new RoboOhjain(bt, 0, 800);
         instance.asetaTestausPaketti(paketti);
         
         // Kyl nää tulee ihan oikein myötäpäiväjärjestyksessä.
@@ -88,7 +88,7 @@ public class RoboOhjainTest {
         etaisyydet[18] = 500;
         etaisyydet[17] = 500;
         
-        RoboOhjain instance = new RoboOhjain(bt,0,0,800);
+        RoboOhjain instance = new RoboOhjain(bt,0,800);
         Point2D.Float expResult = new Point2D.Float(368.6386684F,337.7951038F); //laskimella väännetty
         Point2D.Float result = instance.kokeileHakeaUusiMittauspiste(nykySijainti, kulma, etaisyydet);
         assertEquals(expResult, result);
@@ -112,7 +112,7 @@ public class RoboOhjainTest {
         etaisyydet[18] = 500;
         etaisyydet[19] = 500;
         
-        RoboOhjain instance = new RoboOhjain(bt,0,0,800);
+        RoboOhjain instance = new RoboOhjain(bt,0,800);
         Point2D.Float expResult = new Point2D.Float(-337.7951038F,368.6386684F); //laskimella väännetty
         Point2D.Float result = instance.kokeileHakeaUusiMittauspiste(nykySijainti, kulma, etaisyydet);
         assertEquals(expResult, result);
@@ -132,7 +132,7 @@ public class RoboOhjainTest {
             etaisyydet[i] = 500;
         }
         
-        RoboOhjain instance = new RoboOhjain(bt,0,0,800);
+        RoboOhjain instance = new RoboOhjain(bt,0,800);
         Point2D.Float expResult = new Point2D.Float(0.0F,250.0F); //laskimella väännetty
         Point2D.Float result = instance.kokeileHakeaUusiMittauspiste(nykySijainti, kulma, etaisyydet);
         assertEquals(expResult, result);
@@ -152,7 +152,7 @@ public class RoboOhjainTest {
             etaisyydet[i] = 500;
         }
         
-        RoboOhjain instance = new RoboOhjain(bt,0,0,800);
+        RoboOhjain instance = new RoboOhjain(bt,0,800);
         Point2D.Float expResult = new Point2D.Float(0.0F,250.0F); //laskimella väännetty
         Point2D.Float result = instance.kokeileHakeaUusiMittauspiste(nykySijainti, kulma, etaisyydet);
         assertEquals(expResult, result);
@@ -172,7 +172,7 @@ public class RoboOhjainTest {
             etaisyydet[i] = 800;
         }
 
-        RoboOhjain instance = new RoboOhjain(bt,0,0,800);
+        RoboOhjain instance = new RoboOhjain(bt,0,800);
         Point2D.Float expResult = new Point2D.Float(0.0F,650.0F); //laskimella väännetty
         Point2D.Float result = instance.kokeileHakeaUusiMittauspiste(nykySijainti, kulma, etaisyydet);
         assertEquals(expResult, result);
@@ -198,7 +198,7 @@ public class RoboOhjainTest {
         etaisyydet[25] = 500;
         etaisyydet[32] = 500;
         
-        RoboOhjain instance = new RoboOhjain(bt,0,0,800);
+        RoboOhjain instance = new RoboOhjain(bt,0,800);
         Point2D.Float expResult = new Point2D.Float(-184.3193342F,168.8975519F); //laskimella väännetty
         Point2D.Float result = instance.kokeileHakeaUusiMittauspiste(nykySijainti, kulma, etaisyydet);
         assertEquals(expResult, result);
@@ -222,7 +222,7 @@ public class RoboOhjainTest {
         etaisyydet[18] = 500;
         etaisyydet[17] = 500;
         
-        RoboOhjain instance = new RoboOhjain(bt,0,0,800);
+        RoboOhjain instance = new RoboOhjain(bt,0,800);
         Point2D.Float expResult = new Point2D.Float(-368.6386684F,-337.7951038F); //laskimella väännetty
         Point2D.Float result = instance.kokeileHakeaUusiMittauspiste(nykySijainti, kulma, etaisyydet);
         assertEquals(expResult, result);
@@ -235,7 +235,7 @@ public class RoboOhjainTest {
     public void testKokeileLisataHavainnotKarttaan() {
         System.out.println("kokeileLisataHavainnotKarttaan");
         JsimBTYhteys bt = new JsimBTYhteys();
-        RoboOhjain instance = new RoboOhjain(bt, 0, 0, 800);
+        RoboOhjain instance = new RoboOhjain(bt, 0, 800);
 
         BTPaketti paketti = new BTPaketti(0);
         paketti.setNykySijainti(new Point2D.Float(500, 1500));
