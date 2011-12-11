@@ -137,7 +137,7 @@ public class UI extends JFrame {
         debugIkkunaPaneeli.setSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize().width, Toolkit.getDefaultToolkit().getScreenSize().height));
         debugTekstit.setBackground(Color.BLACK);
         debugTekstit.setSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize().width - 10, Toolkit.getDefaultToolkit().getScreenSize().height - 10));
-        debugTekstit.setRows(75);
+        debugTekstit.setRows(48);
         debugTekstit.setForeground(Color.green);
         debugIkkunaPaneeli.add(scrollPane);
         debugIkkuna.setContentPane(debugIkkunaPaneeli);
