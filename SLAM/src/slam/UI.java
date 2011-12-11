@@ -24,6 +24,8 @@ public class UI extends JFrame {
     /**
      * Luokkamuuttujat
      */
+    private JFrame debugIkkuna;
+    private JPanel debugIkkunaPaneeli;
     private Komentaja komentaja;
     private UIRoboNakyma robo1;
     private UIRoboNakyma robo2;
@@ -59,7 +61,7 @@ public class UI extends JFrame {
     /**
      * Alustetaan kaikki näkyvät komponentit
      */
-    private void alustaKomponentit(){
+    private void alustaKomponentit() {
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 600);
@@ -78,9 +80,8 @@ public class UI extends JFrame {
         karttaNakyma = new UIKarttaNakyma();
         komentaja.asetaKarttaNakyma(karttaNakyma);
         reunus = BorderFactory.createEtchedBorder();
-        debugTekstit = new JTextArea(8, 50);
+        debugTekstit = new JTextArea();
         scrollPane = new JScrollPane(debugTekstit);
-        debugTekstit.setCaretPosition(debugTekstit.getText().length());
 
         //isoon N-kirjaimeen loppuvat muuttujat ovat nappuloita.
         debugValitsinN = new JButton("Debug OFF");
@@ -98,7 +99,7 @@ public class UI extends JFrame {
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         try {
             //Debug-viestien tallennuspaikka
-              tuloste = new PrintWriter("debuguloste.txt");
+            tuloste = new PrintWriter("debuguloste.txt");
         } catch (FileNotFoundException ex) {
             Logger.getLogger(UI.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -126,7 +127,25 @@ public class UI extends JFrame {
         //paaPaneeli.add(nappulaPaneeli, BorderLayout.EAST);
         paaPaneeli.add(roboPaneeli, BorderLayout.WEST);
         paaPaneeli.add(karttaNakyma, BorderLayout.CENTER);
-        paaPaneeli.add(scrollPane, BorderLayout.SOUTH);
+
+
+        //DebugIkkunan säädöt
+        debugIkkuna = new JFrame("Debugging...");
+        debugIkkuna.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        debugIkkuna.setSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize().width, Toolkit.getDefaultToolkit().getScreenSize().height));
+        debugIkkunaPaneeli = new JPanel();
+        debugIkkunaPaneeli.setSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize().width, Toolkit.getDefaultToolkit().getScreenSize().height));
+        debugTekstit.setBackground(Color.BLACK);
+        debugTekstit.setSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize().width - 10, Toolkit.getDefaultToolkit().getScreenSize().height - 10));
+        debugTekstit.setRows(75);
+        debugTekstit.setForeground(Color.green);
+        debugIkkunaPaneeli.add(scrollPane);
+        debugIkkuna.setContentPane(debugIkkunaPaneeli);
+        debugIkkuna.setVisible(true);
+
+
+
+        // paaPaneeli.add(scrollPane, BorderLayout.SOUTH);
 
         //Nappuloiden toiminnot
 
