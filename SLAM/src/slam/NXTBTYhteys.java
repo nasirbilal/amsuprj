@@ -85,11 +85,15 @@ public class NXTBTYhteys extends BTYhteys {
                 if (kirjoitus) {
                     try {
                         ui.asetaDebugTeksti("");
-                        ui.asetaDebugTeksti("#######KIRJOITUS ALKAA#######");
+                        ui.asetaDebugTeksti("################################################");
+                        ui.asetaDebugTeksti("#      Starting data stream decrypting...      #");
+                        ui.asetaDebugTeksti("################################################");
+                        ui.asetaDebugTeksti("");
+
                         dataUlos.writeInt(paketti.getId());
                         dataUlos.flush();
-                       // Thread.sleep(50);
-                       // ui.asetaDebugTeksti("ID kirjoitettu");
+                        // Thread.sleep(50);
+                        // ui.asetaDebugTeksti("ID kirjoitettu");
                         dataUlos.writeFloat(paketti.getNykySijainti().x);
                         dataUlos.flush();
                         //Thread.sleep(50);
@@ -97,18 +101,18 @@ public class NXTBTYhteys extends BTYhteys {
                         dataUlos.writeFloat(paketti.getNykySijainti().y);
                         dataUlos.flush();
                         //Thread.sleep(50);
-                       // ui.asetaDebugTeksti("Nykysijainti Y kirjoitettu");
+                        // ui.asetaDebugTeksti("Nykysijainti Y kirjoitettu");
                         dataUlos.writeFloat(paketti.getUusiSijainti().x);
                         dataUlos.flush();
                         //Thread.sleep(50);
-                       // ui.asetaDebugTeksti("UusiSijainti X kirjoitettu");
+                        // ui.asetaDebugTeksti("UusiSijainti X kirjoitettu");
                         dataUlos.writeFloat(paketti.getUusiSijainti().y);
                         dataUlos.flush();
                         //Thread.sleep(50);
-                       // ui.asetaDebugTeksti("UusiSijainti Y kirjoitettu");
+                        // ui.asetaDebugTeksti("UusiSijainti Y kirjoitettu");
                         dataUlos.writeFloat(paketti.getMittausSuunta().x);
                         dataUlos.flush();
-                       // Thread.sleep(50);
+                        // Thread.sleep(50);
                         //ui.asetaDebugTeksti("GetMittausSuunta X kirjoitettu");
                         dataUlos.writeFloat(paketti.getMittausSuunta().y);
                         dataUlos.flush();
@@ -123,7 +127,11 @@ public class NXTBTYhteys extends BTYhteys {
                 if (luku) {
 
                     try {
-                        ui.asetaDebugTeksti("#######LUKU ALKAA#######");
+                        ui.asetaDebugTeksti("");
+                        ui.asetaDebugTeksti("################################################");
+                        ui.asetaDebugTeksti("#          Starting data streaming...          #");
+                        ui.asetaDebugTeksti("################################################");
+                        ui.asetaDebugTeksti("");
                         paketti.setId(dataSisaan.readInt());
                         String tulosTeksti = "";
                         int[] tempEtaisyydet = new int[paketti.getEtaisyydet().length];
@@ -133,15 +141,15 @@ public class NXTBTYhteys extends BTYhteys {
                             tulosTeksti += tempEtaisyydet[i] + ", ";
                         }
                         paketti.setEtaisyydet(tempEtaisyydet);
-                        ui.asetaDebugTeksti("Robo "+paketti.getId()+": " + tulosTeksti);
+                        ui.asetaDebugTeksti("Robo " + paketti.getId() + ": " + tulosTeksti);
 
                         paketti.setNykySijainti(new Point2D.Float(dataSisaan.readFloat(), dataSisaan.readFloat()));
                         paketti.setUusiSijainti(new Point2D.Float(dataSisaan.readFloat(), dataSisaan.readFloat()));
                         paketti.setMittausSuunta(new Point2D.Float(dataSisaan.readFloat(), dataSisaan.readFloat()));
-                        ui.asetaDebugTeksti("Robo " + paketti.getId() + ": " +
-                            paketti.getNykySijainti().x + "," + paketti.getNykySijainti().y +
-                             " -> " + paketti.getUusiSijainti().x + "," + paketti.getUusiSijainti().y +
-                             " @ " + paketti.getMittausSuunta());
+                        ui.asetaDebugTeksti("Robo " + paketti.getId() + ": "
+                                + paketti.getNykySijainti().x + "," + paketti.getNykySijainti().y
+                                + " -> " + paketti.getUusiSijainti().x + "," + paketti.getUusiSijainti().y
+                                + " @ " + paketti.getMittausSuunta());
                         muuttunut = true;
 
                         luku = false;
@@ -158,11 +166,13 @@ public class NXTBTYhteys extends BTYhteys {
         //  this.odotusAikaMS = odotusAikaMs;
         this.paketti = paketti;
         kirjoitus = true;
-        while (kirjoitus) {}
+        while (kirjoitus) {
+        }
 
         luku = true;
         muuttunut = false;
-        while (!muuttunut) {}
+        while (!muuttunut) {
+        }
 
         return this.paketti;
     }
