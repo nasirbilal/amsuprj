@@ -39,6 +39,10 @@ public class Kokoaja {
         Kokoaja.robotinHalk = robotinHalkaisija;
     }
 
+    public static void pyyhi() {
+        roboKartta = new TreeMap<Integer, Line2D.Float[]>();
+    }
+
     /**
      * 
      */
