@@ -348,8 +348,16 @@ public class RoboSuunnistin {
         int summa = 0;
         int index = -1;
         
-        for (int i = 0; i < etaisyydet.length; ++i)
+        for (int i = 0; i < etaisyydet.length; ++i) {
+            if (etaisyydet[i] < 150)
+                etaisyydet[i] = 0;
             summa += 1 + etaisyydet[i] * etaisyydet[i];
+        }
+
+        if (summa == etaisyydet.length) // Jos kaikki näköviivat < 15 cm...
+            return new Point2D.Float(2*paketti.getNykySijainti().x -
+                paketti.getMittausSuunta().x, 2*paketti.getNykySijainti().y - 
+                paketti.getMittausSuunta().y);
 
         // Valitse näköviivoista sattumnvaraisesti jokin niin, että pidemmät
         // näköviivat saavat suuremman painoarvon kuin lyhyet.
