@@ -150,4 +150,9 @@ public class UIKarttaNakyma extends JPanel implements MouseMotionListener {
     public void mouseMoved(MouseEvent e) {
         setToolTipText(e.getX() + "," + e.getY());
     }
+
+    void pyyhi() {
+        for (int i = 0; i < robottiNakymat.length; ++i)
+            robottiPolut[i].clear();
+    }
 }

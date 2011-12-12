@@ -2,6 +2,7 @@ package slam;
 
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
+import java.util.Calendar;
 import javax.swing.UIManager;
 
 /**
@@ -98,7 +99,8 @@ public class Komentaja extends Thread {
 
     @Override
     public void run() {
-        if (false) {
+        boolean simulaatio = true;
+        if (!simulaatio) {
             b1 = new NXTBTYhteys(this.ui);
             b2 = new NXTBTYhteys(this.ui);
         }else{
@@ -124,6 +126,8 @@ public class Komentaja extends Thread {
             t1.start();
             t2.start();
         }
+        
+        long alkuaika = Calendar.getInstance().getTimeInMillis();
         
         Line2D.Float[][] robottienNakymat = new Line2D.Float[2][];
         Kokoaja.asetaVirhemitat(Math.toRadians(5.0), 1.0*10);
@@ -152,9 +156,15 @@ public class Komentaja extends Thread {
 
             if (muuttunut)
                 karttaNakyma.piirraKartta(Kokoaja.yhdista(), robottienNakymat);
+
+            if (simulaatio && Calendar.getInstance().getTimeInMillis() - alkuaika > 1000*60) {
+                Kokoaja.pyyhi();
+                karttaNakyma.pyyhi();
+                run();
+            }
         }
     }
-    
+
     //Käyttöliittymältä tuleva liikkumiskäsky, ohittaa robotin uuden pisteen laskun
     /**
      * 
