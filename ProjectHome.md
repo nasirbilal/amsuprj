@@ -1,0 +1,1 @@
+Autonomisesti suunnistavien ja ympäristöä kartoittavien robottien joukko
